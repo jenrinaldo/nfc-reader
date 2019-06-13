@@ -142,7 +142,27 @@ elif type(COMMAND) == str:
 		elif (sw1, sw2) == (0x63, 0x0):
 			print ("Status: The operation failed. Maybe auth is needed.")
 		
-
+	elif COMMAND == "write": #masukan mod 4 = 3, gagal
+		COMMAND = [0xFF, 0x86, 0x00, 0x00, 0x05, 0x01, 0x00, int(sys.argv[2]), 0x60, 0x00]
+		data, sw1, sw2 = connection.transmit(COMMAND)
+		if (sw1, sw2) == (0x90, 0x0):
+			print ("Status: Decryption all sector using key #0 as Key A successful.")
+		masukan = '0165150300111021'
+		x = len(masukan)
+		listinput = []
+		COMMAND = [0xFF, 0xD6, 0x00, int(sys.argv[2]), 0x10]
+		if x <= 16:
+			COMMAND.extend([ord(c) for c in masukan])
+			print(COMMAND)
+			data, sw1, sw2 = connection.transmit(COMMAND)
+			print ("Status words: %02X %02X" % (sw1, sw2))
+			if (sw1, sw2) == (0x90, 0x0):
+				print ("Status: Key is loaded successfully to key #0.")
+			elif (sw1, sw2) == (0x63, 0x0):
+				print ("Status: Failed to load key.")
+		else :
+			print ("masukan Terlalu Banyak")
+			
 	else:
 		print ("error: Undefined command: "+ cmd +"\nUse \"help\" command for command list.")
 		sys.exit()
