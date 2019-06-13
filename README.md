@@ -3,7 +3,7 @@ Python code to read/write nfc card with ACR122U
 
 # Environtment
  * pyscard
- * python 2
+ * python 3
 
 # Command List
     $ python nfc.py read
