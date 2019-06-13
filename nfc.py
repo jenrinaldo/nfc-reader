@@ -21,7 +21,6 @@ print ("Using: ", reader)
 # connect with the selected reader
 connection = reader.createConnection()
 connection.connect()
-# hapus halo
 # detect command from cmd
 cmd = sys.argv[1]
 
