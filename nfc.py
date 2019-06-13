@@ -21,8 +21,7 @@ print ("Using: ", reader)
 # connect with the selected reader
 connection = reader.createConnection()
 connection.connect()
-#Haloo
-#Haloo
+
 # detect command from cmd
 cmd = sys.argv[1]
 
