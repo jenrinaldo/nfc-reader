@@ -106,19 +106,6 @@ elif type(COMMAND) == str:
 		for a in range (0, 16):
 			COMMAND = [0xFF, 0x86, 0x00, 0x00, 0x05, 0x01, 0x00, a*4, 0x60, 0x00]
 			data, sw1, sw2 = connection.transmit(COMMAND)
-			# if (sw1, sw2) == (0x90, 0x0):
-			# 	# print ("Status: Decryption all sector using key #0 as Key A successful.")
-			# elif (sw1, sw2) == (0x63, 0x0):
-			# 	# print ("Status: Decryption all sector failed. Trying as Key B")
-			# 	COMMAND = [0xFF, 0x86, 0x00, 0x00, 0x05, 0x01, 0x00, a*4, 0x61, 0x00]
-			# 	data, sw1, sw2 = connection.transmit(COMMAND)
-			# 	if (sw1, sw2) == (0x90, 0x0):
-			# 		# print ("Status: Decryption all sector using key #0 as Key B successful.")
-			# 	elif (sw1, sw2) == (0x63, 0x0):
-			# 		# print ("Status: Decryption all sector failed.")
-			# 		sys.exit()
-			# TODO -h -a for hex/ascii, -d -t for data/trailer, none for all, -s <sector> for certain sector	
-			# print ("--------------------------------- All Sector ---------------------------------")
 			for block in range(a*4, a*4+4):
 				if block > 0 :
 					list_check = [255, 7, 128, 105, 255, 255, 255, 255, 255, 255]
@@ -133,7 +120,7 @@ elif type(COMMAND) == str:
 						if set(data) == set(list_check):
 							pass
 						else :
-							print ("sector "+str(a)+" block "+ str(block) + " " + ''.join(chr(i) for i in data))
+							print ("sector "+str(a)+", block "+ str(block) + " : " + ''.join(chr(i) for i in data))
 			a = a + 1 
 
 		print ("Status words: %02X %02X" % (sw1, sw2))
