@@ -11,14 +11,14 @@ connection = reader.createConnection()
 connection.connect()
 
 
-COMMAND = [0xFF, 0x86, 0x00, 0x00, 0x05, 0x01, 0x00, int(sys.argv[2]), 0x60, 0x00]
+COMMAND = [0xFF, 0x86, 0x00, 0x00, 0x05, 0x01, 0x00, 0x01, 0x60, 0x00]
 data, sw1, sw2 = connection.transmit(COMMAND)
 if (sw1, sw2) == (0x90, 0x0):
     print ("Status: Decryption all sector using key #0 as Key A successful.")
 masukan = raw_input("Masukan inputan : ")
 x = len(masukan)
 bfr = [" "]
-COMMAND = [0xFF, 0xD6, 0x00, int(sys.argv[2]), 0x10]
+COMMAND = [0xFF, 0xD6, 0x00, 0x01, 0x10]
 
 if x <= 16:
     COMMAND.extend([ord(c) for c in masukan])
