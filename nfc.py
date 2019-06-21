@@ -28,13 +28,14 @@ def mainProg():
 	reader = r[0]
 	connection = reader.createConnection()
 	connection.connect()
+	cmd = sys.argv[1]
 	cmdMap = {
 	"mute":[0xFF, 0x00, 0x52, 0x00, 0x00],
 	"unmute":[0xFF, 0x00, 0x52, 0xFF, 0x00],
 	"getuid":[0xFF, 0xCA, 0x00, 0x00, 0x00],
 	"firmver":[0xFF, 0x00, 0x48, 0x00, 0x00],
-}
-
+	}
+	
 	COMMAND = cmdMap.get(cmd, cmd)
 	
 
@@ -128,14 +129,15 @@ elif type(COMMAND) == str:
 			print ("ex) python nfctool.py loadkey FFFFFFFFFFFF")
 			sys.exit()
 
-		COMMAND = [0xFF, 0x82, 0x00, 0x00, 0x06]
+		COMMAND = [0xFF, 0x82, 0x00, 0x00, 0x06] ## [ FF, 82, Key_Structure, Key_Number, 06, Key(6bytes) ]
+												 ## Example key FF FF FF FF FF FF FF
 		key = [sys.argv[2][0:2], sys.argv[2][2:4], sys.argv[2][4:6], sys.argv[2][6:8], sys.argv[2][8:10], sys.argv[2][10:12]]
 		for i in range(6):
 			key[i] = int(key[i], 16)
 		COMMAND.extend(key)
 
 		data, sw1, sw2 = connection.transmit(COMMAND)
-		print ("Status words: %02X %02X" % (sw1, sw2))
+		print ("Status words: %02X %02X" % (sw1, sw2)) ##sw1, sw2 Response
 		if (sw1, sw2) == (0x90, 0x0):
 			print ("Status: Key is loaded successfully to key #0.")
 		elif (sw1, sw2) == (0x63, 0x0):
@@ -145,36 +147,26 @@ elif type(COMMAND) == str:
 	# decrypt first block of sector with key. if succeed, sector is unlocked
 	# if other sector is unlocked, previous sector is locked
 		for a in range (0, 16):
-			COMMAND = [0xFF, 0x86, 0x00, 0x00, 0x05, 0x01, 0x00, a*4, 0x60, 0x00]
+			COMMAND = [0xFF, 0x86, 0x00, 0x00, 0x05, 0x01, 0x00, a*4, 0x60, 0x00] ## Otentikasi
+																				  ## [ FF, 86, 00, 00, 05, 01, 00, Block_Number, Type_Key, 00]
+																				  ## Type_Key = 60->A, 61->B
 			data, sw1, sw2 = connection.transmit(COMMAND)
-			# if (sw1, sw2) == (0x90, 0x0):
-			# 	# print ("Status: Decryption all sector using key #0 as Key A successful.")
-			# elif (sw1, sw2) == (0x63, 0x0):
-			# 	# print ("Status: Decryption all sector failed. Trying as Key B")
-			# 	COMMAND = [0xFF, 0x86, 0x00, 0x00, 0x05, 0x01, 0x00, a*4, 0x61, 0x00]
-			# 	data, sw1, sw2 = connection.transmit(COMMAND)
-			# 	if (sw1, sw2) == (0x90, 0x0):
-			# 		# print ("Status: Decryption all sector using key #0 as Key B successful.")
-			# 	elif (sw1, sw2) == (0x63, 0x0):
-			# 		# print ("Status: Decryption all sector failed.")
-			# 		sys.exit()
-			# TODO -h -a for hex/ascii, -d -t for data/trailer, none for all, -s <sector> for certain sector	
-			# print ("--------------------------------- All Sector ---------------------------------")
 			for block in range(a*4, a*4+4):
 				if block > 0 :
 					list_check = [255, 7, 128, 105, 255, 255, 255, 255, 255, 255]
-					COMMAND = [0xFF, 0xB0, 0x00]
+					COMMAND = [0xFF, 0xB0, 0x00] ## Read [ FF, B0, 00, Block_Number, Read_Byte ]
+												 ## Read Byte = 16byte-> 10, 4byte->4=04
 					COMMAND.append(block)
-					COMMAND.append(16)
+					COMMAND.append(16) #Desimal, ingin membaca brapa byte .. nanti jadi 10
 					data, sw1, sw2 = connection.transmit(COMMAND)
-					data = list(filter(lambda x: x != 00, data))
+					data = list(filter(lambda x: x != 00, data)) #ngefilter data yang mempunyai nilai 0 tidak akan ditampilkan
 					if len(data) == 0 :
 						pass
 					else :
 						if set(data) == set(list_check):
 							pass
 						else :
-							print ("sector "+str(a)+" block "+ str(block) + " " + ''.join(chr(i) for i in data))
+							print ("sector "+str(a)+", block "+ str(block) + " : " + ''.join(chr(i) for i in data))
 			a = a + 1 
 
 		print ("Status words: %02X %02X" % (sw1, sw2))
@@ -183,7 +175,34 @@ elif type(COMMAND) == str:
 		elif (sw1, sw2) == (0x63, 0x0):
 			print ("Status: The operation failed. Maybe auth is needed.")
 		
-
+	elif COMMAND == "write":
+		if (int(sys.argv[2])%4 == 3 or (int(sys.argv[2]) == 0)): ##Tidak dapat menulis di block 0 karena tempat UID
+																 ##Tidak dapat menulis di block 3,7,11,15,... karena tempat key
+			print ("Tidak bisa menulis di block ini")
+		else:
+			COMMAND = [0xFF, 0x86, 0x00, 0x00, 0x05, 0x01, 0x00, int(sys.argv[2]), 0x60, 0x00] ## Otentikasi
+																							   ## [ FF, 86, 00, 00, 05, 01, 00, Block_Number, Type_Key, 00]
+																							   ## Type_Key = 60->A, 61->B
+			data, sw1, sw2 = connection.transmit(COMMAND)
+			if (sw1, sw2) == (0x90, 0x0):
+				print ("Status: Decryption all sector using key #0 as Key A successful.")
+				masukan = raw_input("Masukan inputan data : ")
+				x = len(masukan)
+				listinput = []
+				COMMAND = [0xFF, 0xD6, 0x00, int(sys.argv[2]), 0x10] ##Write [FF, D6, 00, Block_Number, Write_Byte]
+																	 ##Write_Byte = 16bytes->10, 4bytes->04
+				if x <= 16:
+					COMMAND.extend([ord(c) for c in masukan])
+					data, sw1, sw2 = connection.transmit(COMMAND)
+					print ("Status words: %02X %02X" % (sw1, sw2))
+					if (sw1, sw2) == (0x90, 0x0):
+						print ("Status: Key is loaded successfully to key #0.")
+					elif (sw1, sw2) == (0x63, 0x0):
+						print ("Status: Failed to load key.")
+				else :
+					print ("masukan Terlalu Banyak")
+			elif (sw1,sw2) == (0x63, 0x0):
+				print ("Status: Failed to load key.")
 	else:
 		print ("error: Undefined command: "+ cmd +"\nUse \"help\" command for command list.")
 		sys.exit()
