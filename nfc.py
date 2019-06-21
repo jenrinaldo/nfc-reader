@@ -144,7 +144,7 @@ elif type(COMMAND) == str:
 			data, sw1, sw2 = connection.transmit(COMMAND)
 			if (sw1, sw2) == (0x90, 0x0):
 				print ("Status: Decryption all sector using key #0 as Key A successful.")
-				masukan = raw_input("Masukan inputan data : ")
+				masukan = input("Masukan inputan data : ")
 				x = len(masukan)
 				listinput = []
 				COMMAND = [0xFF, 0xD6, 0x00, int(sys.argv[2]), 0x10] ##Write [FF, D6, 00, Block_Number, Write_Byte]
