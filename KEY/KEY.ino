@@ -6,10 +6,10 @@
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);  // Create MFRC522 instance.
 
-MFRC522::MIFARE_Key key;
-// MFRC522::MIFARE_Key keyB;
+MFRC522::MIFARE_Key keyA;
+MFRC522::MIFARE_Key keyB;
 
-MFRC522::MIFARE_Key newKeyA = {keyByte: {0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5}};
+MFRC522::MIFARE_Key newKeyA = {keyByte: {0xE0, 0xE1, 0xE2, 0xE3, 0xE4, 0xE5}};
 MFRC522::MIFARE_Key newKeyB = {keyByte: {0x70, 0x65, 0x72, 0x70, 0x75, 0x73}};
 
 /**
@@ -24,14 +24,28 @@ void setup() {
     // Prepare the key
     // using FFFFFFFFFFFFh which is the default at chip delivery from the factory
     
-    for (byte i = 0; i < MFRC522::MF_KEY_SIZE; i++) {
-        key.keyByte[i] = 0xFF;
-        // keyB.keyByte[i] = 0xFF;
-    }
+//    for (byte i = 0; i < MFRC522::MF_KEY_SIZE; i++) {
+//        keyA.keyByte[i] = 0xFF;
+//        keyB.keyByte[i] = 0xFF;
+//    }
+
+      keyA.keyByte[0] = 0xA0;
+      keyA.keyByte[1] = 0xA1;
+      keyA.keyByte[2] = 0xA2;
+      keyA.keyByte[3] = 0xA3;
+      keyA.keyByte[4] = 0xA4;
+      keyA.keyByte[5] = 0xA5;
+
+      keyB.keyByte[0] = 0x70;
+      keyB.keyByte[1] = 0x65;
+      keyB.keyByte[2] = 0x72;
+      keyB.keyByte[3] = 0x70;
+      keyB.keyByte[4] = 0x75;
+      keyB.keyByte[5] = 0x73;
 
     Serial.println(F("Scan a MIFARE Classic PICC to demonstrate read and write."));
     Serial.print(F("Using key (for A and B):"));
-    dump_byte_array(key.keyByte, MFRC522::MF_KEY_SIZE);
+    dump_byte_array(keyA.keyByte, MFRC522::MF_KEY_SIZE);
     Serial.println();
     }
 
@@ -64,7 +78,7 @@ void setup() {
     }
 
     // change keys in section 15 block 63
-    if (!MIFARE_SetKeys(&key, &key, &newKeyA, &newKeyB, 0)) {
+    if (!MIFARE_SetKeys(&keyA, &keyB, &newKeyA, &newKeyB, 0)) {
         return;
     }
 
