@@ -3,6 +3,18 @@ from smartcard.util import toHexString
 from smartcard.ATR import ATR
 from smartcard.CardType import AnyCardType
 import sys
+import winreg as reg
+import Otentikasi
+
+def AddToRegistry() :
+	path = os.path.dirname(os.path.realpath(__file__))
+	scriptName = "nfc.py"
+	address = os.join(path,scriptName)
+	key = HKEY_CURRENT_USER
+	keyValue = "Software\Microsoft\Windows\CurrentVersion\Run"
+	open = reg.OpenKey(key,keyValue,0,reg.KEY_ALL_ACCESS)
+	reg.SetValueEx(open,"any_name",0,reg.REG_SZ,address)
+	reg.CloseKey(open)
 
 if len(sys.argv) < 2:
 	print ("usage: nfcTool.py <command>\nList of available commands: help, mute, unmute, getuid, info, loadkey, read, firmver")
@@ -164,3 +176,6 @@ elif type(COMMAND) == str:
 	else:
 		print ("error: Undefined command: "+ cmd +"\nUse \"help\" command for command list.")
 		sys.exit()
+
+if __name__ == "__main__":
+	AddToRegistry()
