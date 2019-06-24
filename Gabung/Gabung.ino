@@ -21,11 +21,7 @@ void baca(){
     
       //-------------------------------------------
      
-        
-          Serial.println("\n**Card Detected**");
-        
           byte buffer1[18];
-        
           block = 1;
           len = 18;
         
@@ -46,7 +42,7 @@ void baca(){
           // --------------------------------------------------------------
           
           // ---------------PRINT NIM------------------------
-          Serial.print("NIM : ");
+
           for (uint8_t i = 0; i < 16; i++)
           {
             if (buffer1[i] != 32)
@@ -59,8 +55,7 @@ void baca(){
         
           //------------------------------------------------
         
-          Serial.println("\n**End Reading**\n");
-        
+       
           delay(1000); //change value if you want to read cards faster
         
             mfrc522.PICC_HaltA();
