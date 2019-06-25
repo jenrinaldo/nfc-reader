@@ -37,7 +37,7 @@ void loop() {
     Serial.println("**Card Detected:**");
   
     if (Serial.available()) {
-        reader_mode = Serial.readStringUntil('\n');
+        reader_mode = Serial.readStringUntil('#');
         if (reader_mode.equals("write") == true) {
             write_card();
         }
@@ -106,7 +106,7 @@ void write_card() {
     Serial.println("Write mode is on. Please input your data.");
     Serial.setTimeout(10000L);
     
-    len = Serial.readBytesUntil('\n', (char *) buffer, 18);
+    len = Serial.readBytesUntil('*', (char *) buffer, 18);
     if (len <= 16) {
         for (byte i = len; i < 16; i++)
             buffer[i] = ' ';
