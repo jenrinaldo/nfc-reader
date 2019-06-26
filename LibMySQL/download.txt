@@ -1,8 +1,0 @@
-# XAMPP
-httpssourceforge.netprojectsxamppfilesXAMPP%20Windows1.7.3
-
-# MYSQL CONNECTOR ODBC
-https://dev.mysql.com/downloads/connector/odbc/
-
-# MYSQL CONNECTOR NET
-https://dev.mysql.com/downloads/connector/net/1.0.html
