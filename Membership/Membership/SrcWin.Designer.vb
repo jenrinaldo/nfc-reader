@@ -22,12 +22,20 @@ Partial Class SrcWin
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.TextId = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.SrcBtn = New System.Windows.Forms.Button()
         Me.ExtBtn = New System.Windows.Forms.Label()
         Me.TextName = New System.Windows.Forms.TextBox()
         Me.TextStat = New System.Windows.Forms.TextBox()
+        Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.Disconnect = New System.Windows.Forms.Button()
+        Me.connect = New System.Windows.Forms.Button()
+        Me.CmbPort = New System.Windows.Forms.ComboBox()
+        Me.port = New System.Windows.Forms.Button()
+        Me.clr = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'TextId
@@ -85,12 +93,61 @@ Partial Class SrcWin
         Me.TextStat.TabIndex = 2
         Me.TextStat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
+        'Disconnect
+        '
+        Me.Disconnect.Location = New System.Drawing.Point(401, 192)
+        Me.Disconnect.Name = "Disconnect"
+        Me.Disconnect.Size = New System.Drawing.Size(75, 23)
+        Me.Disconnect.TabIndex = 7
+        Me.Disconnect.Text = "Disconnect"
+        Me.Disconnect.UseVisualStyleBackColor = True
+        '
+        'connect
+        '
+        Me.connect.Location = New System.Drawing.Point(401, 168)
+        Me.connect.Name = "connect"
+        Me.connect.Size = New System.Drawing.Size(75, 23)
+        Me.connect.TabIndex = 6
+        Me.connect.Text = "Connect"
+        Me.connect.UseVisualStyleBackColor = True
+        '
+        'CmbPort
+        '
+        Me.CmbPort.FormattingEnabled = True
+        Me.CmbPort.Location = New System.Drawing.Point(355, 141)
+        Me.CmbPort.Name = "CmbPort"
+        Me.CmbPort.Size = New System.Drawing.Size(121, 21)
+        Me.CmbPort.TabIndex = 9
+        '
+        'port
+        '
+        Me.port.Location = New System.Drawing.Point(288, 140)
+        Me.port.Name = "port"
+        Me.port.Size = New System.Drawing.Size(59, 24)
+        Me.port.TabIndex = 8
+        Me.port.Text = "Port"
+        Me.port.UseVisualStyleBackColor = True
+        '
+        'clr
+        '
+        Me.clr.Location = New System.Drawing.Point(288, 192)
+        Me.clr.Name = "clr"
+        Me.clr.Size = New System.Drawing.Size(75, 23)
+        Me.clr.TabIndex = 10
+        Me.clr.Text = "Clear"
+        Me.clr.UseVisualStyleBackColor = True
+        '
         'SrcWin
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.HighlightText
-        Me.ClientSize = New System.Drawing.Size(284, 224)
+        Me.ClientSize = New System.Drawing.Size(488, 227)
+        Me.Controls.Add(Me.clr)
+        Me.Controls.Add(Me.CmbPort)
+        Me.Controls.Add(Me.port)
+        Me.Controls.Add(Me.Disconnect)
+        Me.Controls.Add(Me.connect)
         Me.Controls.Add(Me.TextStat)
         Me.Controls.Add(Me.TextName)
         Me.Controls.Add(Me.ExtBtn)
@@ -112,4 +169,11 @@ Partial Class SrcWin
     Friend WithEvents ExtBtn As Label
     Friend WithEvents TextName As TextBox
     Friend WithEvents TextStat As TextBox
+    Friend WithEvents SerialPort1 As IO.Ports.SerialPort
+    Friend WithEvents Timer1 As Timer
+    Friend WithEvents Disconnect As Button
+    Friend WithEvents connect As Button
+    Friend WithEvents CmbPort As ComboBox
+    Friend WithEvents port As Button
+    Friend WithEvents clr As Button
 End Class
