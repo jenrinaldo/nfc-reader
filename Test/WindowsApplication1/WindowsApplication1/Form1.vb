@@ -102,4 +102,5 @@ Public Class Form1
         write.BringToFront()
         read.Text = ""
     End Sub
+
 End Class

@@ -49,8 +49,6 @@ void authenticate_key() {
     for (byte i = 0; i < 6; i++) {
         key.keyByte[i] = 0xFF;
     }
-
-    Serial.print("Authenticating...\n");
     status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block, &key, &(mfrc522.uid));
 }
 
@@ -66,12 +64,7 @@ void read_card() {
     if (status != MFRC522::STATUS_OK) {
         Serial.println("Authentication failed!");
 
-        // Delay for changing card(s)
-        delay(5000);
-        // Stop reading
-        mfrc522.PICC_HaltA();
-        mfrc522.PCD_StopCrypto1();
-        return;
+        exit_card();
     }
         
     // Read the block 1
@@ -90,7 +83,7 @@ void read_card() {
 }
 
 void write_card() {
-    Serial.setTimeout(20000L);
+    Serial.setTimeout(30000L);
 
     len = Serial.readBytesUntil('*', (char *) buffer, 18);
     if (len <= 16) {
@@ -107,13 +100,7 @@ void write_card() {
         if (status != MFRC522::STATUS_OK) {
             Serial.println("Authentication failed!");
     
-            // Delay for changing card(s)
-            delay(5000);
-            
-            // Stop reading
-            mfrc522.PICC_HaltA();
-            mfrc522.PCD_StopCrypto1();
-            return;
+           exit_card();
         }
 
         // Write block
