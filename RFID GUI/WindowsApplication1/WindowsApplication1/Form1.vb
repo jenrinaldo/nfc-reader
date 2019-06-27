@@ -1,12 +1,18 @@
-﻿Imports System
-Imports System.IO.Ports
+﻿Imports System.IO.Ports
 Imports MySql.Data.MySqlClient
+Imports System.Management
+Imports System.Text.RegularExpressions
+
 
 Public Class Form1
 
     Dim Conn As MySqlConnection
     Dim COMMAND As MySqlCommand
     Dim Query As String
+    Dim string1 As String
+    Dim string2 As String
+    Dim hasil As String
+    Dim baudrate As String = "9600"
 
     Private Sub Ext_Click(sender As Object, e As EventArgs) Handles Ext.Click
         Me.Close()
@@ -25,16 +31,12 @@ Public Class Form1
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Timer1.Enabled = True
+
         Timer2.Enabled = False
-
-        BtnCon.Enabled = False
-        BtnCon.BringToFront()
-
-        BtnDiscon.Enabled = False
-        BtnDiscon.SendToBack()
-
-        Write.Enabled = False
         Login.Enabled = False
+        BtnCon.Enabled = False
+        BtnDiscon.Enabled = False
+        Write.Enabled = False
 
         Label1.Hide()
         TxtUsr.Hide()
@@ -44,6 +46,66 @@ Public Class Form1
         Label3.Hide()
         txtNIM_2.Hide()
         Write2.Hide()
+
+        Try
+            Dim searcher As New ManagementObjectSearcher("root\CIMV2", "Select * FROM Win32_PnPEntity")
+            For Each queryObj As ManagementObject In searcher.Get()
+                If InStr(queryObj("Name"), ("COM")) > 0 Then
+                    If queryObj("Description") = "USB-SERIAL CH340" Then
+                        string1 = queryObj("Description")
+                        string2 = queryObj("Name")
+                        hasil = string2.Replace(string1, "")
+                        hasil = hasil.Replace("(", "")
+                        hasil = hasil.Replace(")", "")
+                        hasil = hasil.Replace(" ", "")
+                        If string1 = "USB-SERIAL CH340" Then
+                            SerialPort1.BaudRate = baudrate
+                            SerialPort1.PortName = hasil
+                            SerialPort1.Parity = Parity.None
+                            SerialPort1.StopBits = StopBits.One
+                            SerialPort1.Handshake = Handshake.None
+                            SerialPort1.Encoding = System.Text.Encoding.Default
+                            SerialPort1.Open()
+
+                            Timer2.Enabled = True
+
+                            BtnDiscon.Enabled = True
+                            BtnDiscon.BringToFront()
+
+                            BtnCon.Enabled = False
+                            BtnCon.SendToBack()
+
+                            BtnScanPort.Enabled = False
+                            CmbPort.DroppedDown = False
+                            CmbPort.Enabled = False
+                            CmbPort.Text = hasil
+
+                            Write.Enabled = True
+                            Login.Enabled = True
+
+                        Else
+                            CmbPort.Enabled = True
+                            CmbPort.DroppedDown = True
+                            BtnScanPort.Enabled = True
+
+                            Login.Enabled = False
+                            Write.Enabled = False
+
+                            BtnCon.Enabled = False
+                            BtnCon.BringToFront()
+
+                            BtnDiscon.Enabled = False
+                            BtnDiscon.SendToBack()
+
+                            Timer2.Enabled = False
+
+                        End If
+                    End If
+                End If
+            Next
+        Catch err As ManagementException
+            MsgBox(err.Message)
+        End Try
 
 
     End Sub
@@ -69,21 +131,23 @@ Public Class Form1
             BtnCon.BringToFront()
             CmbPort.DroppedDown = True
         Catch ex As Exception
-            Dim result As DialogResult
-            result = MessageBox.Show("Com port not detected", "Warning!", MessageBoxButtons.OK)
+            MessageBox.Show("Com port Not detected", "Warning!", MessageBoxButtons.OK)
             CmbPort.Text = ""
             Call Form1_Load(Me, e)
         End Try
 
     End Sub
 
+
     Private Sub BtnCon_Click(sender As Object, e As EventArgs) Handles BtnCon.Click
         BtnCon.Enabled = False
         BtnCon.SendToBack()
+        BtnScanPort.Enabled = False
+        CmbPort.Enabled = False
+        CmbPort.DroppedDown = False
 
-        SerialPort1.BaudRate = 9600
+        SerialPort1.BaudRate = baudrate
         SerialPort1.PortName = CmbPort.SelectedItem
-        SerialPort1.DataBits = 8
         SerialPort1.Parity = Parity.None
         SerialPort1.StopBits = StopBits.One
         SerialPort1.Handshake = Handshake.None
@@ -103,7 +167,9 @@ Public Class Form1
 
     Private Sub BtnDiscon_Click(sender As Object, e As EventArgs) Handles BtnDiscon.Click
         BtnDiscon.Enabled = False
-        BtnCon.Enabled = True
+        BtnCon.Enabled = False
+        BtnScanPort.Enabled = True
+        CmbPort.Text = ""
 
         BtnCon.BringToFront()
         BtnDiscon.SendToBack()
@@ -123,27 +189,34 @@ Public Class Form1
         Dim Incoming As String
         Incoming = SerialPort1.ReadExisting()
         NIM.Text &= Incoming
-        If NIM.Text <> "" Then
-            Conn = New MySqlConnection
-            Conn.ConnectionString = "server=localhost; userid=root; password=; database=membership"
-            Conn.Open()
 
-            Query = "SELECT nama, jenis_anggota FROM `membership` WHERE id = '" & NIM.Text & "'"
-            COMMAND = New MySqlCommand(Query, Conn)
-            Dim ADAPTER As New MySqlDataAdapter(COMMAND)
-            Dim TABLE As New DataTable()
-            ADAPTER.Fill(TABLE)
-            If ADAPTER.Fill(TABLE) < 1 Then
-                MsgBox("Data Not Found", MsgBoxStyle.Critical, "Error")
-            Else
-                Nama.Text = TABLE.Rows(0)(0).ToString()
+        If Regex.IsMatch(NIM.Text, "^[0-9 ]") Then
+            If NIM.Text <> "" Then
+                Conn = New MySqlConnection
+                Conn.ConnectionString = "server=localhost; userid=root; password=; database=membership"
+                Conn.Open()
+
+                Query = "SELECT nama, jenis_anggota FROM `membership` WHERE id = '" & NIM.Text & "'"
+                COMMAND = New MySqlCommand(Query, Conn)
+                Dim ADAPTER As New MySqlDataAdapter(COMMAND)
+                Dim TABLE As New DataTable()
+                ADAPTER.Fill(TABLE)
+                If ADAPTER.Fill(TABLE) < 1 Then
+                    Nama.Text = "Data not found"
+                Else
+                    Nama.Text = TABLE.Rows(0)(0).ToString()
+                End If
+                Conn.Close()
             End If
-            Conn.Close()
+        Else
+            NIM.Text = ""
         End If
+
+
     End Sub
 
     Private Sub Login_Click(sender As Object, e As EventArgs) Handles Login.Click
-
+        NIM.Text = ""
     End Sub
 
     Private Sub Write_Click(sender As Object, e As EventArgs) Handles Write.Click
@@ -256,7 +329,7 @@ Public Class Form1
 
     Private Sub Write2_Click(sender As Object, e As EventArgs) Handles Write2.Click
         SerialPort1.Write(txtNIM_2.Text & "*")
-        txtNIM_2.Text = ""
+        Label4.Text = ""
 
 
 

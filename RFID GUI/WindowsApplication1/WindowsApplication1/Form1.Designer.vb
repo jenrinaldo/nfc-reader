@@ -50,6 +50,7 @@ Partial Class Form1
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txtNIM_2 = New System.Windows.Forms.TextBox()
         Me.Write2 = New System.Windows.Forms.Button()
+        Me.Label4 = New System.Windows.Forms.Label()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -327,12 +328,22 @@ Partial Class Form1
         Me.Write2.Text = "WRITE"
         Me.Write2.UseVisualStyleBackColor = False
         '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(29, 196)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(39, 13)
+        Me.Label4.TabIndex = 22
+        Me.Label4.Text = "Label4"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(892, 402)
+        Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Write2)
         Me.Controls.Add(Me.txtNIM_2)
         Me.Controls.Add(Me.Label3)
@@ -391,4 +402,5 @@ Partial Class Form1
     Friend WithEvents Label3 As Label
     Friend WithEvents txtNIM_2 As TextBox
     Friend WithEvents Write2 As Button
+    Friend WithEvents Label4 As Label
 End Class

@@ -2,17 +2,59 @@
 Imports System.Threading
 Imports System.IO.Ports
 Imports System.ComponentModel
+Imports System.Management
+Imports System.Collections.Generic
+Imports System.Linq
+
 
 Public Class Form1
     Delegate Sub SetTextCallback(ByVal [text] As String) 'Added to prevent threading errors during receiveing of data
+    Dim string1 As String
+    Dim string2 As String
+    Dim hasil As String
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Timer1.Enabled = False
 
-        connect.Enabled = False
+        connect.Enabled = True
         connect.BringToFront()
 
         Disconnect.Enabled = False
         Disconnect.SendToBack()
+
+        Try
+            Dim searcher As New ManagementObjectSearcher("root\CIMV2", "SELECT * FROM Win32_PnPEntity")
+            For Each queryObj As ManagementObject In searcher.Get()
+                If InStr(queryObj("Name"), ("COM")) > 0 Then
+                    If queryObj("Description") = "USB-SERIAL CH340" Then
+                        string1 = queryObj("Description")
+                        string2 = queryObj("Name")
+                        hasil = string2.Replace(string1, "")
+                        hasil = hasil.Replace("(", "")
+                        hasil = hasil.Replace(")", "")
+                        hasil = hasil.Replace(" ", "")
+                    End If
+                End If
+            Next
+        Catch err As ManagementException
+            MsgBox(err.Message)
+        End Try
+
+        If string1 = "USB-SERIAL CH340" Then
+            SerialPort1.BaudRate = 9600
+            SerialPort1.PortName = hasil
+            SerialPort1.DataBits = 8
+            SerialPort1.Parity = Parity.None
+            SerialPort1.StopBits = StopBits.One
+            SerialPort1.Handshake = Handshake.None
+            SerialPort1.Encoding = System.Text.Encoding.Default
+            SerialPort1.Open()
+
+            Timer1.Enabled = True
+
+            Disconnect.Enabled = True
+            Disconnect.BringToFront()
+        End If
+
 
     End Sub
 
@@ -22,28 +64,20 @@ Public Class Form1
 
         clr.Enabled = True
 
-        SerialPort1.BaudRate = 9600
-        SerialPort1.PortName = CmbPort.SelectedItem
-        SerialPort1.DataBits = 8
-        SerialPort1.Parity = Parity.None
-        SerialPort1.StopBits = StopBits.One
-        SerialPort1.Handshake = Handshake.None
-        SerialPort1.Encoding = System.Text.Encoding.Default
-        SerialPort1.Open()
-
-        Timer1.Enabled = True
 
 
-        Disconnect.Enabled = True
-        Disconnect.BringToFront()
     End Sub
 
     Private Sub port_Click(sender As Object, e As EventArgs) Handles port.Click
+        GetAllSerialPortsName()
+
         CmbPort.Items.Clear()
         Dim myPort As Array
         Dim i As Integer
 
         myPort = IO.Ports.SerialPort.GetPortNames()
+
+
         CmbPort.Items.AddRange(myPort)
         i = CmbPort.Items.Count
         i = i - i
@@ -56,9 +90,14 @@ Public Class Form1
             CmbPort.Text = ""
             Call Form1_Load(Me, e)
         End Try
+
         connect.Enabled = True
         connect.BringToFront()
         CmbPort.DroppedDown = True
+    End Sub
+
+    Private Sub GetAllSerialPortsName()
+
     End Sub
 
     Private Sub Disconnect_Click(sender As Object, e As EventArgs) Handles Disconnect.Click
@@ -87,6 +126,8 @@ Public Class Form1
 
     Private Sub clr_Click(sender As Object, e As EventArgs) Handles clr.Click
         write.Text = ""
+        Process.Start("http://127.0.0.1/loginsystem/view.php")
+
     End Sub
 
     Private Sub btnWrite_Click(sender As Object, e As EventArgs) Handles btnWrite.Click
