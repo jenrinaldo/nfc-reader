@@ -51,6 +51,8 @@ Partial Class Form1
         Me.txtNIM_2 = New System.Windows.Forms.TextBox()
         Me.Write2 = New System.Windows.Forms.Button()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
+        Me.Ext3 = New System.Windows.Forms.Label()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -74,7 +76,7 @@ Partial Class Form1
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.Panel1.Location = New System.Drawing.Point(0, 354)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(892, 48)
+        Me.Panel1.Size = New System.Drawing.Size(804, 48)
         Me.Panel1.TabIndex = 2
         '
         'Jam
@@ -337,12 +339,26 @@ Partial Class Form1
         Me.Label4.TabIndex = 22
         Me.Label4.Text = "Label4"
         '
+        'Timer3
+        '
+        Me.Timer3.Interval = 1000
+        '
+        'Ext3
+        '
+        Me.Ext3.AutoSize = True
+        Me.Ext3.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Ext3.Location = New System.Drawing.Point(12, 11)
+        Me.Ext3.Name = "Ext3"
+        Me.Ext3.Size = New System.Drawing.Size(20, 20)
+        Me.Ext3.TabIndex = 23
+        Me.Ext3.Text = "X"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(892, 402)
+        Me.ClientSize = New System.Drawing.Size(804, 402)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Write2)
         Me.Controls.Add(Me.txtNIM_2)
@@ -365,6 +381,7 @@ Partial Class Form1
         Me.Controls.Add(Me.Judul)
         Me.Controls.Add(Me.BtnDiscon)
         Me.Controls.Add(Me.Ext2)
+        Me.Controls.Add(Me.Ext3)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "Form1"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
@@ -403,4 +420,6 @@ Partial Class Form1
     Friend WithEvents txtNIM_2 As TextBox
     Friend WithEvents Write2 As Button
     Friend WithEvents Label4 As Label
+    Friend WithEvents Timer3 As Timer
+    Friend WithEvents Ext3 As Label
 End Class

@@ -2,7 +2,7 @@
 Imports MySql.Data.MySqlClient
 Imports System.Management
 Imports System.Text.RegularExpressions
-
+Imports System.Media
 
 Public Class Form1
 
@@ -13,6 +13,8 @@ Public Class Form1
     Dim string2 As String
     Dim hasil As String
     Dim baudrate As String = "9600"
+    Dim waktu As Integer = 0
+    Dim charactersAllowed As String = "1234567890"
 
     Private Sub Ext_Click(sender As Object, e As EventArgs) Handles Ext.Click
         Me.Close()
@@ -37,6 +39,8 @@ Public Class Form1
         BtnCon.Enabled = False
         BtnDiscon.Enabled = False
         Write.Enabled = False
+
+        Label4.Text = ""
 
         Label1.Hide()
         TxtUsr.Hide()
@@ -189,9 +193,11 @@ Public Class Form1
         Dim Incoming As String
         Incoming = SerialPort1.ReadExisting()
         NIM.Text &= Incoming
+        Label4.Text &= Incoming
 
         If Regex.IsMatch(NIM.Text, "^[0-9 ]") Then
             If NIM.Text <> "" Then
+                Label4.Text = ""
                 Conn = New MySqlConnection
                 Conn.ConnectionString = "server=localhost; userid=root; password=; database=membership"
                 Conn.Open()
@@ -201,13 +207,18 @@ Public Class Form1
                 Dim ADAPTER As New MySqlDataAdapter(COMMAND)
                 Dim TABLE As New DataTable()
                 ADAPTER.Fill(TABLE)
-                If ADAPTER.Fill(TABLE) < 1 Then
-                    Nama.Text = "Data not found"
+                If NIM.Text.Contains("Done") Then
+                    Nama.Text = ""
+                    NIM.Text = ""
+                ElseIf ADAPTER.Fill(TABLE) < 1 Then
+                    Nama.Text = "Data Not Found"
                 Else
                     Nama.Text = TABLE.Rows(0)(0).ToString()
                 End If
                 Conn.Close()
             End If
+        ElseIf System.Text.RegularExpressions.Regex.IsMatch(Label4.Text, "DataisEmpty") Then
+            Label4.Text = ""
         Else
             NIM.Text = ""
         End If
@@ -217,10 +228,10 @@ Public Class Form1
 
     Private Sub Login_Click(sender As Object, e As EventArgs) Handles Login.Click
         NIM.Text = ""
+        Label4.Text = ""
     End Sub
 
     Private Sub Write_Click(sender As Object, e As EventArgs) Handles Write.Click
-
         Ext.SendToBack()
         Judul.Hide()
         LabelNama.Hide()
@@ -248,6 +259,8 @@ Public Class Form1
 
         Login2.Show()
         Login2.Enabled = True
+
+        Label4.Text = ""
 
 
     End Sub
@@ -277,6 +290,36 @@ Public Class Form1
         Write2.Hide()
 
     End Sub
+    Private Sub Ext3_Click(sender As Object, e As EventArgs) Handles Ext3.Click
+        Ext.BringToFront()
+        Ext2.SendToBack()
+        Judul.Show()
+        LabelNama.Show()
+        LabelNIM.Show()
+        NIM.Show()
+        Nama.Show()
+        Login.Show()
+        BtnScanPort.Show()
+        CmbPort.Show()
+        BtnCon.Show()
+        BtnDiscon.Show()
+        Write.Show()
+
+        Label1.Hide()
+        TxtUsr.Hide()
+        Label2.Hide()
+        TxtPass.Hide()
+        Login2.Hide()
+
+        Label3.Hide()
+        txtNIM_2.Hide()
+        Write2.Hide()
+
+        SerialPort1.Write("DataisEmpty" & "*")
+        Timer3.Enabled = False
+        waktu = 0
+    End Sub
+
 
     Private Sub Login2_Click(sender As Object, e As EventArgs) Handles Login2.Click
         If TxtUsr.Text = "admin" And TxtPass.Text = "admin" Then
@@ -284,6 +327,7 @@ Public Class Form1
 
             TxtUsr.Text = ""
             TxtPass.Text = ""
+            txtNIM_2.Text = ""
 
             Login2.Enabled = False
             Login2.SendToBack()
@@ -309,6 +353,14 @@ Public Class Form1
             Label3.Show()
             SerialPort1.Write("write" & "#")
 
+            waktu = 30
+            Timer3.Enabled = True
+
+            Ext3.BringToFront()
+            Ext.SendToBack()
+            Ext2.SendToBack()
+
+
 
         Else
             If TxtUsr.Text = "" And TxtPass.Text = "" Then
@@ -329,14 +381,13 @@ Public Class Form1
 
     Private Sub Write2_Click(sender As Object, e As EventArgs) Handles Write2.Click
         SerialPort1.Write(txtNIM_2.Text & "*")
-        Label4.Text = ""
-
-
+        Timer3.Enabled = False
+        waktu = 0
 
         Label3.Hide()
         txtNIM_2.Hide()
         Write2.Hide()
-
+        Login2.Hide()
 
         Ext.BringToFront()
         Judul.Show()
@@ -350,6 +401,49 @@ Public Class Form1
         BtnCon.Show()
         BtnDiscon.Show()
         Write.Show()
+    End Sub
+
+    Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
+        If waktu > 0 Then
+            waktu -= 1
+        Else
+            Timer3.Enabled = False
+            MsgBox("Time is over!")
+            Label3.Hide()
+            txtNIM_2.Hide()
+            Write2.Hide()
+            Login2.Hide()
+
+            Ext.BringToFront()
+            Judul.Show()
+            LabelNama.Show()
+            LabelNIM.Show()
+            NIM.Show()
+            Nama.Show()
+            Login.Show()
+            BtnScanPort.Show()
+            CmbPort.Show()
+            BtnCon.Show()
+            BtnDiscon.Show()
+            Write.Show()
+        End If
+    End Sub
+
+    Private Sub txtNIM_2_TextChanged(sender As Object, e As EventArgs) Handles txtNIM_2.TextChanged
+        Dim theText As String = txtNIM_2.Text
+        Dim Letter As String
+        Dim SelectionIndex As Integer = txtNIM_2.SelectionStart
+        Dim Change As Integer
+        For x As Integer = 0 To txtNIM_2.Text.Length - 1
+            Letter = txtNIM_2.Text.Substring(x, 1)
+            If charactersAllowed.Contains(Letter) = False Then
+                SystemSounds.Beep.Play()
+                theText = theText.Replace(Letter, String.Empty)
+                Change = 1
+            End If
+        Next
+        txtNIM_2.Text = theText
+        txtNIM_2.Select(SelectionIndex - Change, 0)
     End Sub
 
 End Class
