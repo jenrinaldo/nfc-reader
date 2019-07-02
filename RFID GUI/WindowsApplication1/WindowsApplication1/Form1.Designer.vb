@@ -117,7 +117,7 @@ Partial Class Form1
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Tw Cen MT Condensed", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(38, 93)
+        Me.Label1.Location = New System.Drawing.Point(467, 90)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(67, 19)
         Me.Label1.TabIndex = 16
@@ -138,7 +138,7 @@ Partial Class Form1
         Me.TxtUsr.BackColor = System.Drawing.Color.White
         Me.TxtUsr.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
         Me.TxtUsr.ForeColor = System.Drawing.Color.Gray
-        Me.TxtUsr.Location = New System.Drawing.Point(106, 87)
+        Me.TxtUsr.Location = New System.Drawing.Point(535, 84)
         Me.TxtUsr.Name = "TxtUsr"
         Me.TxtUsr.Size = New System.Drawing.Size(248, 29)
         Me.TxtUsr.TabIndex = 15
@@ -167,7 +167,7 @@ Partial Class Form1
         '
         Me.Ext.AutoSize = True
         Me.Ext.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Ext.Location = New System.Drawing.Point(12, 9)
+        Me.Ext.Location = New System.Drawing.Point(54, 9)
         Me.Ext.Name = "Ext"
         Me.Ext.Size = New System.Drawing.Size(20, 20)
         Me.Ext.TabIndex = 7
@@ -243,7 +243,7 @@ Partial Class Form1
         '
         Me.Ext2.AutoSize = True
         Me.Ext2.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Ext2.Location = New System.Drawing.Point(12, 9)
+        Me.Ext2.Location = New System.Drawing.Point(117, 3)
         Me.Ext2.Name = "Ext2"
         Me.Ext2.Size = New System.Drawing.Size(20, 20)
         Me.Ext2.TabIndex = 14
@@ -253,7 +253,7 @@ Partial Class Form1
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Tw Cen MT Condensed", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(40, 124)
+        Me.Label2.Location = New System.Drawing.Point(469, 121)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(63, 19)
         Me.Label2.TabIndex = 17
@@ -264,7 +264,7 @@ Partial Class Form1
         Me.TxtPass.BackColor = System.Drawing.Color.White
         Me.TxtPass.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
         Me.TxtPass.ForeColor = System.Drawing.Color.Gray
-        Me.TxtPass.Location = New System.Drawing.Point(106, 117)
+        Me.TxtPass.Location = New System.Drawing.Point(535, 114)
         Me.TxtPass.Name = "TxtPass"
         Me.TxtPass.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.TxtPass.Size = New System.Drawing.Size(248, 29)
@@ -287,7 +287,7 @@ Partial Class Form1
         Me.Login2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Login2.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
         Me.Login2.ForeColor = System.Drawing.SystemColors.ControlLightLight
-        Me.Login2.Location = New System.Drawing.Point(251, 149)
+        Me.Login2.Location = New System.Drawing.Point(680, 146)
         Me.Login2.Margin = New System.Windows.Forms.Padding(0)
         Me.Login2.Name = "Login2"
         Me.Login2.Size = New System.Drawing.Size(102, 42)
@@ -299,7 +299,7 @@ Partial Class Form1
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Tw Cen MT Condensed", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(42, 97)
+        Me.Label3.Location = New System.Drawing.Point(471, 204)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(32, 19)
         Me.Label3.TabIndex = 19
@@ -310,7 +310,7 @@ Partial Class Form1
         Me.txtNIM_2.BackColor = System.Drawing.Color.White
         Me.txtNIM_2.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
         Me.txtNIM_2.ForeColor = System.Drawing.Color.Gray
-        Me.txtNIM_2.Location = New System.Drawing.Point(45, 117)
+        Me.txtNIM_2.Location = New System.Drawing.Point(474, 224)
         Me.txtNIM_2.Name = "txtNIM_2"
         Me.txtNIM_2.Size = New System.Drawing.Size(309, 29)
         Me.txtNIM_2.TabIndex = 20
@@ -322,7 +322,7 @@ Partial Class Form1
         Me.Write2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Write2.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
         Me.Write2.ForeColor = System.Drawing.SystemColors.ControlLightLight
-        Me.Write2.Location = New System.Drawing.Point(252, 149)
+        Me.Write2.Location = New System.Drawing.Point(681, 256)
         Me.Write2.Margin = New System.Windows.Forms.Padding(0)
         Me.Write2.Name = "Write2"
         Me.Write2.Size = New System.Drawing.Size(102, 42)
