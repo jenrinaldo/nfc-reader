@@ -332,9 +332,8 @@ Partial Class Form1
         Me.Prodi.Font = New System.Drawing.Font("Century Gothic", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Prodi.Location = New System.Drawing.Point(138, 98)
         Me.Prodi.Name = "Prodi"
-        Me.Prodi.Size = New System.Drawing.Size(138, 21)
+        Me.Prodi.Size = New System.Drawing.Size(0, 21)
         Me.Prodi.TabIndex = 30
-        Me.Prodi.Text = "Teknik Komputer"
         '
         'Panel7
         '
@@ -350,9 +349,8 @@ Partial Class Form1
         Me.Fakultas.Font = New System.Drawing.Font("Century Gothic", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Fakultas.Location = New System.Drawing.Point(138, 68)
         Me.Fakultas.Name = "Fakultas"
-        Me.Fakultas.Size = New System.Drawing.Size(192, 21)
+        Me.Fakultas.Size = New System.Drawing.Size(0, 21)
         Me.Fakultas.TabIndex = 28
-        Me.Fakultas.Text = "Fakultas Ilmu Komputer"
         '
         'Panel3
         '
@@ -388,9 +386,8 @@ Partial Class Form1
         Me.Nama.Font = New System.Drawing.Font("Century Gothic", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Nama.Location = New System.Drawing.Point(137, 39)
         Me.Nama.Name = "Nama"
-        Me.Nama.Size = New System.Drawing.Size(68, 21)
+        Me.Nama.Size = New System.Drawing.Size(0, 21)
         Me.Nama.TabIndex = 24
-        Me.Nama.Text = "Erricson"
         '
         'BunifuCustomLabel2
         '
@@ -416,9 +413,8 @@ Partial Class Form1
         Me.NIM.Font = New System.Drawing.Font("Century Gothic", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.NIM.Location = New System.Drawing.Point(136, 11)
         Me.NIM.Name = "NIM"
-        Me.NIM.Size = New System.Drawing.Size(145, 21)
+        Me.NIM.Size = New System.Drawing.Size(0, 21)
         Me.NIM.TabIndex = 21
-        Me.NIM.Text = "165150300111021"
         '
         'BunifuCustomLabel1
         '
@@ -688,10 +684,10 @@ Partial Class Form1
         'Tanggal
         '
         Me.Tanggal.AutoSize = True
-        Me.Tanggal.Font = New System.Drawing.Font("Segoe UI Historic", 11.0!)
+        Me.Tanggal.Font = New System.Drawing.Font("Segoe UI Historic", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Tanggal.Location = New System.Drawing.Point(9, 3)
         Me.Tanggal.Name = "Tanggal"
-        Me.Tanggal.Size = New System.Drawing.Size(53, 20)
+        Me.Tanggal.Size = New System.Drawing.Size(46, 17)
         Me.Tanggal.TabIndex = 0
         Me.Tanggal.Text = "Label1"
         '
