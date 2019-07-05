@@ -25,19 +25,15 @@ Public Class Form1
         Timer2.Enabled = False
         Timer3.Enabled = False
         BtnCon.Enabled = False
-        TxtUsr.Enabled = False
-        TxtPass.Enabled = False
-        Login.Enabled = False
+        Write.Enabled = False
+        Read.Enabled = False
 
         PnlWrite.Hide()
-        PanelLogin.Hide()
         PanelWrite.Hide()
 
-        PnlRead.Show()
-        PanelRead.Show()
+        PnlRead.Hide()
+        PanelRead.Hide()
 
-        TxtUsr.Text = ""
-        TxtPass.Text = ""
         TxtNIM_Write.Text = ""
 
         Try
@@ -73,9 +69,11 @@ Public Class Form1
                             CmbPort.Enabled = False
                             CmbPort.Text = hasil
 
-                            TxtUsr.Enabled = True
-                            TxtPass.Enabled = True
-                            Login.Enabled = True
+                            Read.Enabled = True
+                            Write.Enabled = True
+
+                            PnlRead.Show()
+                            PanelRead.Show()
 
                         Else
                             CmbPort.Enabled = True
@@ -89,10 +87,7 @@ Public Class Form1
                             BtnDiscon.SendToBack()
 
                             Timer2.Enabled = False
-                            TxtUsr.Enabled = False
-                            TxtPass.Enabled = False
-                            Login.Enabled = False
-
+                            Write.Enabled = False
                         End If
                     End If
                 End If
@@ -157,52 +152,54 @@ Public Class Form1
         SerialPort1.Open()
 
         Timer2.Enabled = True
-        TxtUsr.Enabled = True
-        TxtPass.Enabled = True
-        Login.Enabled = True
 
         BtnDiscon.Enabled = True
         BtnDiscon.BringToFront()
+
+        Write.Enabled = True
+        Read.Enabled = True
+
+        PnlRead.Show()
+        PanelRead.Show()
+
     End Sub
 
     Private Sub BtnDiscon_Click(sender As Object, e As EventArgs) Handles BtnDiscon.Click
         BtnDiscon.Enabled = False
         BtnCon.Enabled = False
         BtnScanPort.Enabled = True
-        CmbPort.Text = ""
 
         BtnCon.BringToFront()
         BtnDiscon.SendToBack()
 
         Timer2.Enabled = False
-        TxtUsr.Enabled = False
-        TxtPass.Enabled = False
-        Login.Enabled = False
+        Write.Enabled = False
+        Read.Enabled = False
+
+        PnlRead.Hide()
+        PnlWrite.Hide()
+        PanelRead.Hide()
+
         SerialPort1.Close()
 
-
+        CmbPort.Text = ""
+        Status.Text = ""
         NIM.Text = ""
         Nama.Text = ""
         TxtNIM_Write.Text = ""
-        TxtUsr.Text = ""
-        TxtPass.Text = ""
     End Sub
 
 
     Private Sub Read_Click(sender As Object, e As EventArgs) Handles Read.Click
         PanelRead.Hide()
         PanelWrite.Hide()
-        PanelLogin.Hide()
 
         PnlRead.Show()
         PanelRead.Show()
 
         PnlWrite.Hide()
-        PanelLogin.Hide()
         PanelWrite.Hide()
 
-        TxtUsr.Text = ""
-        TxtPass.Text = ""
         TxtNIM_Write.Text = ""
         Status.Text = ""
 
@@ -210,53 +207,26 @@ Public Class Form1
 
     Private Sub Write_Click(sender As Object, e As EventArgs) Handles Write.Click
         PnlWrite.Show()
-        PanelLogin.Show()
+
 
         PnlRead.Hide()
         PanelRead.Hide()
-        PanelWrite.Hide()
+        PanelWrite.Show()
 
+        Read.Enabled = False
+        Write.Enabled = False
+        Ext.Enabled = False
+
+        Status.Text = ""
+        TxtNIM_Write.Text = ""
+        TxtNIM_Write.Focus()
+
+        SerialPort1.Write("write" & "#")
+        waktu = 25
+        Timer3.Enabled = True
 
         Status.Hide()
 
-        TxtUsr.Focus()
-
-
-    End Sub
-    Private Sub Login_Click(sender As Object, e As EventArgs) Handles Login.Click
-        If TxtUsr.Text = "admin" And TxtPass.Text = "admin" Then
-            MsgBox("Login Success", MsgBoxStyle.Information, "Login")
-            PanelWrite.Show()
-
-            Read.Enabled = False
-            Write.Enabled = False
-            Ext.Enabled = False
-
-            PanelLogin.Hide()
-            TxtUsr.Text = ""
-            TxtPass.Text = ""
-            TxtNIM_Write.Text = ""
-
-            SerialPort1.Write("write" & "#")
-            waktu = 30
-            Timer3.Enabled = True
-
-            TxtNIM_Write.Focus()
-        Else
-            If TxtUsr.Text = "" And TxtPass.Text = "" Then
-                MsgBox("No Username and Password found!", MsgBoxStyle.Critical, "Error")
-            Else
-                If TxtUsr.Text = "" Then
-                    MsgBox("No Username found!", MsgBoxStyle.Critical, "Error")
-                Else
-                    If TxtPass.Text = "" Then
-                        MsgBox("No Password found!", MsgBoxStyle.Critical, "Error")
-                    Else
-                        MsgBox("Invalid Username and/or Password!", MsgBoxStyle.Critical, "Error")
-                    End If
-                End If
-            End If
-        End If
     End Sub
 
     Private Sub BtnWrite_Click(sender As Object, e As EventArgs) Handles BtnWrite.Click
@@ -269,14 +239,28 @@ Public Class Form1
         Ext.Enabled = True
 
         Status.Show()
-        PanelLogin.Show()
+
+        PanelRead.Show()
+        PnlRead.Show()
+
+        PnlWrite.Hide()
         PanelWrite.Hide()
+
+    End Sub
+    Private Sub TxtNIM_Write_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtNIM_Write.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            BtnWrite.PerformClick()
+        End If
+
     End Sub
 
     Private Sub Ext2_Click(sender As Object, e As EventArgs) Handles Ext2.Click
         Status.Show()
-        PanelLogin.Show()
+        PnlWrite.Hide()
         PanelWrite.Hide()
+
+        PanelRead.Show()
+        PnlRead.Show()
 
         Read.Enabled = True
         Write.Enabled = True
@@ -316,7 +300,14 @@ Public Class Form1
         NIM.Text &= Incoming
         Status.Text &= Incoming
 
+
         If Regex.IsMatch(NIM.Text, "^[0-9 ]") Then
+            Conn = New MySqlConnection
+            Conn.ConnectionString = "server=localhost; userid=root; password=; database=membership"
+            Conn.Open()
+            Query = "SELECT waktu FROM `bukutamu` WHERE NIM = '" & NIM.Text & "'"
+            COMMAND = New MySqlCommand(Query, Conn)
+            reader = COMMAND.ExecuteReader()
             If NIM.Text <> "" Then
                 Status.Text = ""
 
@@ -325,23 +316,22 @@ Public Class Form1
                 Conn.Open()
                 Query = "SELECT nama, jenis_anggota FROM `membership` WHERE id = '" & NIM.Text & "'"
                 COMMAND = New MySqlCommand(Query, Conn)
-                Dim ADAPTER As New MySqlDataAdapter(COMMAND)
-                Dim TABLE As New DataTable()
-                ADAPTER.Fill(TABLE)
+                reader = COMMAND.ExecuteReader()
 
                 If NIM.Text.Contains("Done") Then
                     Nama.Text = ""
                     NIM.Text = ""
-                ElseIf ADAPTER.Fill(TABLE) < 1 Then
+                ElseIf reader.Read() = False Then
                     Nama.Text = "Data Not Found"
                 Else
-                    Nama.Text = TABLE.Rows(0)(0).ToString()
-                    Conn.Close()
-                    Conn.Open()
+                    'Nama.Text = TABLE.Rows(0)(0).ToString()
+                    Nama.Text = reader("Nama".ToString())
+                    reader.Close()
+
                     Query = "insert into `bukutamu` values(
-                    (SELECT id FROM membership WHERE id  = '" & NIM.Text & "'),
+                    (''), (SELECT id FROM membership WHERE id  = '" & NIM.Text & "'),
                     (SELECT nama FROM membership WHERE id = '" & NIM.Text & "'),
-                    CURRENT_TIME)"
+                    NOW())"
                     COMMAND = New MySqlCommand(Query, Conn)
                     reader = COMMAND.ExecuteReader
                     Conn.Close()
@@ -367,33 +357,21 @@ Public Class Form1
             waktu -= 1
         Else
             Timer3.Enabled = False
-            MsgBox("Time is over!")
             TxtNIM_Write.Text = ""
-            PanelWrite.Hide()
-            PanelLogin.Show()
+            SerialPort1.Write("DataisEmpty" & "*")
+
             Read.Enabled = True
             Write.Enabled = True
             Ext.Enabled = True
-        End If
-    End Sub
 
-    Private Sub TxtUsr_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtUsr.KeyDown
-        If e.KeyCode = Keys.Enter Then
-            Login.PerformClick()
-        End If
-    End Sub
+            Status.Show()
 
-    Private Sub TxtPass_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtPass.KeyDown
-        If e.KeyCode = Keys.Enter Then
-            Login.PerformClick()
-        End If
-    End Sub
+            PanelRead.Show()
+            PnlRead.Show()
 
-    Private Sub TxtNIM_Write_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtNIM_Write.KeyDown
-        If e.KeyCode = Keys.Enter Then
-            BtnWrite.PerformClick()
+            PnlWrite.Hide()
+            PanelWrite.Hide()
         End If
-
     End Sub
 
 End Class
