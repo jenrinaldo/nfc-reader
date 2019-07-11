@@ -339,7 +339,7 @@ Public Class Form1
 
 
     End Sub
-    
+
     Private Sub NIM_TextChanged(sender As Object, e As EventArgs) Handles NIM.TextChanged
         Conn = New MySqlConnection
         Conn.ConnectionString = "server = localhost; port = 3309; userid = root; password =; database = inlislite_v3"
