@@ -81,6 +81,7 @@ void write_card() {
 
         // Write block
         status = mfrc522.MIFARE_Write(block, buffer, 16);
+        
         if (status != MFRC522::STATUS_OK) {
             Serial.print("Write failed!");
             return;
@@ -144,7 +145,7 @@ void loop() {
       }
     }
     else {
-        read_card();
+      read_card();
     }
 
   }

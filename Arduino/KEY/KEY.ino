@@ -12,7 +12,7 @@ MFRC522::MIFARE_Key keyB;
 MFRC522::MIFARE_Key newKeyA = {keyByte: {0xE0, 0xE1, 0xE2, 0xE3, 0xE4, 0xE5}};
 MFRC522::MIFARE_Key newKeyB = {keyByte: {0x70, 0x65, 0x72, 0x70, 0x75, 0x73}};
 
-/**
+/** 
    Initialize.
 */
 void setup() {
