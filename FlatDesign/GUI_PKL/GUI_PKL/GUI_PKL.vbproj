@@ -48,7 +48,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bunifu_UI_v1.5.3">
-      <HintPath>..\..\..\..\VB\Bunifu_UI_v1.5.3.dll</HintPath>
+      <HintPath>..\..\Bunifu_UI_v1.5.3.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=8.0.16.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />

@@ -15,15 +15,16 @@ Public Class Form1
     Dim baudrate As String = "9600"
     Dim waktu As Integer = 0
     Dim numbersAllowed As String = "1234567890"
+    Dim Flag As Integer
+    Delegate Sub SetTextCallback(ByVal [text] As String)
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Fingerprint.Enabled = False
         RFID.Enabled = False
 
         Timer1.Enabled = True
-
-        Timer2.Enabled = False
         Timer3.Enabled = False
+
         BtnCon.Enabled = False
         Write.Enabled = False
         Read.Enabled = False
@@ -56,7 +57,7 @@ Public Class Form1
                             SerialPort1.Encoding = System.Text.Encoding.Default
                             SerialPort1.Open()
 
-                            Timer2.Enabled = True
+
 
                             BtnDiscon.Enabled = True
                             BtnDiscon.BringToFront()
@@ -75,6 +76,8 @@ Public Class Form1
                             PnlRead.Show()
                             PanelRead.Show()
 
+                            NIM.Enabled = True
+                            NIM.Focus()
                         Else
                             CmbPort.Enabled = True
                             CmbPort.DroppedDown = True
@@ -85,8 +88,8 @@ Public Class Form1
 
                             BtnDiscon.Enabled = False
                             BtnDiscon.SendToBack()
+                            NIM.Enabled = False
 
-                            Timer2.Enabled = False
                             Write.Enabled = False
                         End If
                     End If
@@ -151,7 +154,8 @@ Public Class Form1
         SerialPort1.Encoding = System.Text.Encoding.Default
         SerialPort1.Open()
 
-        Timer2.Enabled = True
+        NIM.Enabled = True
+        NIM.Focus()
 
         BtnDiscon.Enabled = True
         BtnDiscon.BringToFront()
@@ -172,13 +176,15 @@ Public Class Form1
         BtnCon.BringToFront()
         BtnDiscon.SendToBack()
 
-        Timer2.Enabled = False
+
         Write.Enabled = False
         Read.Enabled = False
 
         PnlRead.Hide()
         PnlWrite.Hide()
         PanelRead.Hide()
+
+        NIM.Enabled = False
 
         SerialPort1.Close()
 
@@ -202,6 +208,8 @@ Public Class Form1
 
         TxtNIM_Write.Text = ""
         Status.Text = ""
+
+        NIM.Focus()
 
     End Sub
 
@@ -266,7 +274,7 @@ Public Class Form1
         Write.Enabled = True
         Ext.Enabled = True
 
-        SerialPort1.Write("DataisEmpty" & "*")
+        SerialPort1.Write("DataKosong" & "*")
         Timer3.Enabled = False
         waktu = 0
 
@@ -289,67 +297,10 @@ Public Class Form1
         TxtNIM_Write.Text = theText
         TxtNIM_Write.Select(SelectionIndex - Change, 0)
     End Sub
+
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         Tanggal.Text = Date.Now.ToString("dddd, dd MMM yyyy")
         Jam.Text = Date.Now.ToString("hh:mm:ss")
-    End Sub
-
-    Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
-        Dim Incoming As String
-        Incoming = SerialPort1.ReadExisting()
-        NIM.Text &= Incoming
-        Status.Text &= Incoming
-
-
-        If Regex.IsMatch(NIM.Text, "^[0-9 ]") Then
-            Conn = New MySqlConnection
-            Conn.ConnectionString = "server=localhost; userid=root; password=; database=membership"
-            Conn.Open()
-            Query = "SELECT waktu FROM `bukutamu` WHERE NIM = '" & NIM.Text & "'"
-            COMMAND = New MySqlCommand(Query, Conn)
-            reader = COMMAND.ExecuteReader()
-            If NIM.Text <> "" Then
-                Status.Text = ""
-
-                Conn = New MySqlConnection
-                Conn.ConnectionString = "server=localhost; userid=root; password=; database=membership"
-                Conn.Open()
-                Query = "SELECT nama, jenis_anggota FROM `membership` WHERE id = '" & NIM.Text & "'"
-                COMMAND = New MySqlCommand(Query, Conn)
-                reader = COMMAND.ExecuteReader()
-
-                If NIM.Text.Contains("Done") Then
-                    Nama.Text = ""
-                    NIM.Text = ""
-                ElseIf reader.Read() = False Then
-                    Nama.Text = "Data Not Found"
-                Else
-                    'Nama.Text = TABLE.Rows(0)(0).ToString()
-                    Nama.Text = reader("Nama".ToString())
-                    reader.Close()
-
-                    Query = "insert into `bukutamu` values(
-                    (''), (SELECT id FROM membership WHERE id  = '" & NIM.Text & "'),
-                    (SELECT nama FROM membership WHERE id = '" & NIM.Text & "'),
-                    NOW())"
-                    COMMAND = New MySqlCommand(Query, Conn)
-                    reader = COMMAND.ExecuteReader
-                    Conn.Close()
-                End If
-                Conn.Close()
-            End If
-        ElseIf Regex.IsMatch(Status.Text, "DataisEmpty") Then
-            Status.Text = ""
-        Else
-            NIM.Text = ""
-        End If
-
-        If Regex.IsMatch(Status.Text, "^[a-z,A-Z,! ]+$") = False Then
-            Status.Text = ""
-        End If
-
-
-
     End Sub
 
     Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
@@ -372,6 +323,111 @@ Public Class Form1
             PnlWrite.Hide()
             PanelWrite.Hide()
         End If
+    End Sub
+
+    Private Sub SerialPort1_DataReceived(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
+        ReceivedText(SerialPort1.ReadExisting())    ' read text from serial data
+    End Sub
+
+    Private Sub ReceivedText(ByVal [text] As String)
+        If Me.NIM.InvokeRequired Then
+            Dim x As New SetTextCallback(AddressOf ReceivedText)
+            Me.Invoke(x, New Object() {(text)})
+        Else
+            Me.NIM.Text &= [text]
+        End If
+
+
+    End Sub
+    
+    Private Sub NIM_TextChanged(sender As Object, e As EventArgs) Handles NIM.TextChanged
+        Conn = New MySqlConnection
+        Conn.ConnectionString = "server = localhost; port = 3309; userid = root; password =; database = inlislite_v3"
+
+        Try
+            If Regex.IsMatch(NIM.Text, "^[0-9 ]") Then
+                If NIM.Text <> "" Then
+                    Status.Text = ""
+
+                    Conn.Open()
+                    Query = "SELECT * FROM `members` WHERE MemberNo = '" & NIM.Text & "'"
+                    COMMAND = New MySqlCommand(Query, Conn)
+                    reader = COMMAND.ExecuteReader()
+                    If reader.Read() = True Then
+                        Nama.Text = reader("FullName".ToString())
+                        reader.Close()
+                        Query = "SELECT DATE(MAX(updateDate)) AS 'Date/Time', CURDATE(), DATEDIFF(MAX(UpdateDate), CURDATE()) AS 'Date' 
+                            FROM memberguesses WHERE NoAnggota = '" & NIM.Text & "';"
+                        COMMAND = New MySqlCommand(Query, Conn)
+                        reader = COMMAND.ExecuteReader()
+                        If reader.Read() = True Then
+                            Try
+                                Flag = reader.GetInt16("Date")
+                                If Flag = 0 Then
+                                    MessageBox.Show("Sudah")
+                                    Nama.Text = ""
+                                    NIM.Text = ""
+                                ElseIf Flag < 0 Then
+                                    Query = "INSERT INTO `memberguesses` (`NoAnggota`, `Nama`, `Alamat`, `CreateDate`, `CreateTerminal`, `UpdateDate`, `UpdateTerminal`, `Location_Id`) 
+                                    SELECT memberNo, Fullname, addressnow, CURTIME(), CreateTerminal, CURTIME(), UpdateTerminal, '472' FROM members WHERE MemberNo = '" & NIM.Text & "';"
+                                    reader.Close()
+                                    COMMAND = New MySqlCommand(Query, Conn)
+                                    reader = COMMAND.ExecuteReader()
+                                    MessageBox.Show("Selamat Datang!")
+                                    Nama.Text = ""
+                                    NIM.Text = ""
+                                End If
+                            Catch ex As Exception
+                                Query = "INSERT INTO `memberguesses` (`NoAnggota`, `Nama`, `Alamat`, `CreateDate`, `CreateTerminal`, `UpdateDate`, `UpdateTerminal`, `Location_Id`) 
+                                    SELECT memberNo, Fullname, addressnow, CURTIME(), CreateTerminal, CURTIME(), UpdateTerminal, '472' FROM members WHERE MemberNo = '" & NIM.Text & "';"
+                                reader.Close()
+                                COMMAND = New MySqlCommand(Query, Conn)
+                                reader = COMMAND.ExecuteReader()
+                                MessageBox.Show("Selamat Datang!")
+                                Nama.Text = ""
+                                NIM.Text = ""
+                            End Try
+                        End If
+                    ElseIf NIM.Text.Contains("Done") Then
+                        Nama.Text = ""
+                        NIM.Text = ""
+                    Else
+                        Nama.Text = "NIM Tidak Terdaftar"
+                    End If
+                    Conn.Close()
+                End If
+            ElseIf Regex.IsMatch(NIM.Text, "^[a-z,A-Z ]+$") Then
+                NIM.Text = ""
+                Nama.Text = ""
+            Else
+                NIM.Text = ""
+                Nama.Text = ""
+            End If
+
+        Catch ex As Exception
+            BtnDiscon.Enabled = False
+            BtnCon.Enabled = False
+            BtnScanPort.Enabled = True
+
+            BtnCon.BringToFront()
+            BtnDiscon.SendToBack()
+
+
+            Write.Enabled = False
+            Read.Enabled = False
+
+            PnlRead.Hide()
+            PnlWrite.Hide()
+            PanelRead.Hide()
+
+            SerialPort1.Close()
+
+            CmbPort.Text = ""
+            Status.Text = ""
+            NIM.Text = ""
+            Nama.Text = ""
+            TxtNIM_Write.Text = ""
+        End Try
     End Sub
 
 End Class
