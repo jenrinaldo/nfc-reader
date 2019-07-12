@@ -1,10 +1,13 @@
-﻿Imports System.IO.Ports
+﻿Option Explicit On
+Imports System.IO.Ports
 Imports System.Management
-Imports System.Text.RegularExpressions
 Imports System.Media
+Imports System.Text.RegularExpressions
 Imports MySql.Data.MySqlClient
 
 Public Class Form1
+    Dim WithEvents FpVer As New FlexCodeSDK.FinFPVer
+    Dim Template As String
     Dim reader As MySqlDataReader
     Dim Conn As MySqlConnection
     Dim COMMAND As MySqlCommand
@@ -16,9 +19,20 @@ Public Class Form1
     Dim waktu As Integer = 0
     Dim numbersAllowed As String = "1234567890"
     Dim Flag As Integer
+    Dim statusFP As Boolean
     Delegate Sub SetTextCallback(ByVal [text] As String)
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Conn = New MySqlConnection
+        Conn.ConnectionString = "server = localhost; port = 3306; userid = root; password = ; database = inlislite_v3"
+        Conn.Open()
+        FpVer = New FlexCodeSDK.FinFPVer
+        FpVer.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
+        FpVer.SetMaxTemplate(100000)
+        FpVer.FPVerificationStart()
+        FpVer.PictureSamplePath = My.Application.Info.DirectoryPath & "\FPTemp.BMP"
+        FpVer.PictureSampleHeight = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Height))
+        FpVer.PictureSampleWidth = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Width))
         Fingerprint.Enabled = False
         RFID.Enabled = False
 
@@ -36,11 +50,10 @@ Public Class Form1
         PanelRead.Hide()
 
         TxtNIM_Write.Text = ""
-
         Try
             Dim searcher As New ManagementObjectSearcher("root\CIMV2", "Select * FROM Win32_PnPEntity")
             For Each queryObj As ManagementObject In searcher.Get()
-                If InStr(queryObj("Name"), ("COM")) > 0 Then
+                If InStr(queryObj("Name"), ("COM")) > 0 Or statusFP! = False Then
                     If queryObj("Description") = "USB-SERIAL CH340" Then
                         string1 = queryObj("Description")
                         string2 = queryObj("Name")
@@ -56,15 +69,10 @@ Public Class Form1
                             SerialPort1.Handshake = Handshake.None
                             SerialPort1.Encoding = System.Text.Encoding.Default
                             SerialPort1.Open()
-
-
-
                             BtnDiscon.Enabled = True
                             BtnDiscon.BringToFront()
-
                             BtnCon.Enabled = False
                             BtnCon.SendToBack()
-
                             BtnScanPort.Enabled = False
                             CmbPort.DroppedDown = False
                             CmbPort.Enabled = False
@@ -92,16 +100,62 @@ Public Class Form1
 
                             Write.Enabled = False
                         End If
+                    ElseIf statusFP = False Then
+                        Read.Enabled = True
+                        PnlRead.Show()
+                        PanelRead.Show()
+                        NIM.Enabled = True
+                        NIM.Focus()
+
+                        Dim sqlCommand As New MySqlCommand
+                        sqlCommand.Connection = Conn
+                        sqlCommand.CommandText = "SELECT MemberNo, FullName, Template, FingerIndex FROM Members"
+                        Dim rd As MySqlDataReader = sqlCommand.ExecuteReader()
+                        While rd.Read
+                            FpVer.FPLoad(rd.GetString(0), rd.GetString(3), rd.GetString(2), "YourSecretKey")
+                        End While
+                        FpVer.FPVerificationStart()
+                        rd.Close()
+
+
                     End If
                 End If
             Next
         Catch err As ManagementException
             MsgBox(err.Message)
         End Try
-
-
     End Sub
 
+
+    Private Sub FPVer_FPVerificationStatus(ByVal Status As FlexCodeSDK.VerificationStatus) Handles FpVer.FPVerificationStatus
+        Select Case Status
+            Case FlexCodeSDK.VerificationStatus.v_ActivationIncorrect
+                MsgBox("Activation / verification code is incorrent or not set")
+            Case FlexCodeSDK.VerificationStatus.v_FPDevFull
+                MsgBox("Max 10 devices")
+            Case FlexCodeSDK.VerificationStatus.v_FPListEmpty
+                MsgBox("Please add templates")
+            Case FlexCodeSDK.VerificationStatus.v_FPListFull
+                MsgBox("Max 100K templates")
+            Case FlexCodeSDK.VerificationStatus.v_MultiplelMatch
+                MsgBox("Multiple match")
+            Case FlexCodeSDK.VerificationStatus.v_NoDevice
+                statusFP = True
+                MsgBox("Please connect the device to USB port or Add a device")
+            Case FlexCodeSDK.VerificationStatus.v_NotMatch
+                MsgBox("No match")
+            Case FlexCodeSDK.VerificationStatus.v_OK
+                MsgBox("Match")
+            Case FlexCodeSDK.VerificationStatus.v_PoorImageQuality
+                MsgBox("Poor image quality")
+            Case FlexCodeSDK.VerificationStatus.v_VerificationFailed
+                MsgBox("Verification failed")
+            Case FlexCodeSDK.VerificationStatus.v_VerifyCaptureStop
+                MsgBox("Stop verify")
+            Case Else
+                statusFP = False
+        End Select
+    End Sub
 
     Private Sub Ext_Click(sender As Object, e As EventArgs) Handles Ext.Click
         Me.Close()
@@ -341,9 +395,6 @@ Public Class Form1
     End Sub
 
     Private Sub NIM_TextChanged(sender As Object, e As EventArgs) Handles NIM.TextChanged
-        Conn = New MySqlConnection
-        Conn.ConnectionString = "server = localhost; port = 3309; userid = root; password =; database = inlislite_v3"
-
         Try
             If Regex.IsMatch(NIM.Text, "^[0-9 ]") Then
                 If NIM.Text <> "" Then
@@ -429,5 +480,22 @@ Public Class Form1
             TxtNIM_Write.Text = ""
         End Try
     End Sub
+    Private Sub FPVer_FPVerificationID(ByVal ID As String, ByVal FingerNr As FlexCodeSDK.FingerNumber) Handles FpVer.FPVerificationID
+        NIM.Text = NIM.Text & vbNewLine & "ID = " & ID & ", FingerNr = " & FingerNr
+    End Sub
 
+    Private Sub FPVer_FPVerificationImage() Handles FpVer.FPVerificationImage
+        Dim imgFile As System.IO.FileStream = New System.IO.FileStream(My.Application.Info.DirectoryPath & "\FPTemp.BMP", System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite)
+        Dim fileBytes(imgFile.Length) As Byte
+        imgFile.Read(fileBytes, 0, fileBytes.Length)
+        imgFile.Close()
+        Dim ms As System.IO.MemoryStream = New System.IO.MemoryStream(fileBytes)
+        PictureBox1.Image = Image.FromStream(ms)
+    End Sub
+
+    Private Sub Form1_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
+        FpVer.FPVerificationStop()
+        FpVer.FPListClear()
+        Conn.Close()
+    End Sub
 End Class
