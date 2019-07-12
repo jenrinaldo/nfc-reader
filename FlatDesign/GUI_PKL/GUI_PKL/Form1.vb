@@ -100,6 +100,7 @@ Public Class Form1
                     End If
                 End If
             Next
+<<<<<<< HEAD
         'Catch err As ManagementException
         '    MsgBox(err.Message)
         '    BtnDiscon.Enabled = False
@@ -129,6 +130,11 @@ Public Class Form1
         '    Nama.Text = ""
         '    TxtNIM_Write.Text = ""
         'End Try
+=======
+        Catch err As ManagementException
+            MsgBox("Port terlepas!")
+        End Try
+>>>>>>> dce0d9102a1e1509e85101000a0b66d0a408e43e
 
 
     End Sub
