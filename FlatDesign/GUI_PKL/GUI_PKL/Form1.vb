@@ -21,7 +21,6 @@ Public Class Form1
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Fingerprint.Enabled = False
         RFID.Enabled = False
-        NIM.Enabled = False
 
         Timer1.Enabled = True
         Timer3.Enabled = False
@@ -38,12 +37,8 @@ Public Class Form1
 
         TxtNIM_Write.Text = ""
 
-        Label2.Hide()
-        pesan.Hide()
-
-
-        'Try
-        Dim searcher As New ManagementObjectSearcher("root\CIMV2", "Select * FROM Win32_PnPEntity")
+        Try
+            Dim searcher As New ManagementObjectSearcher("root\CIMV2", "Select * FROM Win32_PnPEntity")
             For Each queryObj As ManagementObject In searcher.Get()
                 If InStr(queryObj("Name"), ("COM")) > 0 Then
                     If queryObj("Description") = "USB-SERIAL CH340" Then
@@ -62,6 +57,8 @@ Public Class Form1
                             SerialPort1.Encoding = System.Text.Encoding.Default
                             SerialPort1.Open()
 
+
+
                             BtnDiscon.Enabled = True
                             BtnDiscon.BringToFront()
 
@@ -79,10 +76,8 @@ Public Class Form1
                             PnlRead.Show()
                             PanelRead.Show()
 
+                            NIM.Enabled = True
                             NIM.Focus()
-                            Label2.Show()
-                            pesan.Show()
-                            pesan.Text = "Hanya dapat menggunakan Kartu RFID"
                         Else
                             CmbPort.Enabled = True
                             CmbPort.DroppedDown = True
@@ -100,41 +95,9 @@ Public Class Form1
                     End If
                 End If
             Next
-<<<<<<< HEAD
-        'Catch err As ManagementException
-        '    MsgBox(err.Message)
-        '    BtnDiscon.Enabled = False
-        '    BtnCon.Enabled = False
-        '    BtnScanPort.Enabled = True
-
-        '    BtnCon.BringToFront()
-        '    BtnDiscon.SendToBack()
-
-
-        '    Write.Enabled = False
-        '    Read.Enabled = False
-
-        '    Label2.Hide()
-        '    pesan.Hide()
-        '    PnlRead.Hide()
-        '    PnlWrite.Hide()
-        '    PanelRead.Hide()
-
-        '    NIM.Enabled = False
-
-        '    SerialPort1.Close()
-
-        '    CmbPort.Text = ""
-        '    Status.Text = ""
-        '    NIM.Text = ""
-        '    Nama.Text = ""
-        '    TxtNIM_Write.Text = ""
-        'End Try
-=======
         Catch err As ManagementException
             MsgBox("Port terlepas!")
         End Try
->>>>>>> dce0d9102a1e1509e85101000a0b66d0a408e43e
 
 
     End Sub
@@ -191,7 +154,7 @@ Public Class Form1
         SerialPort1.Encoding = System.Text.Encoding.Default
         SerialPort1.Open()
 
-        NIM.Enabled = False
+        NIM.Enabled = True
         NIM.Focus()
 
         BtnDiscon.Enabled = True
@@ -379,7 +342,7 @@ Public Class Form1
 
     Private Sub NIM_TextChanged(sender As Object, e As EventArgs) Handles NIM.TextChanged
         Conn = New MySqlConnection
-        Conn.ConnectionString = "server = localhost; userid = root; password =; database = inlislite_v3"
+        Conn.ConnectionString = "server = localhost; port = 3309; userid = root; password =; database = inlislite_v3"
 
         Try
             If Regex.IsMatch(NIM.Text, "^[0-9 ]") Then
@@ -430,7 +393,7 @@ Public Class Form1
                     End If
                     Conn.Close()
                 End If
-            ElseIf Regex.IsMatch(NIM.Text, "^[a-z,A-Z ]") Then
+            ElseIf Regex.IsMatch(NIM.Text, "^[a-z,A-Z ]+$") Then
                 NIM.Text = ""
                 Nama.Text = ""
             Else
