@@ -63,6 +63,8 @@ Partial Class Form1
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.pesan = New System.Windows.Forms.Label()
         Me.BunifuGradientPanel1.SuspendLayout()
         Me.PanelMENU.SuspendLayout()
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -280,10 +282,12 @@ Partial Class Form1
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.pesan)
+        Me.Panel1.Controls.Add(Me.Label2)
+        Me.Panel1.Controls.Add(Me.PanelRead)
         Me.Panel1.Controls.Add(Me.RFID)
         Me.Panel1.Controls.Add(Me.Fingerprint)
         Me.Panel1.Controls.Add(Me.PanelWrite)
-        Me.Panel1.Controls.Add(Me.PanelRead)
         Me.Panel1.Location = New System.Drawing.Point(187, 0)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(542, 386)
@@ -538,6 +542,26 @@ Partial Class Form1
         'SerialPort1
         '
         '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Century Gothic", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(7, 324)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(113, 22)
+        Me.Label2.TabIndex = 24
+        Me.Label2.Text = "PERHATIAN"
+        '
+        'pesan
+        '
+        Me.pesan.AutoSize = True
+        Me.pesan.Font = New System.Drawing.Font("Century Gothic", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.pesan.Location = New System.Drawing.Point(7, 346)
+        Me.pesan.Name = "pesan"
+        Me.pesan.Size = New System.Drawing.Size(60, 16)
+        Me.pesan.TabIndex = 25
+        Me.pesan.Text = "Gunakan"
+        '
         'Form1
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
@@ -558,6 +582,7 @@ Partial Class Form1
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.PanelWrite.ResumeLayout(False)
         Me.PanelWrite.PerformLayout()
         Me.PanelRead.ResumeLayout(False)
@@ -606,4 +631,6 @@ Partial Class Form1
     Friend WithEvents Read As Bunifu.Framework.UI.BunifuFlatButton
     Friend WithEvents Write As Bunifu.Framework.UI.BunifuFlatButton
     Friend WithEvents NIM As TextBox
+    Friend WithEvents pesan As Label
+    Friend WithEvents Label2 As Label
 End Class
