@@ -356,8 +356,7 @@ Public Class Form1
                     If reader.Read() = True Then
                         Nama.Text = reader("FullName".ToString())
                         reader.Close()
-                        Query = "SELECT DATE(MAX(updateDate)) AS 'Date/Time', CURDATE(), DATEDIFF(MAX(UpdateDate), CURDATE()) AS 'Date' 
-                            FROM memberguesses WHERE NoAnggota = '" & NIM.Text & "';"
+                        Query = "CALL GetTimeDif('" & NIM.Text & "');"
                         COMMAND = New MySqlCommand(Query, Conn)
                         reader = COMMAND.ExecuteReader()
                         If reader.Read() = True Then
@@ -368,8 +367,7 @@ Public Class Form1
                                     Nama.Text = ""
                                     NIM.Text = ""
                                 ElseIf Flag < 0 Then
-                                    Query = "INSERT INTO `memberguesses` (`NoAnggota`, `Nama`, `Alamat`, `CreateDate`, `CreateTerminal`, `UpdateDate`, `UpdateTerminal`, `Location_Id`) 
-                                    SELECT memberNo, Fullname, addressnow, CURTIME(), CreateTerminal, CURTIME(), UpdateTerminal, '472' FROM members WHERE MemberNo = '" & NIM.Text & "';"
+                                    Query = "CALL InsertGuessBook('" & NIM.Text & "');"
                                     reader.Close()
                                     COMMAND = New MySqlCommand(Query, Conn)
                                     reader = COMMAND.ExecuteReader()
@@ -378,8 +376,7 @@ Public Class Form1
                                     NIM.Text = ""
                                 End If
                             Catch ex As Exception
-                                Query = "INSERT INTO `memberguesses` (`NoAnggota`, `Nama`, `Alamat`, `CreateDate`, `CreateTerminal`, `UpdateDate`, `UpdateTerminal`, `Location_Id`) 
-                                    SELECT memberNo, Fullname, addressnow, CURTIME(), CreateTerminal, CURTIME(), UpdateTerminal, '472' FROM members WHERE MemberNo = '" & NIM.Text & "';"
+                                Query = "CALL InsertGuessBook('" & NIM.Text & "');"
                                 reader.Close()
                                 COMMAND = New MySqlCommand(Query, Conn)
                                 reader = COMMAND.ExecuteReader()
