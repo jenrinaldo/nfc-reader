@@ -96,7 +96,7 @@ Public Class Form1
                 End If
             Next
         Catch err As ManagementException
-            MsgBox(err.Message)
+            MsgBox("Port terlepas!")
         End Try
 
 
