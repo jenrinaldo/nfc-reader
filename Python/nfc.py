@@ -3,6 +3,48 @@ from smartcard.util import toHexString
 from smartcard.ATR import ATR
 from smartcard.CardType import AnyCardType
 import sys
+import winreg as reg
+import os
+
+
+def AddToRegistry():
+    path = os.path.dirname(os.path.realpath(__file__))
+    scriptName = "nfc.py"
+    address = os.path.join(path, scriptName)
+    key = reg.HKEY_CURRENT_USER
+    keyValue = "Software\Microsoft\Windows\CurrentVersion\Run"
+    open = reg.OpenKey(key, keyValue, 0, reg.KEY_ALL_ACCESS)
+    reg.SetValueEx(open, "any_name", 0, reg.REG_SZ, address)
+    reg.CloseKey(open)
+
+
+def mainProg():
+	while True:
+		r = readers()
+		if len(r)<1 :
+			continue
+		else:
+			pass
+	reader = r[0]
+	connection = reader.createConnection()
+	connection.connect()
+	cmd = sys.argv[1]
+	cmdMap = {
+	"mute":[0xFF, 0x00, 0x52, 0x00, 0x00],
+	"unmute":[0xFF, 0x00, 0x52, 0xFF, 0x00],
+	"getuid":[0xFF, 0xCA, 0x00, 0x00, 0x00],
+	"firmver":[0xFF, 0x00, 0x48, 0x00, 0x00],
+	}
+	
+	COMMAND = cmdMap.get(cmd, cmd)
+	
+
+while True:
+    if __name__ == "__main__":
+        AddToRegistry()
+        mainProg()
+
+
 
 if len(sys.argv) < 2:
 	print ("usage: nfcTool.py <command>\nList of available commands: help, mute, unmute, getuid, info, loadkey, read, firmver")
