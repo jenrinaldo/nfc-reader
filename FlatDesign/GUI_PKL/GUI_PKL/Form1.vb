@@ -14,13 +14,14 @@ Public Class Form1
     Dim hasil As String
     Dim baudrate As String = "9600"
     Dim waktu As Integer = 0
-    Dim numbersAllowed As String = "1234567890"
+    Dim numbers As String = "1234567890"
     Dim Flag As Integer
     Delegate Sub SetTextCallback(ByVal [text] As String)
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Fingerprint.Enabled = False
         RFID.Enabled = False
+        NIM.Enabled = False
 
         Timer1.Enabled = True
         Timer3.Enabled = False
@@ -76,7 +77,6 @@ Public Class Form1
                             PnlRead.Show()
                             PanelRead.Show()
 
-                            NIM.Enabled = True
                             NIM.Focus()
                         Else
                             CmbPort.Enabled = True
@@ -88,7 +88,6 @@ Public Class Form1
 
                             BtnDiscon.Enabled = False
                             BtnDiscon.SendToBack()
-                            NIM.Enabled = False
 
                             Write.Enabled = False
                         End If
@@ -154,7 +153,7 @@ Public Class Form1
         SerialPort1.Encoding = System.Text.Encoding.Default
         SerialPort1.Open()
 
-        NIM.Enabled = True
+
         NIM.Focus()
 
         BtnDiscon.Enabled = True
@@ -288,7 +287,7 @@ Public Class Form1
         Dim Change As Integer
         For x As Integer = 0 To TxtNIM_Write.Text.Length - 1
             Letter = TxtNIM_Write.Text.Substring(x, 1)
-            If numbersAllowed.Contains(Letter) = False Then
+            If numbers.Contains(Letter) = False Then
                 SystemSounds.Beep.Play()
                 theText = theText.Replace(Letter, String.Empty)
                 Change = 1
@@ -341,11 +340,14 @@ Public Class Form1
     End Sub
 
     Private Sub NIM_TextChanged(sender As Object, e As EventArgs) Handles NIM.TextChanged
+        Dim bfr As String
+        bfr = NIM.Text
+
         Conn = New MySqlConnection
-        Conn.ConnectionString = "server = localhost; port = 3309; userid = root; password =; database = inlislite_v3"
+        Conn.ConnectionString = "server = localhost; userid = root; password =; database = inlislite_v3"
 
         Try
-            If Regex.IsMatch(NIM.Text, "^[0-9 ]") Then
+            If Regex.IsMatch(NIM.Text, "^[0-9 ]+$") Then
                 If NIM.Text <> "" Then
                     Status.Text = ""
 
@@ -366,6 +368,7 @@ Public Class Form1
                                     MessageBox.Show("Sudah")
                                     Nama.Text = ""
                                     NIM.Text = ""
+                                    Conn.Close()
                                 ElseIf Flag < 0 Then
                                     Query = "CALL InsertGuessBook('" & NIM.Text & "');"
                                     reader.Close()
@@ -374,6 +377,7 @@ Public Class Form1
                                     MessageBox.Show("Selamat Datang!")
                                     Nama.Text = ""
                                     NIM.Text = ""
+                                    Conn.Close()
                                 End If
                             Catch ex As Exception
                                 Query = "CALL InsertGuessBook('" & NIM.Text & "');"
@@ -383,6 +387,7 @@ Public Class Form1
                                 MessageBox.Show("Selamat Datang!")
                                 Nama.Text = ""
                                 NIM.Text = ""
+                                Conn.Close()
                             End Try
                         End If
                     ElseIf NIM.Text.Contains("Done") Then
@@ -391,11 +396,7 @@ Public Class Form1
                     Else
                         Nama.Text = "NIM Tidak Terdaftar"
                     End If
-                    Conn.Close()
                 End If
-            ElseIf Regex.IsMatch(NIM.Text, "^[a-z,A-Z ]+$") Then
-                NIM.Text = ""
-                Nama.Text = ""
             Else
                 NIM.Text = ""
                 Nama.Text = ""
