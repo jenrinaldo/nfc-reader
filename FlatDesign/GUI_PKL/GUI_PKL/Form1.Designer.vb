@@ -38,9 +38,9 @@ Partial Class Form1
         Me.Fingerprint = New Bunifu.Framework.UI.BunifuImageButton()
         Me.RFID = New Bunifu.Framework.UI.BunifuImageButton()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.pesan2 = New System.Windows.Forms.Label()
-        Me.pesan1 = New System.Windows.Forms.Label()
+        Me.balasan = New System.Windows.Forms.Label()
         Me.PanelRead = New System.Windows.Forms.Panel()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.NIM = New System.Windows.Forms.TextBox()
         Me.Nama = New System.Windows.Forms.Label()
         Me.BunifuCustomLabel2 = New Bunifu.Framework.UI.BunifuCustomLabel()
@@ -66,13 +66,15 @@ Partial Class Form1
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
-        Me.balasan = New System.Windows.Forms.Label()
+        Me.CheckFngr = New Bunifu.Framework.UI.BunifuCheckbox()
+        Me.CheckRFID = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.BunifuGradientPanel1.SuspendLayout()
         Me.PanelMENU.SuspendLayout()
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.PanelRead.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanelWrite.SuspendLayout()
         Me.Panel4.SuspendLayout()
         Me.SuspendLayout()
@@ -133,7 +135,7 @@ Partial Class Form1
         'Read
         '
         Me.Read.Activecolor = System.Drawing.Color.FromArgb(CType(CType(50, Byte), Integer), CType(CType(80, Byte), Integer), CType(CType(36, Byte), Integer), CType(CType(95, Byte), Integer))
-        Me.Read.BackColor = System.Drawing.Color.Transparent
+        Me.Read.BackColor = System.Drawing.Color.FromArgb(CType(CType(50, Byte), Integer), CType(CType(80, Byte), Integer), CType(CType(36, Byte), Integer), CType(CType(95, Byte), Integer))
         Me.Read.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Read.BorderRadius = 0
         Me.Read.ButtonText = "       Daftar Hadir"
@@ -259,7 +261,7 @@ Partial Class Form1
         Me.Fingerprint.Cursor = System.Windows.Forms.Cursors.Default
         Me.Fingerprint.Image = CType(resources.GetObject("Fingerprint.Image"), System.Drawing.Image)
         Me.Fingerprint.ImageActive = Nothing
-        Me.Fingerprint.Location = New System.Drawing.Point(387, 324)
+        Me.Fingerprint.Location = New System.Drawing.Point(364, 324)
         Me.Fingerprint.Name = "Fingerprint"
         Me.Fingerprint.Size = New System.Drawing.Size(73, 55)
         Me.Fingerprint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -284,9 +286,9 @@ Partial Class Form1
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.CheckRFID)
+        Me.Panel1.Controls.Add(Me.CheckFngr)
         Me.Panel1.Controls.Add(Me.balasan)
-        Me.Panel1.Controls.Add(Me.pesan2)
-        Me.Panel1.Controls.Add(Me.pesan1)
         Me.Panel1.Controls.Add(Me.PanelRead)
         Me.Panel1.Controls.Add(Me.RFID)
         Me.Panel1.Controls.Add(Me.Fingerprint)
@@ -296,29 +298,20 @@ Partial Class Form1
         Me.Panel1.Size = New System.Drawing.Size(542, 386)
         Me.Panel1.TabIndex = 1
         '
-        'pesan2
+        'balasan
         '
-        Me.pesan2.AutoSize = True
-        Me.pesan2.Font = New System.Drawing.Font("Century Gothic", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pesan2.Location = New System.Drawing.Point(7, 346)
-        Me.pesan2.Name = "pesan2"
-        Me.pesan2.Size = New System.Drawing.Size(48, 16)
-        Me.pesan2.TabIndex = 25
-        Me.pesan2.Text = "pesan2"
-        '
-        'pesan1
-        '
-        Me.pesan1.AutoSize = True
-        Me.pesan1.Font = New System.Drawing.Font("Century Gothic", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pesan1.Location = New System.Drawing.Point(7, 324)
-        Me.pesan1.Name = "pesan1"
-        Me.pesan1.Size = New System.Drawing.Size(78, 22)
-        Me.pesan1.TabIndex = 24
-        Me.pesan1.Text = "pesan1"
+        Me.balasan.AutoSize = True
+        Me.balasan.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.balasan.Location = New System.Drawing.Point(236, 182)
+        Me.balasan.Name = "balasan"
+        Me.balasan.Size = New System.Drawing.Size(67, 20)
+        Me.balasan.TabIndex = 26
+        Me.balasan.Text = "balasan"
         '
         'PanelRead
         '
         Me.PanelRead.BackColor = System.Drawing.Color.Transparent
+        Me.PanelRead.Controls.Add(Me.PictureBox1)
         Me.PanelRead.Controls.Add(Me.NIM)
         Me.PanelRead.Controls.Add(Me.Nama)
         Me.PanelRead.Controls.Add(Me.BunifuCustomLabel2)
@@ -329,6 +322,14 @@ Partial Class Form1
         Me.PanelRead.Name = "PanelRead"
         Me.PanelRead.Size = New System.Drawing.Size(531, 275)
         Me.PanelRead.TabIndex = 3
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Location = New System.Drawing.Point(14, 103)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(100, 50)
+        Me.PictureBox1.TabIndex = 32
+        Me.PictureBox1.TabStop = False
         '
         'NIM
         '
@@ -570,15 +571,29 @@ Partial Class Form1
         'Timer2
         '
         '
-        'balasan
+        'CheckFngr
         '
-        Me.balasan.AutoSize = True
-        Me.balasan.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.balasan.Location = New System.Drawing.Point(236, 182)
-        Me.balasan.Name = "balasan"
-        Me.balasan.Size = New System.Drawing.Size(67, 20)
-        Me.balasan.TabIndex = 26
-        Me.balasan.Text = "balasan"
+        Me.CheckFngr.BackColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
+        Me.CheckFngr.ChechedOffColor = System.Drawing.Color.FromArgb(CType(CType(132, Byte), Integer), CType(CType(135, Byte), Integer), CType(CType(140, Byte), Integer))
+        Me.CheckFngr.Checked = True
+        Me.CheckFngr.CheckedOnColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
+        Me.CheckFngr.ForeColor = System.Drawing.Color.White
+        Me.CheckFngr.Location = New System.Drawing.Point(349, 342)
+        Me.CheckFngr.Name = "CheckFngr"
+        Me.CheckFngr.Size = New System.Drawing.Size(20, 20)
+        Me.CheckFngr.TabIndex = 27
+        '
+        'CheckRFID
+        '
+        Me.CheckRFID.BackColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
+        Me.CheckRFID.ChechedOffColor = System.Drawing.Color.FromArgb(CType(CType(132, Byte), Integer), CType(CType(135, Byte), Integer), CType(CType(140, Byte), Integer))
+        Me.CheckRFID.Checked = True
+        Me.CheckRFID.CheckedOnColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
+        Me.CheckRFID.ForeColor = System.Drawing.Color.White
+        Me.CheckRFID.Location = New System.Drawing.Point(445, 342)
+        Me.CheckRFID.Name = "CheckRFID"
+        Me.CheckRFID.Size = New System.Drawing.Size(20, 20)
+        Me.CheckRFID.TabIndex = 28
         '
         'Form1
         '
@@ -603,6 +618,7 @@ Partial Class Form1
         Me.Panel1.PerformLayout()
         Me.PanelRead.ResumeLayout(False)
         Me.PanelRead.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PanelWrite.ResumeLayout(False)
         Me.PanelWrite.PerformLayout()
         Me.Panel4.ResumeLayout(False)
@@ -649,8 +665,9 @@ Partial Class Form1
     Friend WithEvents Read As Bunifu.Framework.UI.BunifuFlatButton
     Friend WithEvents Write As Bunifu.Framework.UI.BunifuFlatButton
     Friend WithEvents NIM As TextBox
-    Friend WithEvents pesan2 As Label
-    Friend WithEvents pesan1 As Label
     Friend WithEvents Timer2 As Timer
     Friend WithEvents balasan As Label
+    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents CheckRFID As Bunifu.Framework.UI.BunifuCheckbox
+    Friend WithEvents CheckFngr As Bunifu.Framework.UI.BunifuCheckbox
 End Class

@@ -5,6 +5,8 @@ Imports System.Media
 Imports MySql.Data.MySqlClient
 
 Public Class Form1
+    Dim WithEvents FpVer As New FlexCodeSDK.FinFPVer
+    Dim Template As String
     Dim reader As MySqlDataReader
     Dim Conn As MySqlConnection
     Dim COMMAND As MySqlCommand
@@ -16,11 +18,28 @@ Public Class Form1
     Dim waktu As Integer = 0
     Dim numbers As String = "1234567890"
     Dim Flag As Integer
+    Dim statusFP As Boolean
     Delegate Sub SetTextCallback(ByVal [text] As String)
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Conn = New MySqlConnection
+        Conn.ConnectionString = "server = localhost; userid = root; password = ; database = inlislite_v3"
+        Conn.Open()
+        FpVer = New FlexCodeSDK.FinFPVer
+        FpVer.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
+        FpVer.SetMaxTemplate(100000)
+        FpVer.FPVerificationStart()
+        FpVer.PictureSamplePath = My.Application.Info.DirectoryPath & "\FPTemp.BMP"
+        FpVer.PictureSampleHeight = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Height))
+        FpVer.PictureSampleWidth = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Width))
+
         Fingerprint.Enabled = False
+        CheckFngr.Enabled = False
+        CheckFngr.Checked = False
         RFID.Enabled = False
+        CheckRFID.Enabled = False
+        CheckRFID.Checked = False
+
         NIM.Enabled = False
 
         Timer1.Enabled = True
@@ -37,8 +56,6 @@ Public Class Form1
         PnlRead.Hide()
         PanelRead.Hide()
 
-        pesan1.Text = ""
-        pesan2.Text = ""
         Status.Text = ""
         Nama.Text = ""
         balasan.Text = ""
@@ -46,52 +63,108 @@ Public Class Form1
 
         Dim searcher As New ManagementObjectSearcher("root\CIMV2", "Select * FROM Win32_PnPEntity")
         For Each queryObj As ManagementObject In searcher.Get()
-            If InStr(queryObj("Name"), ("COM")) > 0 Then
-                If queryObj("Description") = "USB-SERIAL CH340" Then
-                    string1 = queryObj("Description")
-                    string2 = queryObj("Name")
-                    hasil = string2.Replace(string1, "")
-                    hasil = hasil.Replace("(", "")
-                    hasil = hasil.Replace(")", "")
-                    hasil = hasil.Replace(" ", "")
-                    If string1 = "USB-SERIAL CH340" Then
-                        SerialPort1.BaudRate = baudrate
-                        SerialPort1.PortName = hasil
-                        SerialPort1.Parity = Parity.None
-                        SerialPort1.StopBits = StopBits.One
-                        SerialPort1.Handshake = Handshake.None
-                        SerialPort1.Encoding = System.Text.Encoding.Default
-                        SerialPort1.Open()
+            If queryObj("Description") = "USB-SERIAL CH340" And statusFP = True Then
+                string1 = queryObj("Description")
+                string2 = queryObj("Name")
+                hasil = string2.Replace(string1, "")
+                hasil = hasil.Replace("(", "")
+                hasil = hasil.Replace(")", "")
+                hasil = hasil.Replace(" ", "")
 
-                        Timer2.Enabled = True
-
-                        BtnDiscon.Enabled = True
-                        BtnDiscon.BringToFront()
-
-                        BtnCon.Enabled = False
-                        BtnCon.SendToBack()
-
-                        BtnScanPort.Enabled = False
-                        CmbPort.DroppedDown = False
-                        CmbPort.Enabled = False
-                        CmbPort.Text = hasil
-
-                        Read.Enabled = True
-                        Write.Enabled = True
-
-                        PnlRead.Show()
-                        PanelRead.Show()
-
-                        pesan1.Text = "Perhatian"
-                        pesan2.Text = "Hanya Bisa Menggunakan RFID Reader"
-                    Else
-                        BtnDiscon.PerformClick()
-                    End If
-                End If
+                konek(hasil)
+                CheckRFID.Checked = True
             End If
         Next
     End Sub
 
+    Private Sub konek(ByVal Cmb As String)
+
+        SerialPort1.BaudRate = baudrate
+        SerialPort1.PortName = Cmb
+        SerialPort1.Parity = Parity.None
+        SerialPort1.StopBits = StopBits.One
+        SerialPort1.Handshake = Handshake.None
+        SerialPort1.Encoding = System.Text.Encoding.Default
+        SerialPort1.Open()
+
+        BtnDiscon.Enabled = True
+        BtnDiscon.BringToFront()
+
+        BtnCon.Enabled = False
+        BtnCon.SendToBack()
+
+        BtnScanPort.Enabled = False
+        CmbPort.DroppedDown = False
+        CmbPort.Enabled = False
+        CmbPort.Text = Cmb
+
+        Read.Enabled = True
+        Write.Enabled = True
+        Timer2.Enabled = True
+        CheckRFID.Checked = True
+
+        PnlRead.Show()
+        PanelRead.Show()
+    End Sub
+
+    Private Sub diskonek()
+        BtnDiscon.Enabled = False
+        BtnCon.Enabled = False
+        BtnScanPort.Enabled = True
+        CmbPort.Enabled = True
+
+        BtnCon.BringToFront()
+        BtnDiscon.SendToBack()
+
+        Timer2.Enabled = False
+        Write.Enabled = False
+        Read.Enabled = False
+
+        PnlRead.Hide()
+        PnlWrite.Hide()
+        PanelRead.Hide()
+
+        NIM.Enabled = False
+        CheckRFID.Checked = False
+
+        SerialPort1.Close()
+
+        CmbPort.Text = ""
+        Status.Text = ""
+        NIM.Text = ""
+        Nama.Text = ""
+        TxtNIM_Write.Text = ""
+    End Sub
+
+    Private Sub FPVer_FPVerificationStatus(ByVal Status As FlexCodeSDK.VerificationStatus) Handles FpVer.FPVerificationStatus
+        Select Case Status
+            Case FlexCodeSDK.VerificationStatus.v_ActivationIncorrect
+                MsgBox("Activation / verification code is incorrent or not set")
+            Case FlexCodeSDK.VerificationStatus.v_FPDevFull
+                MsgBox("Max 10 devices")
+            Case FlexCodeSDK.VerificationStatus.v_FPListEmpty
+                MsgBox("Please add templates")
+            Case FlexCodeSDK.VerificationStatus.v_FPListFull
+                MsgBox("Max 100K templates")
+            Case FlexCodeSDK.VerificationStatus.v_MultiplelMatch
+                MsgBox("Multiple match")
+            Case FlexCodeSDK.VerificationStatus.v_NoDevice
+                statusFP = True
+                MsgBox("Please connect the device to USB port or Add a device")
+            Case FlexCodeSDK.VerificationStatus.v_NotMatch
+                MsgBox("No match")
+            Case FlexCodeSDK.VerificationStatus.v_OK
+                MsgBox("Match")
+            Case FlexCodeSDK.VerificationStatus.v_PoorImageQuality
+                MsgBox("Poor image quality")
+            Case FlexCodeSDK.VerificationStatus.v_VerificationFailed
+                MsgBox("Verification failed")
+            Case FlexCodeSDK.VerificationStatus.v_VerifyCaptureStop
+                MsgBox("Stop verify")
+            Case Else
+                statusFP = False
+        End Select
+    End Sub
     Private Sub Ext_Click(sender As Object, e As EventArgs) Handles Ext.Click
         Me.Close()
     End Sub
@@ -129,60 +202,11 @@ Public Class Form1
     End Sub
 
     Private Sub BtnCon_Click(sender As Object, e As EventArgs) Handles BtnCon.Click
-        BtnCon.Enabled = False
-        BtnCon.SendToBack()
-        BtnScanPort.Enabled = False
-        CmbPort.Enabled = False
-        CmbPort.DroppedDown = False
-
-        SerialPort1.BaudRate = baudrate
-        SerialPort1.PortName = CmbPort.SelectedItem
-        SerialPort1.Parity = Parity.None
-        SerialPort1.StopBits = StopBits.One
-        SerialPort1.Handshake = Handshake.None
-        SerialPort1.Encoding = System.Text.Encoding.Default
-        SerialPort1.Open()
-
-        pesan1.Text = "Perhatian"
-        pesan2.Text = "Hanya Bisa Menggunakan RFID Reader"
-
-        BtnDiscon.Enabled = True
-        BtnDiscon.BringToFront()
-
-        Write.Enabled = True
-        Read.Enabled = True
-
-        PnlRead.Show()
-        PanelRead.Show()
+        konek(CmbPort.SelectedItem)
     End Sub
 
     Private Sub BtnDiscon_Click(sender As Object, e As EventArgs) Handles BtnDiscon.Click
-        BtnDiscon.Enabled = False
-        BtnCon.Enabled = False
-        BtnScanPort.Enabled = True
-
-        BtnCon.BringToFront()
-        BtnDiscon.SendToBack()
-
-        Timer2.Enabled = False
-        Write.Enabled = False
-        Read.Enabled = False
-
-        PnlRead.Hide()
-        PnlWrite.Hide()
-        PanelRead.Hide()
-
-        NIM.Enabled = False
-
-        SerialPort1.Close()
-
-        CmbPort.Text = ""
-        Status.Text = ""
-        NIM.Text = ""
-        Nama.Text = ""
-        TxtNIM_Write.Text = ""
-        pesan1.Text = ""
-        pesan2.Text = ""
+        diskonek()
     End Sub
 
     Private Sub Read_Click(sender As Object, e As EventArgs) Handles Read.Click
@@ -196,13 +220,10 @@ Public Class Form1
         PanelWrite.Hide()
 
         TxtNIM_Write.Text = ""
-
-        NIM.Focus()
     End Sub
 
     Private Sub Write_Click(sender As Object, e As EventArgs) Handles Write.Click
         PnlWrite.Show()
-
 
         PnlRead.Hide()
         PanelRead.Hide()
@@ -218,8 +239,6 @@ Public Class Form1
         SerialPort1.Write("write" & "#")
         waktu = 25
         Timer3.Enabled = True
-
-
     End Sub
 
     Private Sub BtnWrite_Click(sender As Object, e As EventArgs) Handles BtnWrite.Click
@@ -307,7 +326,7 @@ Public Class Form1
     End Sub
 
     Private Sub SerialPort1_DataReceived(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
-        ReceivedText(SerialPort1.ReadExisting())    ' read text from serial data
+        ReceivedText(SerialPort1.ReadExisting())
     End Sub
 
     Private Sub ReceivedText(ByVal [text] As String)
@@ -398,5 +417,6 @@ Public Class Form1
         Catch ex As Exception
             BtnDiscon.PerformClick()
         End Try
+
     End Sub
 End Class
