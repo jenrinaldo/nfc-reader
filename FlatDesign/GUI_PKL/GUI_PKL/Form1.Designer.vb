@@ -38,13 +38,8 @@ Partial Class Form1
         Me.Fingerprint = New Bunifu.Framework.UI.BunifuImageButton()
         Me.RFID = New Bunifu.Framework.UI.BunifuImageButton()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.PanelWrite = New System.Windows.Forms.Panel()
-        Me.Ext2 = New System.Windows.Forms.Button()
-        Me.BtnWrite = New System.Windows.Forms.Button()
-        Me.Label1 = New Bunifu.Framework.UI.BunifuCustomLabel()
-        Me.NIMWrite = New Bunifu.Framework.UI.BunifuCustomLabel()
-        Me.TxtNIM_Write = New System.Windows.Forms.TextBox()
-        Me.Panel8 = New System.Windows.Forms.Panel()
+        Me.pesan2 = New System.Windows.Forms.Label()
+        Me.pesan1 = New System.Windows.Forms.Label()
         Me.PanelRead = New System.Windows.Forms.Panel()
         Me.NIM = New System.Windows.Forms.TextBox()
         Me.Nama = New System.Windows.Forms.Label()
@@ -52,6 +47,13 @@ Partial Class Form1
         Me.Panel9 = New System.Windows.Forms.Panel()
         Me.BunifuCustomLabel1 = New Bunifu.Framework.UI.BunifuCustomLabel()
         Me.Panel10 = New System.Windows.Forms.Panel()
+        Me.PanelWrite = New System.Windows.Forms.Panel()
+        Me.Ext2 = New System.Windows.Forms.Button()
+        Me.BtnWrite = New System.Windows.Forms.Button()
+        Me.Label1 = New Bunifu.Framework.UI.BunifuCustomLabel()
+        Me.NIMWrite = New Bunifu.Framework.UI.BunifuCustomLabel()
+        Me.TxtNIM_Write = New System.Windows.Forms.TextBox()
+        Me.Panel8 = New System.Windows.Forms.Panel()
         Me.Panel4 = New System.Windows.Forms.Panel()
         Me.Status = New System.Windows.Forms.Label()
         Me.BtnCon = New System.Windows.Forms.Button()
@@ -63,15 +65,15 @@ Partial Class Form1
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.pesan = New System.Windows.Forms.Label()
+        Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
+        Me.balasan = New System.Windows.Forms.Label()
         Me.BunifuGradientPanel1.SuspendLayout()
         Me.PanelMENU.SuspendLayout()
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
-        Me.PanelWrite.SuspendLayout()
         Me.PanelRead.SuspendLayout()
+        Me.PanelWrite.SuspendLayout()
         Me.Panel4.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -282,8 +284,9 @@ Partial Class Form1
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
-        Me.Panel1.Controls.Add(Me.pesan)
-        Me.Panel1.Controls.Add(Me.Label2)
+        Me.Panel1.Controls.Add(Me.balasan)
+        Me.Panel1.Controls.Add(Me.pesan2)
+        Me.Panel1.Controls.Add(Me.pesan1)
         Me.Panel1.Controls.Add(Me.PanelRead)
         Me.Panel1.Controls.Add(Me.RFID)
         Me.Panel1.Controls.Add(Me.Fingerprint)
@@ -292,6 +295,96 @@ Partial Class Form1
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(542, 386)
         Me.Panel1.TabIndex = 1
+        '
+        'pesan2
+        '
+        Me.pesan2.AutoSize = True
+        Me.pesan2.Font = New System.Drawing.Font("Century Gothic", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.pesan2.Location = New System.Drawing.Point(7, 346)
+        Me.pesan2.Name = "pesan2"
+        Me.pesan2.Size = New System.Drawing.Size(48, 16)
+        Me.pesan2.TabIndex = 25
+        Me.pesan2.Text = "pesan2"
+        '
+        'pesan1
+        '
+        Me.pesan1.AutoSize = True
+        Me.pesan1.Font = New System.Drawing.Font("Century Gothic", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.pesan1.Location = New System.Drawing.Point(7, 324)
+        Me.pesan1.Name = "pesan1"
+        Me.pesan1.Size = New System.Drawing.Size(78, 22)
+        Me.pesan1.TabIndex = 24
+        Me.pesan1.Text = "pesan1"
+        '
+        'PanelRead
+        '
+        Me.PanelRead.BackColor = System.Drawing.Color.Transparent
+        Me.PanelRead.Controls.Add(Me.NIM)
+        Me.PanelRead.Controls.Add(Me.Nama)
+        Me.PanelRead.Controls.Add(Me.BunifuCustomLabel2)
+        Me.PanelRead.Controls.Add(Me.Panel9)
+        Me.PanelRead.Controls.Add(Me.BunifuCustomLabel1)
+        Me.PanelRead.Controls.Add(Me.Panel10)
+        Me.PanelRead.Location = New System.Drawing.Point(3, 15)
+        Me.PanelRead.Name = "PanelRead"
+        Me.PanelRead.Size = New System.Drawing.Size(531, 275)
+        Me.PanelRead.TabIndex = 3
+        '
+        'NIM
+        '
+        Me.NIM.BackColor = System.Drawing.Color.White
+        Me.NIM.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.NIM.Font = New System.Drawing.Font("Century Gothic", 12.0!)
+        Me.NIM.Location = New System.Drawing.Point(142, 9)
+        Me.NIM.Name = "NIM"
+        Me.NIM.Size = New System.Drawing.Size(247, 20)
+        Me.NIM.TabIndex = 31
+        '
+        'Nama
+        '
+        Me.Nama.AutoSize = True
+        Me.Nama.Font = New System.Drawing.Font("Century Gothic", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Nama.Location = New System.Drawing.Point(137, 39)
+        Me.Nama.Name = "Nama"
+        Me.Nama.Size = New System.Drawing.Size(99, 21)
+        Me.Nama.TabIndex = 24
+        Me.Nama.Text = "label nama"
+        '
+        'BunifuCustomLabel2
+        '
+        Me.BunifuCustomLabel2.AutoSize = True
+        Me.BunifuCustomLabel2.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BunifuCustomLabel2.Location = New System.Drawing.Point(10, 40)
+        Me.BunifuCustomLabel2.Name = "BunifuCustomLabel2"
+        Me.BunifuCustomLabel2.Size = New System.Drawing.Size(57, 20)
+        Me.BunifuCustomLabel2.TabIndex = 23
+        Me.BunifuCustomLabel2.Text = "NAMA"
+        '
+        'Panel9
+        '
+        Me.Panel9.BackColor = System.Drawing.Color.Coral
+        Me.Panel9.Location = New System.Drawing.Point(140, 60)
+        Me.Panel9.Name = "Panel9"
+        Me.Panel9.Size = New System.Drawing.Size(249, 1)
+        Me.Panel9.TabIndex = 22
+        '
+        'BunifuCustomLabel1
+        '
+        Me.BunifuCustomLabel1.AutoSize = True
+        Me.BunifuCustomLabel1.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BunifuCustomLabel1.Location = New System.Drawing.Point(10, 12)
+        Me.BunifuCustomLabel1.Name = "BunifuCustomLabel1"
+        Me.BunifuCustomLabel1.Size = New System.Drawing.Size(40, 20)
+        Me.BunifuCustomLabel1.TabIndex = 20
+        Me.BunifuCustomLabel1.Text = "NIM"
+        '
+        'Panel10
+        '
+        Me.Panel10.BackColor = System.Drawing.Color.Coral
+        Me.Panel10.Location = New System.Drawing.Point(141, 32)
+        Me.Panel10.Name = "Panel10"
+        Me.Panel10.Size = New System.Drawing.Size(249, 1)
+        Me.Panel10.TabIndex = 19
         '
         'PanelWrite
         '
@@ -375,75 +468,6 @@ Partial Class Form1
         Me.Panel8.Size = New System.Drawing.Size(249, 1)
         Me.Panel8.TabIndex = 15
         '
-        'PanelRead
-        '
-        Me.PanelRead.BackColor = System.Drawing.Color.Transparent
-        Me.PanelRead.Controls.Add(Me.NIM)
-        Me.PanelRead.Controls.Add(Me.Nama)
-        Me.PanelRead.Controls.Add(Me.BunifuCustomLabel2)
-        Me.PanelRead.Controls.Add(Me.Panel9)
-        Me.PanelRead.Controls.Add(Me.BunifuCustomLabel1)
-        Me.PanelRead.Controls.Add(Me.Panel10)
-        Me.PanelRead.Location = New System.Drawing.Point(3, 15)
-        Me.PanelRead.Name = "PanelRead"
-        Me.PanelRead.Size = New System.Drawing.Size(531, 275)
-        Me.PanelRead.TabIndex = 3
-        '
-        'NIM
-        '
-        Me.NIM.BackColor = System.Drawing.Color.White
-        Me.NIM.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.NIM.Font = New System.Drawing.Font("Century Gothic", 12.0!)
-        Me.NIM.Location = New System.Drawing.Point(142, 9)
-        Me.NIM.Name = "NIM"
-        Me.NIM.Size = New System.Drawing.Size(247, 20)
-        Me.NIM.TabIndex = 31
-        '
-        'Nama
-        '
-        Me.Nama.AutoSize = True
-        Me.Nama.Font = New System.Drawing.Font("Century Gothic", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Nama.Location = New System.Drawing.Point(137, 39)
-        Me.Nama.Name = "Nama"
-        Me.Nama.Size = New System.Drawing.Size(0, 21)
-        Me.Nama.TabIndex = 24
-        '
-        'BunifuCustomLabel2
-        '
-        Me.BunifuCustomLabel2.AutoSize = True
-        Me.BunifuCustomLabel2.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BunifuCustomLabel2.Location = New System.Drawing.Point(10, 40)
-        Me.BunifuCustomLabel2.Name = "BunifuCustomLabel2"
-        Me.BunifuCustomLabel2.Size = New System.Drawing.Size(57, 20)
-        Me.BunifuCustomLabel2.TabIndex = 23
-        Me.BunifuCustomLabel2.Text = "NAMA"
-        '
-        'Panel9
-        '
-        Me.Panel9.BackColor = System.Drawing.Color.Coral
-        Me.Panel9.Location = New System.Drawing.Point(140, 60)
-        Me.Panel9.Name = "Panel9"
-        Me.Panel9.Size = New System.Drawing.Size(249, 1)
-        Me.Panel9.TabIndex = 22
-        '
-        'BunifuCustomLabel1
-        '
-        Me.BunifuCustomLabel1.AutoSize = True
-        Me.BunifuCustomLabel1.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BunifuCustomLabel1.Location = New System.Drawing.Point(10, 12)
-        Me.BunifuCustomLabel1.Name = "BunifuCustomLabel1"
-        Me.BunifuCustomLabel1.Size = New System.Drawing.Size(40, 20)
-        Me.BunifuCustomLabel1.TabIndex = 20
-        Me.BunifuCustomLabel1.Text = "NIM"
-        '
-        'Panel10
-        '
-        Me.Panel10.BackColor = System.Drawing.Color.Coral
-        Me.Panel10.Location = New System.Drawing.Point(141, 32)
-        Me.Panel10.Name = "Panel10"
-        Me.Panel10.Size = New System.Drawing.Size(249, 1)
-        Me.Panel10.TabIndex = 19
-        '
         'Panel4
         '
         Me.Panel4.BackColor = System.Drawing.SystemColors.ControlLight
@@ -463,10 +487,11 @@ Partial Class Form1
         '
         Me.Status.AutoSize = True
         Me.Status.Font = New System.Drawing.Font("Segoe UI Historic", 8.0!)
-        Me.Status.Location = New System.Drawing.Point(438, 10)
+        Me.Status.Location = New System.Drawing.Point(438, 4)
         Me.Status.Name = "Status"
-        Me.Status.Size = New System.Drawing.Size(0, 13)
+        Me.Status.Size = New System.Drawing.Size(39, 13)
         Me.Status.TabIndex = 18
+        Me.Status.Text = "Status"
         '
         'BtnCon
         '
@@ -542,25 +567,18 @@ Partial Class Form1
         'SerialPort1
         '
         '
-        'Label2
+        'Timer2
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Century Gothic", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(7, 324)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(113, 22)
-        Me.Label2.TabIndex = 24
-        Me.Label2.Text = "PERHATIAN"
         '
-        'pesan
+        'balasan
         '
-        Me.pesan.AutoSize = True
-        Me.pesan.Font = New System.Drawing.Font("Century Gothic", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pesan.Location = New System.Drawing.Point(7, 346)
-        Me.pesan.Name = "pesan"
-        Me.pesan.Size = New System.Drawing.Size(60, 16)
-        Me.pesan.TabIndex = 25
-        Me.pesan.Text = "Gunakan"
+        Me.balasan.AutoSize = True
+        Me.balasan.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.balasan.Location = New System.Drawing.Point(236, 182)
+        Me.balasan.Name = "balasan"
+        Me.balasan.Size = New System.Drawing.Size(67, 20)
+        Me.balasan.TabIndex = 26
+        Me.balasan.Text = "balasan"
         '
         'Form1
         '
@@ -583,10 +601,10 @@ Partial Class Form1
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
-        Me.PanelWrite.ResumeLayout(False)
-        Me.PanelWrite.PerformLayout()
         Me.PanelRead.ResumeLayout(False)
         Me.PanelRead.PerformLayout()
+        Me.PanelWrite.ResumeLayout(False)
+        Me.PanelWrite.PerformLayout()
         Me.Panel4.ResumeLayout(False)
         Me.Panel4.PerformLayout()
         Me.ResumeLayout(False)
@@ -631,6 +649,8 @@ Partial Class Form1
     Friend WithEvents Read As Bunifu.Framework.UI.BunifuFlatButton
     Friend WithEvents Write As Bunifu.Framework.UI.BunifuFlatButton
     Friend WithEvents NIM As TextBox
-    Friend WithEvents pesan As Label
-    Friend WithEvents Label2 As Label
+    Friend WithEvents pesan2 As Label
+    Friend WithEvents pesan1 As Label
+    Friend WithEvents Timer2 As Timer
+    Friend WithEvents balasan As Label
 End Class

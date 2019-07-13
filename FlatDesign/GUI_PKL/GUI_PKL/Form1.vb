@@ -24,6 +24,7 @@ Public Class Form1
         NIM.Enabled = False
 
         Timer1.Enabled = True
+        Timer2.Enabled = False
         Timer3.Enabled = False
 
         BtnCon.Enabled = False
@@ -36,71 +37,60 @@ Public Class Form1
         PnlRead.Hide()
         PanelRead.Hide()
 
+        pesan1.Text = ""
+        pesan2.Text = ""
+        Status.Text = ""
+        Nama.Text = ""
+        balasan.Text = ""
         TxtNIM_Write.Text = ""
 
-        Try
-            Dim searcher As New ManagementObjectSearcher("root\CIMV2", "Select * FROM Win32_PnPEntity")
-            For Each queryObj As ManagementObject In searcher.Get()
-                If InStr(queryObj("Name"), ("COM")) > 0 Then
-                    If queryObj("Description") = "USB-SERIAL CH340" Then
-                        string1 = queryObj("Description")
-                        string2 = queryObj("Name")
-                        hasil = string2.Replace(string1, "")
-                        hasil = hasil.Replace("(", "")
-                        hasil = hasil.Replace(")", "")
-                        hasil = hasil.Replace(" ", "")
-                        If string1 = "USB-SERIAL CH340" Then
-                            SerialPort1.BaudRate = baudrate
-                            SerialPort1.PortName = hasil
-                            SerialPort1.Parity = Parity.None
-                            SerialPort1.StopBits = StopBits.One
-                            SerialPort1.Handshake = Handshake.None
-                            SerialPort1.Encoding = System.Text.Encoding.Default
-                            SerialPort1.Open()
+        Dim searcher As New ManagementObjectSearcher("root\CIMV2", "Select * FROM Win32_PnPEntity")
+        For Each queryObj As ManagementObject In searcher.Get()
+            If InStr(queryObj("Name"), ("COM")) > 0 Then
+                If queryObj("Description") = "USB-SERIAL CH340" Then
+                    string1 = queryObj("Description")
+                    string2 = queryObj("Name")
+                    hasil = string2.Replace(string1, "")
+                    hasil = hasil.Replace("(", "")
+                    hasil = hasil.Replace(")", "")
+                    hasil = hasil.Replace(" ", "")
+                    If string1 = "USB-SERIAL CH340" Then
+                        SerialPort1.BaudRate = baudrate
+                        SerialPort1.PortName = hasil
+                        SerialPort1.Parity = Parity.None
+                        SerialPort1.StopBits = StopBits.One
+                        SerialPort1.Handshake = Handshake.None
+                        SerialPort1.Encoding = System.Text.Encoding.Default
+                        SerialPort1.Open()
 
+                        Timer2.Enabled = True
 
+                        BtnDiscon.Enabled = True
+                        BtnDiscon.BringToFront()
 
-                            BtnDiscon.Enabled = True
-                            BtnDiscon.BringToFront()
+                        BtnCon.Enabled = False
+                        BtnCon.SendToBack()
 
-                            BtnCon.Enabled = False
-                            BtnCon.SendToBack()
+                        BtnScanPort.Enabled = False
+                        CmbPort.DroppedDown = False
+                        CmbPort.Enabled = False
+                        CmbPort.Text = hasil
 
-                            BtnScanPort.Enabled = False
-                            CmbPort.DroppedDown = False
-                            CmbPort.Enabled = False
-                            CmbPort.Text = hasil
+                        Read.Enabled = True
+                        Write.Enabled = True
 
-                            Read.Enabled = True
-                            Write.Enabled = True
+                        PnlRead.Show()
+                        PanelRead.Show()
 
-                            PnlRead.Show()
-                            PanelRead.Show()
-
-                            NIM.Focus()
-                        Else
-                            CmbPort.Enabled = True
-                            CmbPort.DroppedDown = True
-                            BtnScanPort.Enabled = True
-
-                            BtnCon.Enabled = False
-                            BtnCon.BringToFront()
-
-                            BtnDiscon.Enabled = False
-                            BtnDiscon.SendToBack()
-
-                            Write.Enabled = False
-                        End If
+                        pesan1.Text = "Perhatian"
+                        pesan2.Text = "Hanya Bisa Menggunakan RFID Reader"
+                    Else
+                        BtnDiscon.PerformClick()
                     End If
                 End If
-            Next
-        Catch err As ManagementException
-            MsgBox("Port terlepas!")
-        End Try
-
-
+            End If
+        Next
     End Sub
-
 
     Private Sub Ext_Click(sender As Object, e As EventArgs) Handles Ext.Click
         Me.Close()
@@ -114,8 +104,8 @@ Public Class Form1
         Else
             Application.ExitThread()
         End If
-
     End Sub
+
     Private Sub BtnScanPort_Click(sender As Object, e As EventArgs) Handles BtnScanPort.Click
         CmbPort.Items.Clear()
         Dim myPort As Array
@@ -132,7 +122,7 @@ Public Class Form1
             BtnCon.BringToFront()
             CmbPort.DroppedDown = True
         Catch ex As Exception
-            MessageBox.Show("Com port Not detected", "Warning!", MessageBoxButtons.OK)
+            MessageBox.Show("Port RFID Tidak Terdeteksi", "Warning!", MessageBoxButtons.OK)
             CmbPort.Text = ""
             Call Form1_Load(Me, e)
         End Try
@@ -153,8 +143,8 @@ Public Class Form1
         SerialPort1.Encoding = System.Text.Encoding.Default
         SerialPort1.Open()
 
-
-        NIM.Focus()
+        pesan1.Text = "Perhatian"
+        pesan2.Text = "Hanya Bisa Menggunakan RFID Reader"
 
         BtnDiscon.Enabled = True
         BtnDiscon.BringToFront()
@@ -164,7 +154,6 @@ Public Class Form1
 
         PnlRead.Show()
         PanelRead.Show()
-
     End Sub
 
     Private Sub BtnDiscon_Click(sender As Object, e As EventArgs) Handles BtnDiscon.Click
@@ -175,7 +164,7 @@ Public Class Form1
         BtnCon.BringToFront()
         BtnDiscon.SendToBack()
 
-
+        Timer2.Enabled = False
         Write.Enabled = False
         Read.Enabled = False
 
@@ -192,8 +181,9 @@ Public Class Form1
         NIM.Text = ""
         Nama.Text = ""
         TxtNIM_Write.Text = ""
+        pesan1.Text = ""
+        pesan2.Text = ""
     End Sub
-
 
     Private Sub Read_Click(sender As Object, e As EventArgs) Handles Read.Click
         PanelRead.Hide()
@@ -206,10 +196,8 @@ Public Class Form1
         PanelWrite.Hide()
 
         TxtNIM_Write.Text = ""
-        Status.Text = ""
 
         NIM.Focus()
-
     End Sub
 
     Private Sub Write_Click(sender As Object, e As EventArgs) Handles Write.Click
@@ -224,7 +212,6 @@ Public Class Form1
         Write.Enabled = False
         Ext.Enabled = False
 
-        Status.Text = ""
         TxtNIM_Write.Text = ""
         TxtNIM_Write.Focus()
 
@@ -232,7 +219,6 @@ Public Class Form1
         waktu = 25
         Timer3.Enabled = True
 
-        Status.Hide()
 
     End Sub
 
@@ -245,20 +231,17 @@ Public Class Form1
         Write.Enabled = True
         Ext.Enabled = True
 
-        Status.Show()
-
         PanelRead.Show()
         PnlRead.Show()
 
         PnlWrite.Hide()
         PanelWrite.Hide()
-
     End Sub
+
     Private Sub TxtNIM_Write_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtNIM_Write.KeyDown
         If e.KeyCode = Keys.Enter Then
             BtnWrite.PerformClick()
         End If
-
     End Sub
 
     Private Sub Ext2_Click(sender As Object, e As EventArgs) Handles Ext2.Click
@@ -276,7 +259,6 @@ Public Class Form1
         SerialPort1.Write("DataKosong" & "*")
         Timer3.Enabled = False
         waktu = 0
-
     End Sub
 
 
@@ -308,7 +290,7 @@ Public Class Form1
         Else
             Timer3.Enabled = False
             TxtNIM_Write.Text = ""
-            SerialPort1.Write("DataisEmpty" & "*")
+            SerialPort1.Write("DataKosong" & "*")
 
             Read.Enabled = True
             Write.Enabled = True
@@ -335,8 +317,6 @@ Public Class Form1
         Else
             Me.NIM.Text &= [text]
         End If
-
-
     End Sub
 
     Private Sub NIM_TextChanged(sender As Object, e As EventArgs) Handles NIM.TextChanged
@@ -350,6 +330,7 @@ Public Class Form1
             If Regex.IsMatch(NIM.Text, "^[0-9 ]+$") Then
                 If NIM.Text <> "" Then
                     Status.Text = ""
+                    balasan.Text = ""
 
                     Conn.Open()
                     Query = "SELECT * FROM `members` WHERE MemberNo = '" & NIM.Text & "'"
@@ -365,18 +346,14 @@ Public Class Form1
                             Try
                                 Flag = reader.GetInt16("Date")
                                 If Flag = 0 Then
-                                    MessageBox.Show("Sudah")
-                                    Nama.Text = ""
-                                    NIM.Text = ""
+                                    balasan.Text = "Terimakasih Telah Berkunjung Kembali"
                                     Conn.Close()
                                 ElseIf Flag < 0 Then
                                     Query = "CALL InsertGuessBook('" & NIM.Text & "');"
                                     reader.Close()
                                     COMMAND = New MySqlCommand(Query, Conn)
                                     reader = COMMAND.ExecuteReader()
-                                    MessageBox.Show("Selamat Datang!")
-                                    Nama.Text = ""
-                                    NIM.Text = ""
+                                    balasan.Text = "Selamat Datang di Perpustakaan!"
                                     Conn.Close()
                                 End If
                             Catch ex As Exception
@@ -384,9 +361,7 @@ Public Class Form1
                                 reader.Close()
                                 COMMAND = New MySqlCommand(Query, Conn)
                                 reader = COMMAND.ExecuteReader()
-                                MessageBox.Show("Selamat Datang!")
-                                Nama.Text = ""
-                                NIM.Text = ""
+                                balasan.Text = "Selamat Datang di Perpustakaan!"
                                 Conn.Close()
                             End Try
                         End If
@@ -396,36 +371,32 @@ Public Class Form1
                     Else
                         Nama.Text = "NIM Tidak Terdaftar"
                     End If
+                    Conn.Close()
                 End If
+            ElseIf Regex.IsMatch(NIM.Text, "DataKosong") Then
+                NIM.Text = ""
+                Status.Text = "Data Kosong"
+            ElseIf Regex.IsMatch(NIM.Text, "Write success!") Then
+                NIM.Text = ""
+                Status.Text = "Penulisan RFID Tag" & vbNewLine & "Sukses"
+            ElseIf Regex.IsMatch(NIM.Text, "Write failed!") Then
+                NIM.Text = ""
+                Status.Text = "Penulisan RFID Tag" & vbNewLine & "Gagal"
             Else
                 NIM.Text = ""
                 Nama.Text = ""
+                balasan.Text = ""
             End If
-
         Catch ex As Exception
-            BtnDiscon.Enabled = False
-            BtnCon.Enabled = False
-            BtnScanPort.Enabled = True
-
-            BtnCon.BringToFront()
-            BtnDiscon.SendToBack()
-
-
-            Write.Enabled = False
-            Read.Enabled = False
-
-            PnlRead.Hide()
-            PnlWrite.Hide()
-            PanelRead.Hide()
-
-            SerialPort1.Close()
-
-            CmbPort.Text = ""
-            Status.Text = ""
-            NIM.Text = ""
-            Nama.Text = ""
-            TxtNIM_Write.Text = ""
+            MsgBox("Periksa sambungan database")
         End Try
     End Sub
 
+    Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
+        Try
+            Dim Incoming As String = SerialPort1.ReadExisting()
+        Catch ex As Exception
+            BtnDiscon.PerformClick()
+        End Try
+    End Sub
 End Class
