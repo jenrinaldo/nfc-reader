@@ -63,18 +63,33 @@ Public Class Form1
 
         Dim searcher As New ManagementObjectSearcher("root\CIMV2", "Select * FROM Win32_PnPEntity")
         For Each queryObj As ManagementObject In searcher.Get()
-            If queryObj("Description") = "USB-SERIAL CH340" And statusFP = True Then
+            If queryObj("Description") = "USB-SERIAL CH340" Then
                 string1 = queryObj("Description")
                 string2 = queryObj("Name")
                 hasil = string2.Replace(string1, "")
                 hasil = hasil.Replace("(", "")
                 hasil = hasil.Replace(")", "")
                 hasil = hasil.Replace(" ", "")
-
-                konek(hasil)
-                CheckRFID.Checked = True
             End If
         Next
+
+        If string1 = "USB-SERIAL CH340" And statusFP = True Then
+            konek(hasil)
+            CheckRFID.Checked = True
+            CheckFngr.Checked = True
+        ElseIf string1 = "USB-SERIAL CH340" And statusFP = False Then
+            konek(hasil)
+            CheckRFID.Checked = True
+            CheckFngr.Checked = False
+        ElseIf string1 <> "USB-SERIAL CH340" And statusFP = True Then
+            konek(hasil)
+            CheckRFID.Checked = False
+            CheckFngr.Checked = True
+        Else
+            CheckRFID.Checked = False
+            CheckFngr.Checked = False
+        End If
+
     End Sub
 
     Private Sub konek(ByVal Cmb As String)
@@ -149,7 +164,7 @@ Public Class Form1
             Case FlexCodeSDK.VerificationStatus.v_MultiplelMatch
                 MsgBox("Multiple match")
             Case FlexCodeSDK.VerificationStatus.v_NoDevice
-                statusFP = True
+                statusFP = False
                 MsgBox("Please connect the device to USB port or Add a device")
             Case FlexCodeSDK.VerificationStatus.v_NotMatch
                 MsgBox("No match")
@@ -162,7 +177,7 @@ Public Class Form1
             Case FlexCodeSDK.VerificationStatus.v_VerifyCaptureStop
                 MsgBox("Stop verify")
             Case Else
-                statusFP = False
+                statusFP = True
         End Select
     End Sub
     Private Sub Ext_Click(sender As Object, e As EventArgs) Handles Ext.Click
