@@ -95,6 +95,8 @@ Public Class Form1
             CheckRFID.Checked = False
             CheckFngr.Checked = False
             CheckFngr.Enabled = True
+            sembunyi()
+
         End If
 
     End Sub
@@ -175,6 +177,7 @@ Public Class Form1
     Private Sub diskonek()
         BtnDiscon.Enabled = False
         BtnCon.Enabled = False
+        CmbPort.Text = ""
         BtnScanPort.Enabled = True
         CmbPort.Enabled = True
 
@@ -182,6 +185,9 @@ Public Class Form1
         BtnDiscon.SendToBack()
 
         Timer2.Enabled = False
+
+        PnlWrite.Hide()
+        Write.Enabled = False
 
         NIM.Enabled = False
         CheckRFID.Checked = False
@@ -204,6 +210,14 @@ Public Class Form1
             Case FlexCodeSDK.VerificationStatus.v_NoDevice
                 statusFP = True
                 MsgBox("Please connect the device to USB port or Add a device")
+                If CheckFngr.Checked = True Then
+                    CheckFngr.Checked = False
+                    CheckFngr.Enabled = True
+
+                End If
+                If CheckRFID.Checked = False Then
+                    sembunyi()
+                End If
             Case FlexCodeSDK.VerificationStatus.v_NotMatch
                 Stts.Text = "No match"
             Case FlexCodeSDK.VerificationStatus.v_OK
@@ -261,8 +275,10 @@ Public Class Form1
     End Sub
 
     Private Sub BtnDiscon_Click(sender As Object, e As EventArgs) Handles BtnDiscon.Click
-        sembunyi()
         diskonek()
+        If CheckFngr.Checked = False Then
+            sembunyi()
+        End If
     End Sub
 
     Private Sub Read_Click(sender As Object, e As EventArgs) Handles Read.Click
@@ -408,6 +424,7 @@ Public Class Form1
     Private Sub NIM_TextChanged(sender As Object, e As EventArgs) Handles NIM.TextChanged
         Dim bfr As String
         bfr = NIM.Text
+        Conn.Close()
 
         Try
             If Regex.IsMatch(NIM.Text, "^[0-9 ]+$") Then
@@ -415,7 +432,7 @@ Public Class Form1
                     Stts.Text = ""
                     balasan.Text = ""
                     PictureBox1.Image = Nothing
-
+                    Conn.Open()
                     Query = "CALL FetchData ('" & NIM.Text & "'); "
                     COMMAND = New MySqlCommand(Query, Conn)
                     reader = COMMAND.ExecuteReader()
@@ -481,7 +498,10 @@ Public Class Form1
         Try
             Dim Incoming As String = SerialPort1.ReadExisting()
         Catch ex As Exception
-            BtnDiscon.PerformClick()
+            diskonek()
+            If CheckFngr.Checked = False Then
+                sembunyi()
+            End If
         End Try
 
     End Sub
@@ -497,16 +517,10 @@ Public Class Form1
         FpVer.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
         FpVer.FPVerificationStart()
         tampil()
+        PictureBox1.Image = Nothing
         If CheckFngr.Checked = True Then
             CheckFngr.Enabled = False
         End If
     End Sub
 
-    Private Sub CheckFngr_OnChange(sender As Object, e As EventArgs) Handles CheckFngr.OnChange
-        If CheckFngr.Checked = True And statusFP = True Then
-            CheckFngr.Checked = False
-            CheckFngr.Enabled = True
-            sembunyi()
-        End If
-    End Sub
 End Class
