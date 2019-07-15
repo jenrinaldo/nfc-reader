@@ -213,7 +213,6 @@ Public Class Form1
                 If CheckFngr.Checked = True Then
                     CheckFngr.Checked = False
                     CheckFngr.Enabled = True
-
                 End If
                 If CheckRFID.Checked = False Then
                     sembunyi()
@@ -290,8 +289,6 @@ Public Class Form1
 
         PnlWrite.Hide()
         PanelWrite.Hide()
-
-        TxtNIM_Write.Text = ""
     End Sub
 
     Private Sub Write_Click(sender As Object, e As EventArgs) Handles Write.Click
@@ -312,16 +309,16 @@ Public Class Form1
         waktu = 25
         Timer3.Enabled = True
     End Sub
-
-    Private Sub BtnWrite_Click(sender As Object, e As EventArgs) Handles BtnWrite.Click
+    Private Sub passing()
         Dim obj As New RegisFinger
         obj.NIMpass = TxtNIM_Write.Text
         obj.Show()
+    End Sub
 
+    Private Sub BtnWrite_Click(sender As Object, e As EventArgs) Handles BtnWrite.Click
         SerialPort1.Write(TxtNIM_Write.Text & "*")
         Timer3.Enabled = False
         waktu = 0
-
 
         RegisFinger.Show()
         Hide()
@@ -335,14 +332,13 @@ Public Class Form1
 
         PnlWrite.Hide()
         PanelWrite.Hide()
+
     End Sub
 
     Private Sub TxtNIM_Write_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtNIM_Write.KeyDown
         If e.KeyCode = Keys.Enter Then
             BtnWrite.PerformClick()
-            Dim obj As New RegisFinger
-            obj.NIMpass = TxtNIM_Write.Text
-            obj.Show()
+            passing()
         End If
     End Sub
 
@@ -391,7 +387,6 @@ Public Class Form1
             waktu -= 1
         Else
             Timer3.Enabled = False
-            TxtNIM_Write.Text = ""
             SerialPort1.Write("DataKosong" & "*")
 
             Read.Enabled = True
@@ -478,10 +473,12 @@ Public Class Form1
                 Stts.Text = "Data Kosong"
             ElseIf Regex.IsMatch(NIM.Text, "Write success!") Then
                 NIM.Text = ""
-                Stts.Text = "Penulisan RFID Tag" & vbNewLine & "Sukses"
+                'obj.StatusRFID = "Penulisan RFID Tag Sukses"
+                'obj.Show()
             ElseIf Regex.IsMatch(NIM.Text, "Write failed!") Then
                 NIM.Text = ""
-                Stts.Text = "Penulisan RFID Tag" & vbNewLine & "Gagal"
+                'obj.StatusRFID = "Penulisan RFID Tag Gagal"
+                'obj.Show()
             Else
                 NIM.Text = ""
                 Nama.Text = ""

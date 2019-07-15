@@ -40,6 +40,13 @@ Partial Class Form1
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.CheckRFID = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.CheckFngr = New Bunifu.Framework.UI.BunifuCheckbox()
+        Me.PanelWrite = New System.Windows.Forms.Panel()
+        Me.Ext2 = New System.Windows.Forms.Button()
+        Me.BtnWrite = New System.Windows.Forms.Button()
+        Me.Label1 = New Bunifu.Framework.UI.BunifuCustomLabel()
+        Me.NIMWrite = New Bunifu.Framework.UI.BunifuCustomLabel()
+        Me.TxtNIM_Write = New System.Windows.Forms.TextBox()
+        Me.Panel8 = New System.Windows.Forms.Panel()
         Me.PanelRead = New System.Windows.Forms.Panel()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.NIM = New System.Windows.Forms.TextBox()
@@ -49,13 +56,6 @@ Partial Class Form1
         Me.Panel9 = New System.Windows.Forms.Panel()
         Me.BunifuCustomLabel1 = New Bunifu.Framework.UI.BunifuCustomLabel()
         Me.Panel10 = New System.Windows.Forms.Panel()
-        Me.PanelWrite = New System.Windows.Forms.Panel()
-        Me.Ext2 = New System.Windows.Forms.Button()
-        Me.BtnWrite = New System.Windows.Forms.Button()
-        Me.Label1 = New Bunifu.Framework.UI.BunifuCustomLabel()
-        Me.NIMWrite = New Bunifu.Framework.UI.BunifuCustomLabel()
-        Me.TxtNIM_Write = New System.Windows.Forms.TextBox()
-        Me.Panel8 = New System.Windows.Forms.Panel()
         Me.Panel4 = New System.Windows.Forms.Panel()
         Me.Stts = New System.Windows.Forms.Label()
         Me.BtnCon = New System.Windows.Forms.Button()
@@ -73,9 +73,9 @@ Partial Class Form1
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
+        Me.PanelWrite.SuspendLayout()
         Me.PanelRead.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.PanelWrite.SuspendLayout()
         Me.Panel4.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -321,6 +321,88 @@ Partial Class Form1
         Me.CheckFngr.Size = New System.Drawing.Size(20, 20)
         Me.CheckFngr.TabIndex = 27
         '
+        'PanelWrite
+        '
+        Me.PanelWrite.BackColor = System.Drawing.Color.Transparent
+        Me.PanelWrite.Controls.Add(Me.Ext2)
+        Me.PanelWrite.Controls.Add(Me.BtnWrite)
+        Me.PanelWrite.Controls.Add(Me.Label1)
+        Me.PanelWrite.Controls.Add(Me.NIMWrite)
+        Me.PanelWrite.Controls.Add(Me.TxtNIM_Write)
+        Me.PanelWrite.Controls.Add(Me.Panel8)
+        Me.PanelWrite.Location = New System.Drawing.Point(70, 118)
+        Me.PanelWrite.Name = "PanelWrite"
+        Me.PanelWrite.Size = New System.Drawing.Size(416, 166)
+        Me.PanelWrite.TabIndex = 2
+        '
+        'Ext2
+        '
+        Me.Ext2.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Ext2.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue
+        Me.Ext2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.SteelBlue
+        Me.Ext2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
+        Me.Ext2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Ext2.Font = New System.Drawing.Font("Century Gothic", 12.0!)
+        Me.Ext2.Location = New System.Drawing.Point(242, 98)
+        Me.Ext2.Name = "Ext2"
+        Me.Ext2.Size = New System.Drawing.Size(115, 41)
+        Me.Ext2.TabIndex = 22
+        Me.Ext2.Text = "BATAL"
+        Me.Ext2.UseVisualStyleBackColor = True
+        '
+        'BtnWrite
+        '
+        Me.BtnWrite.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BtnWrite.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue
+        Me.BtnWrite.FlatAppearance.MouseDownBackColor = System.Drawing.Color.SteelBlue
+        Me.BtnWrite.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
+        Me.BtnWrite.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnWrite.Font = New System.Drawing.Font("Century Gothic", 12.0!)
+        Me.BtnWrite.Location = New System.Drawing.Point(107, 98)
+        Me.BtnWrite.Name = "BtnWrite"
+        Me.BtnWrite.Size = New System.Drawing.Size(115, 41)
+        Me.BtnWrite.TabIndex = 21
+        Me.BtnWrite.Text = "TULIS"
+        Me.BtnWrite.UseVisualStyleBackColor = True
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(61, 27)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(289, 20)
+        Me.Label1.TabIndex = 20
+        Me.Label1.Text = "TETAP TEMPELKAN KARTU PADA READER"
+        '
+        'NIMWrite
+        '
+        Me.NIMWrite.AutoSize = True
+        Me.NIMWrite.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NIMWrite.Location = New System.Drawing.Point(61, 69)
+        Me.NIMWrite.Name = "NIMWrite"
+        Me.NIMWrite.Size = New System.Drawing.Size(40, 20)
+        Me.NIMWrite.TabIndex = 17
+        Me.NIMWrite.Text = "NIM"
+        '
+        'TxtNIM_Write
+        '
+        Me.TxtNIM_Write.BackColor = System.Drawing.Color.White
+        Me.TxtNIM_Write.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TxtNIM_Write.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtNIM_Write.Location = New System.Drawing.Point(107, 68)
+        Me.TxtNIM_Write.Name = "TxtNIM_Write"
+        Me.TxtNIM_Write.Size = New System.Drawing.Size(249, 19)
+        Me.TxtNIM_Write.TabIndex = 16
+        '
+        'Panel8
+        '
+        Me.Panel8.BackColor = System.Drawing.Color.Coral
+        Me.Panel8.Location = New System.Drawing.Point(107, 89)
+        Me.Panel8.Name = "Panel8"
+        Me.Panel8.Size = New System.Drawing.Size(249, 1)
+        Me.Panel8.TabIndex = 15
+        '
         'PanelRead
         '
         Me.PanelRead.BackColor = System.Drawing.Color.Transparent
@@ -410,88 +492,6 @@ Partial Class Form1
         Me.Panel10.Name = "Panel10"
         Me.Panel10.Size = New System.Drawing.Size(249, 1)
         Me.Panel10.TabIndex = 19
-        '
-        'PanelWrite
-        '
-        Me.PanelWrite.BackColor = System.Drawing.Color.Transparent
-        Me.PanelWrite.Controls.Add(Me.Ext2)
-        Me.PanelWrite.Controls.Add(Me.BtnWrite)
-        Me.PanelWrite.Controls.Add(Me.Label1)
-        Me.PanelWrite.Controls.Add(Me.NIMWrite)
-        Me.PanelWrite.Controls.Add(Me.TxtNIM_Write)
-        Me.PanelWrite.Controls.Add(Me.Panel8)
-        Me.PanelWrite.Location = New System.Drawing.Point(70, 118)
-        Me.PanelWrite.Name = "PanelWrite"
-        Me.PanelWrite.Size = New System.Drawing.Size(416, 166)
-        Me.PanelWrite.TabIndex = 2
-        '
-        'Ext2
-        '
-        Me.Ext2.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Ext2.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue
-        Me.Ext2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.SteelBlue
-        Me.Ext2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
-        Me.Ext2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Ext2.Font = New System.Drawing.Font("Century Gothic", 12.0!)
-        Me.Ext2.Location = New System.Drawing.Point(242, 98)
-        Me.Ext2.Name = "Ext2"
-        Me.Ext2.Size = New System.Drawing.Size(115, 41)
-        Me.Ext2.TabIndex = 22
-        Me.Ext2.Text = "BATAL"
-        Me.Ext2.UseVisualStyleBackColor = True
-        '
-        'BtnWrite
-        '
-        Me.BtnWrite.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.BtnWrite.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue
-        Me.BtnWrite.FlatAppearance.MouseDownBackColor = System.Drawing.Color.SteelBlue
-        Me.BtnWrite.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
-        Me.BtnWrite.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.BtnWrite.Font = New System.Drawing.Font("Century Gothic", 12.0!)
-        Me.BtnWrite.Location = New System.Drawing.Point(107, 98)
-        Me.BtnWrite.Name = "BtnWrite"
-        Me.BtnWrite.Size = New System.Drawing.Size(115, 41)
-        Me.BtnWrite.TabIndex = 21
-        Me.BtnWrite.Text = "TULIS"
-        Me.BtnWrite.UseVisualStyleBackColor = True
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(61, 27)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(289, 20)
-        Me.Label1.TabIndex = 20
-        Me.Label1.Text = "TETAP TEMPELKAN KARTU PADA READER"
-        '
-        'NIMWrite
-        '
-        Me.NIMWrite.AutoSize = True
-        Me.NIMWrite.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.NIMWrite.Location = New System.Drawing.Point(61, 69)
-        Me.NIMWrite.Name = "NIMWrite"
-        Me.NIMWrite.Size = New System.Drawing.Size(40, 20)
-        Me.NIMWrite.TabIndex = 17
-        Me.NIMWrite.Text = "NIM"
-        '
-        'TxtNIM_Write
-        '
-        Me.TxtNIM_Write.BackColor = System.Drawing.Color.White
-        Me.TxtNIM_Write.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TxtNIM_Write.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtNIM_Write.Location = New System.Drawing.Point(107, 68)
-        Me.TxtNIM_Write.Name = "TxtNIM_Write"
-        Me.TxtNIM_Write.Size = New System.Drawing.Size(249, 19)
-        Me.TxtNIM_Write.TabIndex = 16
-        '
-        'Panel8
-        '
-        Me.Panel8.BackColor = System.Drawing.Color.Coral
-        Me.Panel8.Location = New System.Drawing.Point(107, 89)
-        Me.Panel8.Name = "Panel8"
-        Me.Panel8.Size = New System.Drawing.Size(249, 1)
-        Me.Panel8.TabIndex = 15
         '
         'Panel4
         '
@@ -615,11 +615,11 @@ Partial Class Form1
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
+        Me.PanelWrite.ResumeLayout(False)
+        Me.PanelWrite.PerformLayout()
         Me.PanelRead.ResumeLayout(False)
         Me.PanelRead.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.PanelWrite.ResumeLayout(False)
-        Me.PanelWrite.PerformLayout()
         Me.Panel4.ResumeLayout(False)
         Me.Panel4.PerformLayout()
         Me.ResumeLayout(False)

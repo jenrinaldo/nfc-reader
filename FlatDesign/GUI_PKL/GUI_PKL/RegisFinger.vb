@@ -5,9 +5,8 @@
         ID.Text = NIMpass
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) 
-        Form1.Show()
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Hide()
-
+        Form1.Show()
     End Sub
 End Class
