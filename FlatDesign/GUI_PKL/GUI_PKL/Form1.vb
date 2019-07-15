@@ -6,6 +6,8 @@ Imports MySql.Data.MySqlClient
 
 Public Class Form1
     Dim WithEvents FpVer As New FlexCodeSDK.FinFPVer
+    Dim userid As String
+    Dim finum As Integer
     Dim Template As String
     Dim reader As MySqlDataReader
     Dim Conn As MySqlConnection
@@ -76,6 +78,7 @@ Public Class Form1
         If string1 = "USB-SERIAL CH340" And statusFP = False Then
             konek(hasil)
             tampil()
+            FPLogin()
             CheckRFID.Checked = True
             CheckFngr.Checked = True
         ElseIf string1 = "USB-SERIAL CH340" And statusFP = True Then
@@ -83,8 +86,9 @@ Public Class Form1
             tampil()
             CheckRFID.Checked = True
             CheckFngr.Checked = False
-        ElseIf statusFP = False Then
+        ElseIf string1 <> "USB-SERIAL CH340" And statusFP = False Then
             tampil()
+            FPLogin()
             CheckRFID.Checked = False
             CheckFngr.Checked = True
         Else
@@ -92,6 +96,32 @@ Public Class Form1
             CheckFngr.Checked = False
         End If
 
+    End Sub
+
+    Private Sub FPLogin()
+        Dim sqlCommand As New MySqlCommand
+        sqlCommand.Connection = Conn
+        sqlCommand.CommandText = "SELECT MemberNo, FullName, Template, FingerIndex FROM Members"
+        Dim rd As MySqlDataReader = sqlCommand.ExecuteReader()
+        While rd.Read
+            FpVer.FPLoad(rd.GetString(0), rd.GetString(3), rd.GetString(2), "YourSecretKey")
+        End While
+        FpVer.FPVerificationStart()
+        rd.Close()
+    End Sub
+
+    Private Sub FPVer_FPVerificationID(ByVal ID As String, ByVal FingerNr As FlexCodeSDK.FingerNumber) Handles FpVer.FPVerificationID
+        userId = ID
+        finum = FingerNr
+    End Sub
+
+    Private Sub FPVer_FPVerificationImage() Handles FpVer.FPVerificationImage
+        Dim imgFile As System.IO.FileStream = New System.IO.FileStream(My.Application.Info.DirectoryPath & "\FPTemp.BMP", System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite)
+        Dim fileBytes(imgFile.Length) As Byte
+        imgFile.Read(fileBytes, 0, fileBytes.Length)
+        imgFile.Close()
+        Dim ms As System.IO.MemoryStream = New System.IO.MemoryStream(fileBytes)
+        PictureBox1.Image = Image.FromStream(ms)
     End Sub
 
     Private Sub konek(ByVal Cmb As String)
@@ -367,9 +397,6 @@ Public Class Form1
     Private Sub NIM_TextChanged(sender As Object, e As EventArgs) Handles NIM.TextChanged
         Dim bfr As String
         bfr = NIM.Text
-
-        Conn = New MySqlConnection
-        Conn.ConnectionString = "server = localhost; userid = root; password =; database = inlislite_v3"
 
         Try
             If Regex.IsMatch(NIM.Text, "^[0-9 ]+$") Then
