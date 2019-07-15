@@ -61,7 +61,6 @@ Public Class Form1
         Stts.Text = ""
         Nama.Text = ""
         balasan.Text = ""
-        TxtNIM_Write.Text = ""
 
         Dim searcher As New ManagementObjectSearcher("root\CIMV2", "Select * FROM Win32_PnPEntity")
         For Each queryObj As ManagementObject In searcher.Get()
