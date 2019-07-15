@@ -73,16 +73,18 @@ Public Class Form1
             End If
         Next
 
-        If string1 = "USB-SERIAL CH340" And statusFP = True Then
+        If string1 = "USB-SERIAL CH340" And statusFP = False Then
             konek(hasil)
+            tampil()
             CheckRFID.Checked = True
             CheckFngr.Checked = True
-        ElseIf string1 = "USB-SERIAL CH340" And statusFP = False Then
+        ElseIf string1 = "USB-SERIAL CH340" And statusFP = True Then
             konek(hasil)
+            tampil()
             CheckRFID.Checked = True
             CheckFngr.Checked = False
-        ElseIf string1 <> "USB-SERIAL CH340" And statusFP = True Then
-            konek(hasil)
+        ElseIf statusFP = False Then
+            tampil()
             CheckRFID.Checked = False
             CheckFngr.Checked = True
         Else
@@ -93,7 +95,6 @@ Public Class Form1
     End Sub
 
     Private Sub konek(ByVal Cmb As String)
-
         SerialPort1.BaudRate = baudrate
         SerialPort1.PortName = Cmb
         SerialPort1.Parity = Parity.None
@@ -113,13 +114,32 @@ Public Class Form1
         CmbPort.Enabled = False
         CmbPort.Text = Cmb
 
-        Read.Enabled = True
-        Write.Enabled = True
         Timer2.Enabled = True
         CheckRFID.Checked = True
 
+
+        Write.Enabled = True
+    End Sub
+
+    Private Sub tampil()
+        Read.Enabled = True
         PnlRead.Show()
         PanelRead.Show()
+    End Sub
+
+    Private Sub sembunyi()
+        PnlRead.Hide()
+        PnlWrite.Hide()
+        PanelRead.Hide()
+
+        Write.Enabled = False
+        Read.Enabled = False
+
+        CmbPort.Text = ""
+        Status.Text = ""
+        NIM.Text = ""
+        Nama.Text = ""
+        TxtNIM_Write.Text = ""
     End Sub
 
     Private Sub diskonek()
@@ -132,23 +152,11 @@ Public Class Form1
         BtnDiscon.SendToBack()
 
         Timer2.Enabled = False
-        Write.Enabled = False
-        Read.Enabled = False
-
-        PnlRead.Hide()
-        PnlWrite.Hide()
-        PanelRead.Hide()
 
         NIM.Enabled = False
         CheckRFID.Checked = False
 
         SerialPort1.Close()
-
-        CmbPort.Text = ""
-        Status.Text = ""
-        NIM.Text = ""
-        Nama.Text = ""
-        TxtNIM_Write.Text = ""
     End Sub
 
     Private Sub FPVer_FPVerificationStatus(ByVal Status As FlexCodeSDK.VerificationStatus) Handles FpVer.FPVerificationStatus
@@ -164,7 +172,7 @@ Public Class Form1
             Case FlexCodeSDK.VerificationStatus.v_MultiplelMatch
                 MsgBox("Multiple match")
             Case FlexCodeSDK.VerificationStatus.v_NoDevice
-                statusFP = False
+                statusFP = True
                 MsgBox("Please connect the device to USB port or Add a device")
             Case FlexCodeSDK.VerificationStatus.v_NotMatch
                 MsgBox("No match")
@@ -177,7 +185,8 @@ Public Class Form1
             Case FlexCodeSDK.VerificationStatus.v_VerifyCaptureStop
                 MsgBox("Stop verify")
             Case Else
-                statusFP = True
+                statusFP = False
+                CheckFngr.Checked = True
         End Select
     End Sub
     Private Sub Ext_Click(sender As Object, e As EventArgs) Handles Ext.Click
@@ -218,9 +227,11 @@ Public Class Form1
 
     Private Sub BtnCon_Click(sender As Object, e As EventArgs) Handles BtnCon.Click
         konek(CmbPort.SelectedItem)
+        tampil()
     End Sub
 
     Private Sub BtnDiscon_Click(sender As Object, e As EventArgs) Handles BtnDiscon.Click
+        sembunyi()
         diskonek()
     End Sub
 

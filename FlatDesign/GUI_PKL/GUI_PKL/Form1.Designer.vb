@@ -38,6 +38,8 @@ Partial Class Form1
         Me.Fingerprint = New Bunifu.Framework.UI.BunifuImageButton()
         Me.RFID = New Bunifu.Framework.UI.BunifuImageButton()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.CheckRFID = New Bunifu.Framework.UI.BunifuCheckbox()
+        Me.CheckFngr = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.balasan = New System.Windows.Forms.Label()
         Me.PanelRead = New System.Windows.Forms.Panel()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
@@ -66,8 +68,6 @@ Partial Class Form1
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
-        Me.CheckFngr = New Bunifu.Framework.UI.BunifuCheckbox()
-        Me.CheckRFID = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.BunifuGradientPanel1.SuspendLayout()
         Me.PanelMENU.SuspendLayout()
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -135,7 +135,7 @@ Partial Class Form1
         'Read
         '
         Me.Read.Activecolor = System.Drawing.Color.FromArgb(CType(CType(50, Byte), Integer), CType(CType(80, Byte), Integer), CType(CType(36, Byte), Integer), CType(CType(95, Byte), Integer))
-        Me.Read.BackColor = System.Drawing.Color.FromArgb(CType(CType(50, Byte), Integer), CType(CType(80, Byte), Integer), CType(CType(36, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.Read.BackColor = System.Drawing.Color.Transparent
         Me.Read.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Read.BorderRadius = 0
         Me.Read.ButtonText = "       Daftar Hadir"
@@ -298,6 +298,30 @@ Partial Class Form1
         Me.Panel1.Size = New System.Drawing.Size(542, 386)
         Me.Panel1.TabIndex = 1
         '
+        'CheckRFID
+        '
+        Me.CheckRFID.BackColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
+        Me.CheckRFID.ChechedOffColor = System.Drawing.Color.FromArgb(CType(CType(132, Byte), Integer), CType(CType(135, Byte), Integer), CType(CType(140, Byte), Integer))
+        Me.CheckRFID.Checked = True
+        Me.CheckRFID.CheckedOnColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
+        Me.CheckRFID.ForeColor = System.Drawing.Color.White
+        Me.CheckRFID.Location = New System.Drawing.Point(445, 342)
+        Me.CheckRFID.Name = "CheckRFID"
+        Me.CheckRFID.Size = New System.Drawing.Size(20, 20)
+        Me.CheckRFID.TabIndex = 28
+        '
+        'CheckFngr
+        '
+        Me.CheckFngr.BackColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
+        Me.CheckFngr.ChechedOffColor = System.Drawing.Color.FromArgb(CType(CType(132, Byte), Integer), CType(CType(135, Byte), Integer), CType(CType(140, Byte), Integer))
+        Me.CheckFngr.Checked = True
+        Me.CheckFngr.CheckedOnColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
+        Me.CheckFngr.ForeColor = System.Drawing.Color.White
+        Me.CheckFngr.Location = New System.Drawing.Point(349, 342)
+        Me.CheckFngr.Name = "CheckFngr"
+        Me.CheckFngr.Size = New System.Drawing.Size(20, 20)
+        Me.CheckFngr.TabIndex = 27
+        '
         'balasan
         '
         Me.balasan.AutoSize = True
@@ -325,9 +349,9 @@ Partial Class Form1
         '
         'PictureBox1
         '
-        Me.PictureBox1.Location = New System.Drawing.Point(14, 103)
+        Me.PictureBox1.Location = New System.Drawing.Point(403, 15)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(100, 50)
+        Me.PictureBox1.Size = New System.Drawing.Size(117, 143)
         Me.PictureBox1.TabIndex = 32
         Me.PictureBox1.TabStop = False
         '
@@ -570,30 +594,6 @@ Partial Class Form1
         '
         'Timer2
         '
-        '
-        'CheckFngr
-        '
-        Me.CheckFngr.BackColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
-        Me.CheckFngr.ChechedOffColor = System.Drawing.Color.FromArgb(CType(CType(132, Byte), Integer), CType(CType(135, Byte), Integer), CType(CType(140, Byte), Integer))
-        Me.CheckFngr.Checked = True
-        Me.CheckFngr.CheckedOnColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
-        Me.CheckFngr.ForeColor = System.Drawing.Color.White
-        Me.CheckFngr.Location = New System.Drawing.Point(349, 342)
-        Me.CheckFngr.Name = "CheckFngr"
-        Me.CheckFngr.Size = New System.Drawing.Size(20, 20)
-        Me.CheckFngr.TabIndex = 27
-        '
-        'CheckRFID
-        '
-        Me.CheckRFID.BackColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
-        Me.CheckRFID.ChechedOffColor = System.Drawing.Color.FromArgb(CType(CType(132, Byte), Integer), CType(CType(135, Byte), Integer), CType(CType(140, Byte), Integer))
-        Me.CheckRFID.Checked = True
-        Me.CheckRFID.CheckedOnColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
-        Me.CheckRFID.ForeColor = System.Drawing.Color.White
-        Me.CheckRFID.Location = New System.Drawing.Point(445, 342)
-        Me.CheckRFID.Name = "CheckRFID"
-        Me.CheckRFID.Size = New System.Drawing.Size(20, 20)
-        Me.CheckRFID.TabIndex = 28
         '
         'Form1
         '
