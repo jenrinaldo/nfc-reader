@@ -40,10 +40,10 @@ Partial Class Form1
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.CheckRFID = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.CheckFngr = New Bunifu.Framework.UI.BunifuCheckbox()
-        Me.balasan = New System.Windows.Forms.Label()
         Me.PanelRead = New System.Windows.Forms.Panel()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.NIM = New System.Windows.Forms.TextBox()
+        Me.balasan = New System.Windows.Forms.Label()
         Me.Nama = New System.Windows.Forms.Label()
         Me.BunifuCustomLabel2 = New Bunifu.Framework.UI.BunifuCustomLabel()
         Me.Panel9 = New System.Windows.Forms.Panel()
@@ -57,7 +57,7 @@ Partial Class Form1
         Me.TxtNIM_Write = New System.Windows.Forms.TextBox()
         Me.Panel8 = New System.Windows.Forms.Panel()
         Me.Panel4 = New System.Windows.Forms.Panel()
-        Me.Status = New System.Windows.Forms.Label()
+        Me.Stts = New System.Windows.Forms.Label()
         Me.BtnCon = New System.Windows.Forms.Button()
         Me.CmbPort = New System.Windows.Forms.ComboBox()
         Me.BtnScanPort = New System.Windows.Forms.Button()
@@ -288,11 +288,10 @@ Partial Class Form1
         Me.Panel1.BackColor = System.Drawing.Color.White
         Me.Panel1.Controls.Add(Me.CheckRFID)
         Me.Panel1.Controls.Add(Me.CheckFngr)
-        Me.Panel1.Controls.Add(Me.balasan)
-        Me.Panel1.Controls.Add(Me.PanelRead)
         Me.Panel1.Controls.Add(Me.RFID)
         Me.Panel1.Controls.Add(Me.Fingerprint)
         Me.Panel1.Controls.Add(Me.PanelWrite)
+        Me.Panel1.Controls.Add(Me.PanelRead)
         Me.Panel1.Location = New System.Drawing.Point(187, 0)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(542, 386)
@@ -322,21 +321,12 @@ Partial Class Form1
         Me.CheckFngr.Size = New System.Drawing.Size(20, 20)
         Me.CheckFngr.TabIndex = 27
         '
-        'balasan
-        '
-        Me.balasan.AutoSize = True
-        Me.balasan.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.balasan.Location = New System.Drawing.Point(236, 182)
-        Me.balasan.Name = "balasan"
-        Me.balasan.Size = New System.Drawing.Size(67, 20)
-        Me.balasan.TabIndex = 26
-        Me.balasan.Text = "balasan"
-        '
         'PanelRead
         '
         Me.PanelRead.BackColor = System.Drawing.Color.Transparent
         Me.PanelRead.Controls.Add(Me.PictureBox1)
         Me.PanelRead.Controls.Add(Me.NIM)
+        Me.PanelRead.Controls.Add(Me.balasan)
         Me.PanelRead.Controls.Add(Me.Nama)
         Me.PanelRead.Controls.Add(Me.BunifuCustomLabel2)
         Me.PanelRead.Controls.Add(Me.Panel9)
@@ -364,6 +354,16 @@ Partial Class Form1
         Me.NIM.Name = "NIM"
         Me.NIM.Size = New System.Drawing.Size(247, 20)
         Me.NIM.TabIndex = 31
+        '
+        'balasan
+        '
+        Me.balasan.AutoSize = True
+        Me.balasan.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.balasan.Location = New System.Drawing.Point(4, 249)
+        Me.balasan.Name = "balasan"
+        Me.balasan.Size = New System.Drawing.Size(67, 20)
+        Me.balasan.TabIndex = 26
+        Me.balasan.Text = "balasan"
         '
         'Nama
         '
@@ -496,7 +496,7 @@ Partial Class Form1
         'Panel4
         '
         Me.Panel4.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.Panel4.Controls.Add(Me.Status)
+        Me.Panel4.Controls.Add(Me.Stts)
         Me.Panel4.Controls.Add(Me.BtnCon)
         Me.Panel4.Controls.Add(Me.CmbPort)
         Me.Panel4.Controls.Add(Me.BtnScanPort)
@@ -508,15 +508,15 @@ Partial Class Form1
         Me.Panel4.Size = New System.Drawing.Size(546, 40)
         Me.Panel4.TabIndex = 1
         '
-        'Status
+        'Stts
         '
-        Me.Status.AutoSize = True
-        Me.Status.Font = New System.Drawing.Font("Segoe UI Historic", 8.0!)
-        Me.Status.Location = New System.Drawing.Point(438, 4)
-        Me.Status.Name = "Status"
-        Me.Status.Size = New System.Drawing.Size(39, 13)
-        Me.Status.TabIndex = 18
-        Me.Status.Text = "Status"
+        Me.Stts.AutoSize = True
+        Me.Stts.Font = New System.Drawing.Font("Segoe UI Historic", 8.0!)
+        Me.Stts.Location = New System.Drawing.Point(438, 4)
+        Me.Stts.Name = "Stts"
+        Me.Stts.Size = New System.Drawing.Size(39, 13)
+        Me.Stts.TabIndex = 18
+        Me.Stts.Text = "Status"
         '
         'BtnCon
         '
@@ -615,7 +615,6 @@ Partial Class Form1
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
-        Me.Panel1.PerformLayout()
         Me.PanelRead.ResumeLayout(False)
         Me.PanelRead.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -637,7 +636,7 @@ Partial Class Form1
     Friend WithEvents CmbPort As ComboBox
     Friend WithEvents BtnScanPort As Button
     Friend WithEvents BtnDiscon As Button
-    Friend WithEvents Status As Label
+    Friend WithEvents Stts As Label
     Friend WithEvents Ext As Button
     Friend WithEvents PanelRead As Panel
     Friend WithEvents PanelWrite As Panel

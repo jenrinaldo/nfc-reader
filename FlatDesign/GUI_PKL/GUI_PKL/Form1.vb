@@ -58,7 +58,7 @@ Public Class Form1
         PnlRead.Hide()
         PanelRead.Hide()
 
-        Status.Text = ""
+        Stts.Text = ""
         Nama.Text = ""
         balasan.Text = ""
         TxtNIM_Write.Text = ""
@@ -86,6 +86,7 @@ Public Class Form1
             tampil()
             CheckRFID.Checked = True
             CheckFngr.Checked = False
+            CheckFngr.Enabled = True
         ElseIf string1 <> "USB-SERIAL CH340" And statusFP = False Then
             tampil()
             FPLogin()
@@ -94,14 +95,14 @@ Public Class Form1
         Else
             CheckRFID.Checked = False
             CheckFngr.Checked = False
+            CheckFngr.Enabled = True
         End If
 
     End Sub
 
     Private Sub FPLogin()
-        Dim sqlCommand As New MySqlCommand
-        sqlCommand.Connection = Conn
-        sqlCommand.CommandText = "SELECT MemberNo, FullName, Template, FingerIndex FROM Members"
+        Dim commText As String = "SELECT MemberNo, FullName, Template, FingerIndex FROM Members"
+        Dim sqlCommand As New MySqlCommand(commText, Conn)
         Dim rd As MySqlDataReader = sqlCommand.ExecuteReader()
         While rd.Read
             FpVer.FPLoad(rd.GetString(0), rd.GetString(3), rd.GetString(2), "YourSecretKey")
@@ -111,7 +112,7 @@ Public Class Form1
     End Sub
 
     Private Sub FPVer_FPVerificationID(ByVal ID As String, ByVal FingerNr As FlexCodeSDK.FingerNumber) Handles FpVer.FPVerificationID
-        userId = ID
+        userid = ID
         finum = FingerNr
     End Sub
 
@@ -166,7 +167,7 @@ Public Class Form1
         Read.Enabled = False
 
         CmbPort.Text = ""
-        Status.Text = ""
+        Stts.Text = ""
         NIM.Text = ""
         Nama.Text = ""
         TxtNIM_Write.Text = ""
@@ -192,20 +193,20 @@ Public Class Form1
     Private Sub FPVer_FPVerificationStatus(ByVal Status As FlexCodeSDK.VerificationStatus) Handles FpVer.FPVerificationStatus
         Select Case Status
             Case FlexCodeSDK.VerificationStatus.v_ActivationIncorrect
-                MsgBox("Activation / verification code is incorrent or not set")
+                Stts.Text = "Activation / verification code is" & vbNewLine & "incorrent or not set"
             Case FlexCodeSDK.VerificationStatus.v_FPDevFull
-                MsgBox("Max 10 devices")
+                Stts.Text = "Max 10 devices"
             Case FlexCodeSDK.VerificationStatus.v_FPListEmpty
-                MsgBox("Please add templates")
+                Stts.Text = "Please add templates"
             Case FlexCodeSDK.VerificationStatus.v_FPListFull
-                MsgBox("Max 100K templates")
+                Stts.Text = "Max 100K templates"
             Case FlexCodeSDK.VerificationStatus.v_MultiplelMatch
-                MsgBox("Multiple match")
+                Stts.Text = "Multiple match"
             Case FlexCodeSDK.VerificationStatus.v_NoDevice
                 statusFP = True
                 MsgBox("Please connect the device to USB port or Add a device")
             Case FlexCodeSDK.VerificationStatus.v_NotMatch
-                MsgBox("No match")
+                Stts.Text = "No match"
             Case FlexCodeSDK.VerificationStatus.v_OK
                 MsgBox("Match")
             Case FlexCodeSDK.VerificationStatus.v_PoorImageQuality
@@ -298,9 +299,17 @@ Public Class Form1
     End Sub
 
     Private Sub BtnWrite_Click(sender As Object, e As EventArgs) Handles BtnWrite.Click
+        Dim obj As New RegisFinger
+        obj.NIMpass = TxtNIM_Write.Text
+        obj.Show()
+
         SerialPort1.Write(TxtNIM_Write.Text & "*")
         Timer3.Enabled = False
         waktu = 0
+
+
+        RegisFinger.Show()
+        Hide()
 
         Read.Enabled = True
         Write.Enabled = True
@@ -316,11 +325,14 @@ Public Class Form1
     Private Sub TxtNIM_Write_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtNIM_Write.KeyDown
         If e.KeyCode = Keys.Enter Then
             BtnWrite.PerformClick()
+            Dim obj As New RegisFinger
+            obj.NIMpass = TxtNIM_Write.Text
+            obj.Show()
         End If
     End Sub
 
     Private Sub Ext2_Click(sender As Object, e As EventArgs) Handles Ext2.Click
-        Status.Show()
+        Stts.Show()
         PnlWrite.Hide()
         PanelWrite.Hide()
 
@@ -371,7 +383,7 @@ Public Class Form1
             Write.Enabled = True
             Ext.Enabled = True
 
-            Status.Show()
+            Stts.Show()
 
             PanelRead.Show()
             PnlRead.Show()
@@ -401,11 +413,11 @@ Public Class Form1
         Try
             If Regex.IsMatch(NIM.Text, "^[0-9 ]+$") Then
                 If NIM.Text <> "" Then
-                    Status.Text = ""
+                    Stts.Text = ""
                     balasan.Text = ""
+                    PictureBox1.Image = Nothing
 
-                    Conn.Open()
-                    Query = "SELECT * FROM `members` WHERE MemberNo = '" & NIM.Text & "'"
+                    Query = "CALL FetchData ('" & NIM.Text & "'); "
                     COMMAND = New MySqlCommand(Query, Conn)
                     reader = COMMAND.ExecuteReader()
                     If reader.Read() = True Then
@@ -447,13 +459,13 @@ Public Class Form1
                 End If
             ElseIf Regex.IsMatch(NIM.Text, "DataKosong") Then
                 NIM.Text = ""
-                Status.Text = "Data Kosong"
+                Stts.Text = "Data Kosong"
             ElseIf Regex.IsMatch(NIM.Text, "Write success!") Then
                 NIM.Text = ""
-                Status.Text = "Penulisan RFID Tag" & vbNewLine & "Sukses"
+                Stts.Text = "Penulisan RFID Tag" & vbNewLine & "Sukses"
             ElseIf Regex.IsMatch(NIM.Text, "Write failed!") Then
                 NIM.Text = ""
-                Status.Text = "Penulisan RFID Tag" & vbNewLine & "Gagal"
+                Stts.Text = "Penulisan RFID Tag" & vbNewLine & "Gagal"
             Else
                 NIM.Text = ""
                 Nama.Text = ""
@@ -461,7 +473,9 @@ Public Class Form1
             End If
         Catch ex As Exception
             MsgBox("Periksa sambungan database")
+            NIM.Text = ""
         End Try
+
     End Sub
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
@@ -471,5 +485,29 @@ Public Class Form1
             BtnDiscon.PerformClick()
         End Try
 
+    End Sub
+
+    Private Sub Form1_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
+        Conn.Close()
+        FpVer.FPListClear()
+
+    End Sub
+
+    Private Sub CheckFngr_Click(sender As Object, e As EventArgs) Handles CheckFngr.Click
+        FpVer.FPVerificationStop()
+        FpVer.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
+        FpVer.FPVerificationStart()
+        tampil()
+        If CheckFngr.Checked = True Then
+            CheckFngr.Enabled = False
+        End If
+    End Sub
+
+    Private Sub CheckFngr_OnChange(sender As Object, e As EventArgs) Handles CheckFngr.OnChange
+        If CheckFngr.Checked = True And statusFP = True Then
+            CheckFngr.Checked = False
+            CheckFngr.Enabled = True
+            sembunyi()
+        End If
     End Sub
 End Class
