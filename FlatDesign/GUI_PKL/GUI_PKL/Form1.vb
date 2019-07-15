@@ -61,6 +61,7 @@ Public Class Form1
         Stts.Text = ""
         Nama.Text = ""
         balasan.Text = ""
+        TxtNIM_Write.Text = ""
 
         Dim searcher As New ManagementObjectSearcher("root\CIMV2", "Select * FROM Win32_PnPEntity")
         For Each queryObj As ManagementObject In searcher.Get()
@@ -209,7 +210,7 @@ Public Class Form1
                 Stts.Text = "Multiple match"
             Case FlexCodeSDK.VerificationStatus.v_NoDevice
                 statusFP = True
-                MsgBox("Please connect the device to USB port or Add a device")
+                MessageBox.Show("USB Port Fingerprint Tidak Terdeteksi", "Warning!", MessageBoxButtons.OK)
                 If CheckFngr.Checked = True Then
                     CheckFngr.Checked = False
                     CheckFngr.Enabled = True
@@ -309,8 +310,10 @@ Public Class Form1
         waktu = 25
         Timer3.Enabled = True
     End Sub
+
     Private Sub passing()
         Dim obj As New RegisFinger
+        Hide()
         obj.NIMpass = TxtNIM_Write.Text
         obj.Show()
     End Sub
@@ -319,9 +322,6 @@ Public Class Form1
         SerialPort1.Write(TxtNIM_Write.Text & "*")
         Timer3.Enabled = False
         waktu = 0
-
-        RegisFinger.Show()
-        Hide()
 
         Read.Enabled = True
         Write.Enabled = True
@@ -332,13 +332,11 @@ Public Class Form1
 
         PnlWrite.Hide()
         PanelWrite.Hide()
-
     End Sub
 
     Private Sub TxtNIM_Write_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtNIM_Write.KeyDown
         If e.KeyCode = Keys.Enter Then
             BtnWrite.PerformClick()
-            passing()
         End If
     End Sub
 
@@ -388,6 +386,7 @@ Public Class Form1
         Else
             Timer3.Enabled = False
             SerialPort1.Write("DataKosong" & "*")
+            TxtNIM_Write.Text = ""
 
             Read.Enabled = True
             Write.Enabled = True
@@ -473,12 +472,11 @@ Public Class Form1
                 Stts.Text = "Data Kosong"
             ElseIf Regex.IsMatch(NIM.Text, "Write success!") Then
                 NIM.Text = ""
-                'obj.StatusRFID = "Penulisan RFID Tag Sukses"
-                'obj.Show()
+                MsgBox("Penulisan RFID Tag Sukses")
+                passing()
             ElseIf Regex.IsMatch(NIM.Text, "Write failed!") Then
                 NIM.Text = ""
-                'obj.StatusRFID = "Penulisan RFID Tag Gagal"
-                'obj.Show()
+                MessageBox.Show("Penulisan RFID Tag Gagal", "Warning!", MessageBoxButtons.OK)
             Else
                 NIM.Text = ""
                 Nama.Text = ""

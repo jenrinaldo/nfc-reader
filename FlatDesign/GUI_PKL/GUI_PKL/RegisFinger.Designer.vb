@@ -26,7 +26,6 @@ Partial Class RegisFinger
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.NoJari = New System.Windows.Forms.ComboBox()
         Me.Template = New System.Windows.Forms.RichTextBox()
-        Me.Stts = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -66,16 +65,6 @@ Partial Class RegisFinger
         Me.Template.TabIndex = 35
         Me.Template.Text = ""
         '
-        'Stts
-        '
-        Me.Stts.AutoSize = True
-        Me.Stts.Font = New System.Drawing.Font("Segoe UI Historic", 8.0!)
-        Me.Stts.Location = New System.Drawing.Point(22, 172)
-        Me.Stts.Name = "Stts"
-        Me.Stts.Size = New System.Drawing.Size(39, 13)
-        Me.Stts.TabIndex = 36
-        Me.Stts.Text = "Status"
-        '
         'Button1
         '
         Me.Button1.Location = New System.Drawing.Point(25, 186)
@@ -92,7 +81,6 @@ Partial Class RegisFinger
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(362, 217)
         Me.Controls.Add(Me.Button1)
-        Me.Controls.Add(Me.Stts)
         Me.Controls.Add(Me.Template)
         Me.Controls.Add(Me.NoJari)
         Me.Controls.Add(Me.PictureBox1)
@@ -111,6 +99,5 @@ Partial Class RegisFinger
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents NoJari As ComboBox
     Friend WithEvents Template As RichTextBox
-    Friend WithEvents Stts As Label
     Friend WithEvents Button1 As Button
 End Class
