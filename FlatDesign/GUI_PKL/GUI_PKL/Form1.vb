@@ -6,6 +6,8 @@ Imports MySql.Data.MySqlClient
 
 Public Class Form1
     Dim WithEvents FpVer As New FlexCodeSDK.FinFPVer
+    Dim WithEvents FpReg As New FlexCodeSDK.FinFPReg
+    Dim uniqueTemplate As Boolean
     Dim userid As String
     Dim finum As Integer
     Dim Template As String
@@ -41,7 +43,7 @@ Public Class Form1
         RFID.Enabled = False
         CheckRFID.Enabled = False
         CheckRFID.Checked = False
-
+        uniqueTemplate = False
         NIM.Enabled = False
 
         Timer1.Enabled = True
@@ -99,6 +101,19 @@ Public Class Form1
 
         End If
 
+    End Sub
+
+    Private Sub FPRegist()
+        If Write.Enabled = True Then
+            FpReg = New FlexCodeSDK.FinFPReg
+            FpReg.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
+            FpReg.FPRegistrationStart("YourSecretKey" & TextBox1.Text)
+            ItIsUniqueTemplate = False
+        End If   
+    End Sub 
+
+    Private Sub FpReg_FPSamplesNeeded(ByVal Samples As Short) Handles FpReg.FPSamplesNeeded
+        Label1.Text = Str(Samples) & "x"
     End Sub
 
     Private Sub FPLogin()
