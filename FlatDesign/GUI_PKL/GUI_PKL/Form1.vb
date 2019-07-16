@@ -54,6 +54,7 @@ Public Class Form1
 
         PnlWrite.Hide()
         PanelWrite.Hide()
+        PanelFinger.Hide()
 
         PnlRead.Hide()
         PanelRead.Hide()
@@ -311,12 +312,6 @@ Public Class Form1
         Timer3.Enabled = True
     End Sub
 
-    Private Sub passing()
-        Dim obj As New RegisFinger
-        Hide()
-        obj.NIMpass = TxtNIM_Write.Text
-        obj.Show()
-    End Sub
 
     Private Sub BtnWrite_Click(sender As Object, e As EventArgs) Handles BtnWrite.Click
         SerialPort1.Write(TxtNIM_Write.Text & "*")
@@ -326,12 +321,27 @@ Public Class Form1
         Read.Enabled = True
         Write.Enabled = True
         Ext.Enabled = True
+    End Sub
+    Private Sub passing()
+        PnlWrite.Show()
+        PanelFinger.Show()
+        PanelWrite.Hide()
+        PanelRead.Hide()
 
+        Read.Enabled = False
+        Write.Enabled = False
+        Ext.Enabled = False
+
+        ID.Text = TxtNIM_Write.Text
+    End Sub
+
+    Private Sub gagal()
         PanelRead.Show()
         PnlRead.Show()
 
-        PnlWrite.Hide()
         PanelWrite.Hide()
+        PnlWrite.Hide()
+        PanelFinger.Hide()
     End Sub
 
     Private Sub TxtNIM_Write_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtNIM_Write.KeyDown
@@ -477,6 +487,7 @@ Public Class Form1
             ElseIf Regex.IsMatch(NIM.Text, "Write failed!") Then
                 NIM.Text = ""
                 MessageBox.Show("Penulisan RFID Tag Gagal", "Warning!", MessageBoxButtons.OK)
+                gagal()
             Else
                 NIM.Text = ""
                 Nama.Text = ""
@@ -517,5 +528,6 @@ Public Class Form1
             CheckFngr.Enabled = False
         End If
     End Sub
+
 
 End Class
