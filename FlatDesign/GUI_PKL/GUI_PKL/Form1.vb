@@ -77,7 +77,7 @@ Public Class Form1
         If string1 = "USB-SERIAL CH340" And statusFP = False Then
             konek(hasil)
             tampil()
-            FPLogin()
+            FPVerif()
             CheckRFID.Checked = True
             CheckFngr.Checked = True
         ElseIf string1 = "USB-SERIAL CH340" And statusFP = True Then
@@ -87,8 +87,7 @@ Public Class Form1
             CheckFngr.Checked = False
             CheckFngr.Enabled = True
         ElseIf string1 <> "USB-SERIAL CH340" And statusFP = False Then
-            tampil()
-            FPLogin()
+            FPVerif()
             CheckRFID.Checked = False
             CheckFngr.Checked = True
         Else
@@ -96,19 +95,16 @@ Public Class Form1
             CheckFngr.Checked = False
             CheckFngr.Enabled = True
             sembunyi()
-
         End If
 
     End Sub
 
     Private Sub FPRegist()
-        If Write.Enabled = True Then
-            FpVer.FPVerificationStop()
-            FpReg = New FlexCodeSDK.FinFPReg
-            FpReg.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
-            FpReg.FPRegistrationStart("YourSecretKey")
-            uniqueTemplate = False
-        End If
+        FpVer.FPVerificationStop()
+        FpReg = New FlexCodeSDK.FinFPReg
+        FpReg.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
+        FpReg.FPRegistrationStart("YourSecretKey")
+        uniqueTemplate = False
     End Sub
 
     Private Sub FpReg_FPSamplesNeeded(ByVal Samples As Short) Handles FpReg.FPSamplesNeeded
@@ -117,12 +113,15 @@ Public Class Form1
 
     Private Sub FpReg_FPRegistrationStatus(ByVal Status As FlexCodeSDK.RegistrationStatus) Handles FpReg.FPRegistrationStatus
         If Status = FlexCodeSDK.RegistrationStatus.r_OK Then
-            FPLogin()
+            FpReg.FPRegistrationStop()
+            FPVerif()
         End If
     End Sub
 
 
-    Private Sub FPLogin()
+    Private Sub FPVerif()
+        Conn.Close()
+        Conn.Open()
         FpVer = New FlexCodeSDK.FinFPVer
         FpVer.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
         FpVer.SetMaxTemplate(100000)
@@ -193,12 +192,12 @@ Public Class Form1
     End Sub
 
     Private Sub fpAddToDB()
+        Conn.Close()
+        Conn.Open()
+
         If uniqueTemplate Then
-            Dim sqlCommand As New MySqlCommand
-            sqlCommand.Connection = Conn
-            sqlCommand.CommandText = "INSERT INTO `members`(FingerIndex, Template) 
-                                     SELECT ('" & Str(NoJari.SelectedIndex) & "','" & Template & "') 
-                                     FROM `members` WHERE MemberNo = '" & NimFinger.Text & "'"
+            Dim commText As String = "INSERT INTO `members`(FingerIndex, Template) SELECT ('" & Str(NoJari.SelectedIndex) & "','" & Template & "') FROM `members` WHERE MemberNo = '" & NimFinger.Text & "'"
+            Dim sqlCommand As New MySqlCommand(commText, Conn)
             sqlCommand.ExecuteNonQuery()
             MsgBox("OK!")
         End If
@@ -396,7 +395,6 @@ Public Class Form1
         Ext.Enabled = False
 
         NimFinger.Text = TxtNIM_Write.Text
-        FPRegist()
     End Sub
 
     Private Sub gagal()
@@ -542,6 +540,7 @@ Public Class Form1
                 NIM.Text = ""
                 MsgBox("Penulisan RFID Tag Sukses")
                 passing()
+                FPRegist()
             ElseIf Regex.IsMatch(NIM.Text, "Write failed!") Then
                 NIM.Text = ""
                 MessageBox.Show("Penulisan RFID Tag Gagal", "Warning!", MessageBoxButtons.OK)
