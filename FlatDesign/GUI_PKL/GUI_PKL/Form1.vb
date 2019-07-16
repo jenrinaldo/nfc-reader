@@ -29,10 +29,6 @@ Public Class Form1
         Conn = New MySqlConnection
         Conn.ConnectionString = "server = localhost; userid = root; password = ; database = inlislite_v3"
         Conn.Open()
-        FpVer = New FlexCodeSDK.FinFPVer
-        FpVer.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
-        FpVer.SetMaxTemplate(100000)
-        FpVer.FPVerificationStart()
         FpVer.PictureSamplePath = My.Application.Info.DirectoryPath & "\FPTemp.BMP"
         FpVer.PictureSampleHeight = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Height))
         FpVer.PictureSampleWidth = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Width))
@@ -81,7 +77,6 @@ Public Class Form1
         If string1 = "USB-SERIAL CH340" And statusFP = False Then
             konek(hasil)
             tampil()
-            FPLogin()
             CheckRFID.Checked = True
             CheckFngr.Checked = True
         ElseIf string1 = "USB-SERIAL CH340" And statusFP = True Then
@@ -92,7 +87,6 @@ Public Class Form1
             CheckFngr.Enabled = True
         ElseIf string1 <> "USB-SERIAL CH340" And statusFP = False Then
             tampil()
-            FPLogin()
             CheckRFID.Checked = False
             CheckFngr.Checked = True
         Else
@@ -125,7 +119,12 @@ Public Class Form1
         End If
     End Sub
 
+
     Private Sub FPLogin()
+        FpVer = New FlexCodeSDK.FinFPVer
+        FpVer.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
+        FpVer.SetMaxTemplate(100000)
+        FpVer.FPVerificationStart()
         Dim commText As String = "SELECT MemberNo, FullName, Template, FingerIndex FROM Members"
         Dim sqlCommand As New MySqlCommand(commText, Conn)
         Dim rd As MySqlDataReader = sqlCommand.ExecuteReader()
@@ -153,6 +152,15 @@ Public Class Form1
     Private Sub FpReg_FPRegistrationTemplate(ByVal FPTemplate As String) Handles FpReg.FPRegistrationTemplate
         Template = FPTemplate
         RichTextBox1.Text = FPTemplate
+    End Sub
+
+    Private Sub FpReg_FPRegistrationImage() Handles FpReg.FPRegistrationImage
+        Dim imgFile As System.IO.FileStream = New System.IO.FileStream(My.Application.Info.DirectoryPath & "\FPTemp.BMP", System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite)
+        Dim fileBytes(imgFile.Length) As Byte
+        imgFile.Read(fileBytes, 0, fileBytes.Length)
+        imgFile.Close()
+        Dim ms As System.IO.MemoryStream = New System.IO.MemoryStream(fileBytes)
+        PictureBox2.Image = Image.FromStream(ms)
     End Sub
 
     Private Sub konek(ByVal Cmb As String)
@@ -186,7 +194,9 @@ Public Class Form1
         If uniqueTemplate Then
             Dim sqlCommand As New MySqlCommand
             sqlCommand.Connection = Conn
-            sqlCommand.CommandText = "INSERT INTO members(MemberNo, FingerIndex, Template) VALUES('" & NimFinger.Text & "','" & Str(NoJari.SelectedIndex) & "','" & Template & "')"
+            sqlCommand.CommandText = "INSERT INTO `members`(FingerIndex, Template) 
+                                     SELECT ('" & Str(NoJari.SelectedIndex) & "','" & Template & "') 
+                                     FROM `members` WHERE MemberNo = '" & NimFinger.Text & "'"
             sqlCommand.ExecuteNonQuery()
             MsgBox("OK!")
         End If
@@ -331,9 +341,11 @@ Public Class Form1
 
         PnlWrite.Hide()
         PanelWrite.Hide()
+        FPLogin()
     End Sub
 
     Private Sub Write_Click(sender As Object, e As EventArgs) Handles Write.Click
+        FpVer.FPVerificationStop()
         PnlWrite.Show()
 
         PnlRead.Hide()
@@ -573,6 +585,5 @@ Public Class Form1
             CheckFngr.Enabled = False
         End If
     End Sub
-
 
 End Class
