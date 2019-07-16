@@ -38,6 +38,12 @@ Partial Class Form1
         Me.Fingerprint = New Bunifu.Framework.UI.BunifuImageButton()
         Me.RFID = New Bunifu.Framework.UI.BunifuImageButton()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.PanelFinger = New System.Windows.Forms.Panel()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
+        Me.NoJari = New System.Windows.Forms.ComboBox()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.NimFinger = New System.Windows.Forms.Label()
         Me.PanelWrite = New System.Windows.Forms.Panel()
         Me.Ext2 = New System.Windows.Forms.Button()
         Me.BtnWrite = New System.Windows.Forms.Button()
@@ -45,12 +51,6 @@ Partial Class Form1
         Me.NIMWrite = New Bunifu.Framework.UI.BunifuCustomLabel()
         Me.TxtNIM_Write = New System.Windows.Forms.TextBox()
         Me.Panel8 = New System.Windows.Forms.Panel()
-        Me.PanelFinger = New System.Windows.Forms.Panel()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
-        Me.NoJari = New System.Windows.Forms.ComboBox()
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
-        Me.NimFinger = New System.Windows.Forms.Label()
         Me.CheckRFID = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.CheckFngr = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.PanelRead = New System.Windows.Forms.Panel()
@@ -79,9 +79,9 @@ Partial Class Form1
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
-        Me.PanelWrite.SuspendLayout()
         Me.PanelFinger.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.PanelWrite.SuspendLayout()
         Me.PanelRead.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel4.SuspendLayout()
@@ -306,6 +306,64 @@ Partial Class Form1
         Me.Panel1.Size = New System.Drawing.Size(542, 386)
         Me.Panel1.TabIndex = 1
         '
+        'PanelFinger
+        '
+        Me.PanelFinger.Controls.Add(Me.Label2)
+        Me.PanelFinger.Controls.Add(Me.RichTextBox1)
+        Me.PanelFinger.Controls.Add(Me.NoJari)
+        Me.PanelFinger.Controls.Add(Me.PictureBox2)
+        Me.PanelFinger.Controls.Add(Me.NimFinger)
+        Me.PanelFinger.Location = New System.Drawing.Point(80, 103)
+        Me.PanelFinger.Name = "PanelFinger"
+        Me.PanelFinger.Size = New System.Drawing.Size(394, 204)
+        Me.PanelFinger.TabIndex = 29
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(39, 154)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(40, 13)
+        Me.Label2.TabIndex = 39
+        Me.Label2.Text = "Label2"
+        '
+        'RichTextBox1
+        '
+        Me.RichTextBox1.Location = New System.Drawing.Point(42, 55)
+        Me.RichTextBox1.Name = "RichTextBox1"
+        Me.RichTextBox1.Size = New System.Drawing.Size(182, 96)
+        Me.RichTextBox1.TabIndex = 38
+        Me.RichTextBox1.Text = ""
+        '
+        'NoJari
+        '
+        Me.NoJari.FormattingEnabled = True
+        Me.NoJari.Items.AddRange(New Object() {"Left Pinkie", "Left Ring", "Left Middle", "Left Index", "Left Thumb", "Right Thumb", "Right Index", "Right Middle", "Right Ring", "Right Pinkie"})
+        Me.NoJari.Location = New System.Drawing.Point(42, 30)
+        Me.NoJari.Name = "NoJari"
+        Me.NoJari.Size = New System.Drawing.Size(182, 21)
+        Me.NoJari.TabIndex = 37
+        '
+        'PictureBox2
+        '
+        Me.PictureBox2.Location = New System.Drawing.Point(233, 29)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(124, 138)
+        Me.PictureBox2.TabIndex = 36
+        Me.PictureBox2.TabStop = False
+        '
+        'NimFinger
+        '
+        Me.NimFinger.AutoSize = True
+        Me.NimFinger.Cursor = System.Windows.Forms.Cursors.Default
+        Me.NimFinger.Font = New System.Drawing.Font("Century Gothic", 12.0!)
+        Me.NimFinger.Location = New System.Drawing.Point(38, 5)
+        Me.NimFinger.Name = "NimFinger"
+        Me.NimFinger.Size = New System.Drawing.Size(27, 21)
+        Me.NimFinger.TabIndex = 35
+        Me.NimFinger.Text = "ID"
+        '
         'PanelWrite
         '
         Me.PanelWrite.BackColor = System.Drawing.Color.Transparent
@@ -387,63 +445,6 @@ Partial Class Form1
         Me.Panel8.Name = "Panel8"
         Me.Panel8.Size = New System.Drawing.Size(249, 1)
         Me.Panel8.TabIndex = 15
-        '
-        'PanelFinger
-        '
-        Me.PanelFinger.Controls.Add(Me.Label2)
-        Me.PanelFinger.Controls.Add(Me.RichTextBox1)
-        Me.PanelFinger.Controls.Add(Me.NoJari)
-        Me.PanelFinger.Controls.Add(Me.PictureBox2)
-        Me.PanelFinger.Controls.Add(Me.NimFinger)
-        Me.PanelFinger.Location = New System.Drawing.Point(80, 103)
-        Me.PanelFinger.Name = "PanelFinger"
-        Me.PanelFinger.Size = New System.Drawing.Size(394, 204)
-        Me.PanelFinger.TabIndex = 29
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(39, 154)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(40, 13)
-        Me.Label2.TabIndex = 39
-        Me.Label2.Text = "Label2"
-        '
-        'RichTextBox1
-        '
-        Me.RichTextBox1.Location = New System.Drawing.Point(42, 55)
-        Me.RichTextBox1.Name = "RichTextBox1"
-        Me.RichTextBox1.Size = New System.Drawing.Size(182, 96)
-        Me.RichTextBox1.TabIndex = 38
-        Me.RichTextBox1.Text = ""
-        '
-        'NoJari
-        '
-        Me.NoJari.FormattingEnabled = True
-        Me.NoJari.Location = New System.Drawing.Point(42, 30)
-        Me.NoJari.Name = "NoJari"
-        Me.NoJari.Size = New System.Drawing.Size(182, 21)
-        Me.NoJari.TabIndex = 37
-        '
-        'PictureBox2
-        '
-        Me.PictureBox2.Location = New System.Drawing.Point(233, 29)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(124, 138)
-        Me.PictureBox2.TabIndex = 36
-        Me.PictureBox2.TabStop = False
-        '
-        'NimFinger
-        '
-        Me.NimFinger.AutoSize = True
-        Me.NimFinger.Cursor = System.Windows.Forms.Cursors.Default
-        Me.NimFinger.Font = New System.Drawing.Font("Century Gothic", 12.0!)
-        Me.NimFinger.Location = New System.Drawing.Point(38, 5)
-        Me.NimFinger.Name = "NimFinger"
-        Me.NimFinger.Size = New System.Drawing.Size(27, 21)
-        Me.NimFinger.TabIndex = 35
-        Me.NimFinger.Text = "ID"
         '
         'CheckRFID
         '
@@ -681,11 +682,11 @@ Partial Class Form1
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
-        Me.PanelWrite.ResumeLayout(False)
-        Me.PanelWrite.PerformLayout()
         Me.PanelFinger.ResumeLayout(False)
         Me.PanelFinger.PerformLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.PanelWrite.ResumeLayout(False)
+        Me.PanelWrite.PerformLayout()
         Me.PanelRead.ResumeLayout(False)
         Me.PanelRead.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()

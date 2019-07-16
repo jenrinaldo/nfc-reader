@@ -107,18 +107,19 @@ Public Class Form1
 
     Private Sub FPRegist()
         If Write.Enabled = True Then
+            FpVer.FPVerificationStop()
             FpReg = New FlexCodeSDK.FinFPReg
             FpReg.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
             FpReg.FPRegistrationStart("YourSecretKey")
             uniqueTemplate = False
-        End If   
-    End Sub 
+        End If
+    End Sub
 
     Private Sub FpReg_FPSamplesNeeded(ByVal Samples As Short) Handles FpReg.FPSamplesNeeded
         Label2.Text = Str(Samples) & "x"
     End Sub
 
-        Private Sub FpReg_FPRegistrationStatus(ByVal Status As FlexCodeSDK.RegistrationStatus) Handles FpReg.FPRegistrationStatus
+    Private Sub FpReg_FPRegistrationStatus(ByVal Status As FlexCodeSDK.RegistrationStatus) Handles FpReg.FPRegistrationStatus
         If Status = FlexCodeSDK.RegistrationStatus.r_OK Then
             FPLogin()
         End If
@@ -151,8 +152,9 @@ Public Class Form1
 
     Private Sub FpReg_FPRegistrationTemplate(ByVal FPTemplate As String) Handles FpReg.FPRegistrationTemplate
         Template = FPTemplate
+        RichTextBox1.Text = FPTemplate
     End Sub
-    
+
     Private Sub konek(ByVal Cmb As String)
         SerialPort1.BaudRate = baudrate
         SerialPort1.PortName = Cmb
@@ -180,11 +182,11 @@ Public Class Form1
         Write.Enabled = True
     End Sub
 
-    Private Sub fpAddToDB
+    Private Sub fpAddToDB()
         If uniqueTemplate Then
             Dim sqlCommand As New MySqlCommand
             sqlCommand.Connection = Conn
-            sqlCommand.CommandText = "INSERT INTO members(MemberNo, FingerIndex, Template) VALUES('" & NimFinger.Text & "','" & Str(NoJari.SelectedIndex) & ",'" & Template & "')"
+            sqlCommand.CommandText = "INSERT INTO members(MemberNo, FingerIndex, Template) VALUES('" & NimFinger.Text & "','" & Str(NoJari.SelectedIndex) & "','" & Template & "')"
             sqlCommand.ExecuteNonQuery()
             MsgBox("OK!")
         End If
@@ -254,7 +256,7 @@ Public Class Form1
                 If CheckRFID.Checked = False Then
                     sembunyi()
                 End If
-            Case FlexCodeSDK.VerificationStatus.v_NotMatch, FlexCodeSDK.VerificationStatus.v_FPListEmpty 
+            Case FlexCodeSDK.VerificationStatus.v_NotMatch, FlexCodeSDK.VerificationStatus.v_FPListEmpty
                 uniqueTemplate = True
                 fpAddToDB()
                 Stts.Text = "No match"
@@ -322,6 +324,7 @@ Public Class Form1
     Private Sub Read_Click(sender As Object, e As EventArgs) Handles Read.Click
         PanelRead.Hide()
         PanelWrite.Hide()
+        PanelFinger.Hide()
 
         PnlRead.Show()
         PanelRead.Show()
@@ -335,6 +338,7 @@ Public Class Form1
 
         PnlRead.Hide()
         PanelRead.Hide()
+        PanelFinger.Hide()
         PanelWrite.Show()
 
         Read.Enabled = False
@@ -348,7 +352,11 @@ Public Class Form1
         waktu = 25
         Timer3.Enabled = True
     End Sub
-
+    Private Sub TxtNIM_Write_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtNIM_Write.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            BtnWrite.PerformClick()
+        End If
+    End Sub
 
     Private Sub BtnWrite_Click(sender As Object, e As EventArgs) Handles BtnWrite.Click
         SerialPort1.Write(TxtNIM_Write.Text & "*")
@@ -358,7 +366,12 @@ Public Class Form1
         Read.Enabled = True
         Write.Enabled = True
         Ext.Enabled = True
+
+        PnlWrite.Show()
+        PanelFinger.Show()
+        PanelWrite.Hide()
     End Sub
+
     Private Sub passing()
         PnlWrite.Show()
         PanelFinger.Show()
@@ -379,12 +392,6 @@ Public Class Form1
         PanelWrite.Hide()
         PnlWrite.Hide()
         PanelFinger.Hide()
-    End Sub
-
-    Private Sub TxtNIM_Write_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtNIM_Write.KeyDown
-        If e.KeyCode = Keys.Enter Then
-            BtnWrite.PerformClick()
-        End If
     End Sub
 
     Private Sub Ext2_Click(sender As Object, e As EventArgs) Handles Ext2.Click
@@ -552,7 +559,7 @@ Public Class Form1
     Private Sub Form1_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
         Conn.Close()
         FpVer.FPListClear()
-
+        FpVer.FPVerificationStop()
     End Sub
 
     Private Sub CheckFngr_Click(sender As Object, e As EventArgs) Handles CheckFngr.Click
