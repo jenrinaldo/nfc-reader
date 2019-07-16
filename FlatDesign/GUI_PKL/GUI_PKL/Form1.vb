@@ -225,6 +225,7 @@ Public Class Form1
         Read.Enabled = True
         Ext.Enabled = True
 
+        FpVer.FPVerificationStart()
         NimFinger.Text = "Berhasil"
         NoJari.Text = ""
         RichTextBox1.Text = ""
@@ -311,6 +312,8 @@ Public Class Form1
         If uniqueTemplate And RichTextBox1.Text <> "" Then
             fpAddToDB()
             uniqueTemplate = False
+            FpReg.FPRegistrationStop()
+
         End If
     End Sub
     Private Sub Ext_Click(sender As Object, e As EventArgs) Handles Ext.Click
@@ -362,15 +365,14 @@ Public Class Form1
     End Sub
 
     Private Sub Read_Click(sender As Object, e As EventArgs) Handles Read.Click
-        PanelFinger.Hide()
+        Write.Enabled = True
 
         PnlRead.Show()
         PanelRead.Show()
 
         PnlWrite.Hide()
+        PanelFinger.Hide()
         PanelWrite.Hide()
-
-        FPVerif()
     End Sub
 
     Private Sub Write_Click(sender As Object, e As EventArgs) Handles Write.Click
