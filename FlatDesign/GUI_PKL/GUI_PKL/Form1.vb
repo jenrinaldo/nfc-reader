@@ -383,6 +383,7 @@ Public Class Form1
         Ext.Enabled = False
 
         NimFinger.Text = TxtNIM_Write.Text
+        FPRegist()
     End Sub
 
     Private Sub gagal()
