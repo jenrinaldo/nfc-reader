@@ -77,7 +77,6 @@ Public Class Form1
         If string1 = "USB-SERIAL CH340" And statusFP = False Then
             konek(hasil)
             tampil()
-            FPLogin()
             CheckRFID.Checked = True
             CheckFngr.Checked = True
         ElseIf string1 = "USB-SERIAL CH340" And statusFP = True Then
@@ -88,7 +87,6 @@ Public Class Form1
             CheckFngr.Enabled = True
         ElseIf string1 <> "USB-SERIAL CH340" And statusFP = False Then
             tampil()
-            FPLogin()
             CheckRFID.Checked = False
             CheckFngr.Checked = True
         Else
@@ -343,6 +341,7 @@ Public Class Form1
 
         PnlWrite.Hide()
         PanelWrite.Hide()
+        FPLogin()
     End Sub
 
     Private Sub Write_Click(sender As Object, e As EventArgs) Handles Write.Click
