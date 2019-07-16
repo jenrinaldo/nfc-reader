@@ -135,7 +135,6 @@ Public Class Form1
     Private Sub FPVerif()
         Conn.Close()
         Conn.Open()
-        FpVer = New FlexCodeSDK.FinFPVer
 
         FpVer.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
         Dim commText As String = "SELECT MemberNo, FullName, Template, FingerIndex FROM Members"
@@ -221,11 +220,18 @@ Public Class Form1
         sqlCommand.ExecuteNonQuery()
         MsgBox("OK!")
 
-
+        Write.Enabled = True
         Read.Enabled = True
         Ext.Enabled = True
 
-        FpVer.FPVerificationStart()
+        PnlRead.Show()
+        PanelRead.Show()
+
+        PnlWrite.Hide()
+        PanelFinger.Hide()
+        PanelWrite.Hide()
+        FPVerif()
+
         NimFinger.Text = "Berhasil"
         NoJari.Text = ""
         RichTextBox1.Text = ""
@@ -365,8 +371,6 @@ Public Class Form1
     End Sub
 
     Private Sub Read_Click(sender As Object, e As EventArgs) Handles Read.Click
-        Write.Enabled = True
-
         PnlRead.Show()
         PanelRead.Show()
 
