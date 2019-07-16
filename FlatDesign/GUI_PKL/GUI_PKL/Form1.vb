@@ -1,4 +1,7 @@
-﻿Imports System.IO.Ports
+﻿Option Explicit On
+
+Imports System.IO
+Imports System.IO.Ports
 Imports System.Management
 Imports System.Text.RegularExpressions
 Imports System.Media
@@ -8,8 +11,6 @@ Public Class Form1
     Dim WithEvents FpVer As New FlexCodeSDK.FinFPVer
     Dim WithEvents FpReg As New FlexCodeSDK.FinFPReg
     Dim uniqueTemplate As Boolean
-    Dim userid As String
-    Dim finum As Integer
     Dim Template As String
     Dim reader As MySqlDataReader
     Dim Conn As MySqlConnection
@@ -29,9 +30,18 @@ Public Class Form1
         Conn = New MySqlConnection
         Conn.ConnectionString = "server = localhost; userid = root; password = ; database = inlislite_v3"
         Conn.Open()
+
+        FpVer = New FlexCodeSDK.FinFPVer
+        FpReg = New FlexCodeSDK.FinFPReg
+        FpVer.SetMaxTemplate(100000)
+
         FpVer.PictureSamplePath = My.Application.Info.DirectoryPath & "\FPTemp.BMP"
         FpVer.PictureSampleHeight = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Height))
         FpVer.PictureSampleWidth = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Width))
+
+        FpReg.PictureSamplePath = My.Application.Info.DirectoryPath & "\FPTemp.BMP"
+        FpReg.PictureSampleHeight = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox2.Height))
+        FpReg.PictureSampleWidth = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox2.Width))
 
         Fingerprint.Enabled = False
         CheckFngr.Enabled = False
@@ -87,6 +97,7 @@ Public Class Form1
             CheckFngr.Checked = False
             CheckFngr.Enabled = True
         ElseIf string1 <> "USB-SERIAL CH340" And statusFP = False Then
+            tampil()
             FPVerif()
             CheckRFID.Checked = False
             CheckFngr.Checked = True
@@ -114,7 +125,9 @@ Public Class Form1
     Private Sub FpReg_FPRegistrationStatus(ByVal Status As FlexCodeSDK.RegistrationStatus) Handles FpReg.FPRegistrationStatus
         If Status = FlexCodeSDK.RegistrationStatus.r_OK Then
             FpReg.FPRegistrationStop()
-            FPVerif()
+            FpVer = New FlexCodeSDK.FinFPVer
+            FpVer.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
+            FpVer.FPVerificationStart()
         End If
     End Sub
 
@@ -123,9 +136,8 @@ Public Class Form1
         Conn.Close()
         Conn.Open()
         FpVer = New FlexCodeSDK.FinFPVer
+
         FpVer.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
-        FpVer.SetMaxTemplate(100000)
-        FpVer.FPVerificationStart()
         Dim commText As String = "SELECT MemberNo, FullName, Template, FingerIndex FROM Members"
         Dim sqlCommand As New MySqlCommand(commText, Conn)
         Dim rd As MySqlDataReader = sqlCommand.ExecuteReader()
@@ -137,16 +149,24 @@ Public Class Form1
     End Sub
 
     Private Sub FPVer_FPVerificationID(ByVal ID As String, ByVal FingerNr As FlexCodeSDK.FingerNumber) Handles FpVer.FPVerificationID
-        userid = ID
-        finum = FingerNr
+        Dim bls As String
+        NIM.Text = ID
+        bls = balasan.Text
+        Stts.Text = ""
+        balasan.Text = ""
+        If FlexCodeSDK.VerificationStatus.v_OK = 1 Then
+            MsgBox(bls)
+            NIM.Text = ""
+            Nama.Text = ""
+        End If
     End Sub
 
     Private Sub FPVer_FPVerificationImage() Handles FpVer.FPVerificationImage
-        Dim imgFile As System.IO.FileStream = New System.IO.FileStream(My.Application.Info.DirectoryPath & "\FPTemp.BMP", System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite)
+        Dim imgFile As FileStream = New FileStream(My.Application.Info.DirectoryPath & "\FPTemp.BMP", FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
         Dim fileBytes(imgFile.Length) As Byte
         imgFile.Read(fileBytes, 0, fileBytes.Length)
         imgFile.Close()
-        Dim ms As System.IO.MemoryStream = New System.IO.MemoryStream(fileBytes)
+        Dim ms As MemoryStream = New MemoryStream(fileBytes)
         PictureBox1.Image = Image.FromStream(ms)
     End Sub
 
@@ -156,11 +176,11 @@ Public Class Form1
     End Sub
 
     Private Sub FpReg_FPRegistrationImage() Handles FpReg.FPRegistrationImage
-        Dim imgFile As System.IO.FileStream = New System.IO.FileStream(My.Application.Info.DirectoryPath & "\FPTemp.BMP", System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite)
+        Dim imgFile As FileStream = New FileStream(My.Application.Info.DirectoryPath & "\FPTemp.BMP", FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
         Dim fileBytes(imgFile.Length) As Byte
         imgFile.Read(fileBytes, 0, fileBytes.Length)
         imgFile.Close()
-        Dim ms As System.IO.MemoryStream = New System.IO.MemoryStream(fileBytes)
+        Dim ms As MemoryStream = New MemoryStream(fileBytes)
         PictureBox2.Image = Image.FromStream(ms)
     End Sub
 
@@ -194,13 +214,21 @@ Public Class Form1
     Private Sub fpAddToDB()
         Conn.Close()
         Conn.Open()
+        Stts.Text = ""
+        Dim commText As String = "UPDATE `members` SET `template` = '" & RichTextBox1.Text & "', `fingerindex` = '" & Str(NoJari.SelectedIndex) & "' 
+                                     WHERE MemberNo = '" & NimFinger.Text & "';"
+        Dim sqlCommand As New MySqlCommand(commText, Conn)
+        sqlCommand.ExecuteNonQuery()
+        MsgBox("OK!")
 
-        If uniqueTemplate Then
-            Dim commText As String = "INSERT INTO `members`(FingerIndex, Template) SELECT ('" & Str(NoJari.SelectedIndex) & "','" & Template & "') FROM `members` WHERE MemberNo = '" & NimFinger.Text & "'"
-            Dim sqlCommand As New MySqlCommand(commText, Conn)
-            sqlCommand.ExecuteNonQuery()
-            MsgBox("OK!")
-        End If
+
+        Read.Enabled = True
+        Ext.Enabled = True
+
+        NimFinger.Text = "Berhasil"
+        NoJari.Text = ""
+        RichTextBox1.Text = ""
+        Label2.Text = ""
     End Sub
 
     Private Sub tampil()
@@ -268,21 +296,22 @@ Public Class Form1
                     sembunyi()
                 End If
             Case FlexCodeSDK.VerificationStatus.v_NotMatch, FlexCodeSDK.VerificationStatus.v_FPListEmpty
+                Stts.Text = "No Match"
                 uniqueTemplate = True
-                fpAddToDB()
-                Stts.Text = "No match"
-            Case FlexCodeSDK.VerificationStatus.v_OK
-                MsgBox("Match")
             Case FlexCodeSDK.VerificationStatus.v_PoorImageQuality
-                MsgBox("Poor image quality")
+                Stts.Text = "Poor image quality"
             Case FlexCodeSDK.VerificationStatus.v_VerificationFailed
-                MsgBox("Verification failed")
+                Stts.Text = "Verification failed"
             Case FlexCodeSDK.VerificationStatus.v_VerifyCaptureStop
-                MsgBox("Stop verify")
+                Stts.Text = "Stop verify"
             Case Else
                 statusFP = False
                 CheckFngr.Checked = True
         End Select
+        If uniqueTemplate And RichTextBox1.Text <> "" Then
+            fpAddToDB()
+            uniqueTemplate = False
+        End If
     End Sub
     Private Sub Ext_Click(sender As Object, e As EventArgs) Handles Ext.Click
         Me.Close()
@@ -333,8 +362,6 @@ Public Class Form1
     End Sub
 
     Private Sub Read_Click(sender As Object, e As EventArgs) Handles Read.Click
-        PanelRead.Hide()
-        PanelWrite.Hide()
         PanelFinger.Hide()
 
         PnlRead.Show()
@@ -342,6 +369,8 @@ Public Class Form1
 
         PnlWrite.Hide()
         PanelWrite.Hide()
+
+        FPVerif()
     End Sub
 
     Private Sub Write_Click(sender As Object, e As EventArgs) Handles Write.Click
@@ -359,6 +388,12 @@ Public Class Form1
 
         TxtNIM_Write.Text = ""
         TxtNIM_Write.Focus()
+
+        Stts.Text = ""
+        NimFinger.Text = ""
+        NoJari.Text = ""
+        RichTextBox1.Text = ""
+        Label2.Text = ""
 
         SerialPort1.Write("write" & "#")
         waktu = 25
@@ -529,7 +564,7 @@ Public Class Form1
                         Nama.Text = ""
                         NIM.Text = ""
                     Else
-                        Nama.Text = "NIM Tidak Terdaftar"
+                        Nama.Text = "NIM Tak Terdaftar"
                     End If
                     Conn.Close()
                 End If
@@ -585,5 +620,4 @@ Public Class Form1
             CheckFngr.Enabled = False
         End If
     End Sub
-
 End Class
