@@ -294,8 +294,8 @@ Partial Class Form1
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
-        Me.Panel1.Controls.Add(Me.PanelWrite)
         Me.Panel1.Controls.Add(Me.PanelFinger)
+        Me.Panel1.Controls.Add(Me.PanelWrite)
         Me.Panel1.Controls.Add(Me.CheckRFID)
         Me.Panel1.Controls.Add(Me.CheckFngr)
         Me.Panel1.Controls.Add(Me.RFID)
