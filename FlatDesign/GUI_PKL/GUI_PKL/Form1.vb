@@ -56,6 +56,7 @@ Public Class Form1
 
         PnlWrite.Hide()
         PanelWrite.Hide()
+        PanelFinger.Hide()
 
         PnlRead.Hide()
         PanelRead.Hide()
@@ -63,6 +64,7 @@ Public Class Form1
         Stts.Text = ""
         Nama.Text = ""
         balasan.Text = ""
+        TxtNIM_Write.Text = ""
 
         Dim searcher As New ManagementObjectSearcher("root\CIMV2", "Select * FROM Win32_PnPEntity")
         For Each queryObj As ManagementObject In searcher.Get()
@@ -224,7 +226,7 @@ Public Class Form1
                 Stts.Text = "Multiple match"
             Case FlexCodeSDK.VerificationStatus.v_NoDevice
                 statusFP = True
-                MsgBox("Please connect the device to USB port or Add a device")
+                MessageBox.Show("USB Port Fingerprint Tidak Terdeteksi", "Warning!", MessageBoxButtons.OK)
                 If CheckFngr.Checked = True Then
                     CheckFngr.Checked = False
                     CheckFngr.Enabled = True
@@ -324,36 +326,42 @@ Public Class Form1
         waktu = 25
         Timer3.Enabled = True
     End Sub
-    Private Sub passing()
-        Dim obj As New RegisFinger
-        obj.NIMpass = TxtNIM_Write.Text
-        obj.Show()
-    End Sub
+
 
     Private Sub BtnWrite_Click(sender As Object, e As EventArgs) Handles BtnWrite.Click
         SerialPort1.Write(TxtNIM_Write.Text & "*")
         Timer3.Enabled = False
         waktu = 0
 
-        RegisFinger.Show()
-        Hide()
-
         Read.Enabled = True
         Write.Enabled = True
         Ext.Enabled = True
+    End Sub
+    Private Sub passing()
+        PnlWrite.Show()
+        PanelFinger.Show()
+        PanelWrite.Hide()
+        PanelRead.Hide()
 
+        Read.Enabled = False
+        Write.Enabled = False
+        Ext.Enabled = False
+
+        ID.Text = TxtNIM_Write.Text
+    End Sub
+
+    Private Sub gagal()
         PanelRead.Show()
         PnlRead.Show()
 
-        PnlWrite.Hide()
         PanelWrite.Hide()
-
+        PnlWrite.Hide()
+        PanelFinger.Hide()
     End Sub
 
     Private Sub TxtNIM_Write_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtNIM_Write.KeyDown
         If e.KeyCode = Keys.Enter Then
             BtnWrite.PerformClick()
-            passing()
         End If
     End Sub
 
@@ -403,6 +411,7 @@ Public Class Form1
         Else
             Timer3.Enabled = False
             SerialPort1.Write("DataKosong" & "*")
+            TxtNIM_Write.Text = ""
 
             Read.Enabled = True
             Write.Enabled = True
@@ -488,12 +497,12 @@ Public Class Form1
                 Stts.Text = "Data Kosong"
             ElseIf Regex.IsMatch(NIM.Text, "Write success!") Then
                 NIM.Text = ""
-                'obj.StatusRFID = "Penulisan RFID Tag Sukses"
-                'obj.Show()
+                MsgBox("Penulisan RFID Tag Sukses")
+                passing()
             ElseIf Regex.IsMatch(NIM.Text, "Write failed!") Then
                 NIM.Text = ""
-                'obj.StatusRFID = "Penulisan RFID Tag Gagal"
-                'obj.Show()
+                MessageBox.Show("Penulisan RFID Tag Gagal", "Warning!", MessageBoxButtons.OK)
+                gagal()
             Else
                 NIM.Text = ""
                 Nama.Text = ""
@@ -534,5 +543,6 @@ Public Class Form1
             CheckFngr.Enabled = False
         End If
     End Sub
+
 
 End Class
