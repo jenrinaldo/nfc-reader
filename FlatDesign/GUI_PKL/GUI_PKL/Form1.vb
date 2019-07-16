@@ -196,7 +196,9 @@ Public Class Form1
         If uniqueTemplate Then
             Dim sqlCommand As New MySqlCommand
             sqlCommand.Connection = Conn
-            sqlCommand.CommandText = "INSERT INTO members(MemberNo, FingerIndex, Template) VALUES('" & NimFinger.Text & "','" & Str(NoJari.SelectedIndex) & "','" & Template & "')"
+            sqlCommand.CommandText = "INSERT INTO `members`(FingerIndex, Template) 
+                                     SELECT ('" & Str(NoJari.SelectedIndex) & "','" & Template & "') 
+                                     FROM `members` WHERE MemberNo = '" & NimFinger.Text & "'"
             sqlCommand.ExecuteNonQuery()
             MsgBox("OK!")
         End If
