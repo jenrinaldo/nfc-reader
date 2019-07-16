@@ -38,9 +38,6 @@ Partial Class Form1
         Me.Fingerprint = New Bunifu.Framework.UI.BunifuImageButton()
         Me.RFID = New Bunifu.Framework.UI.BunifuImageButton()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.PanelFinger = New System.Windows.Forms.Panel()
-        Me.CheckRFID = New Bunifu.Framework.UI.BunifuCheckbox()
-        Me.CheckFngr = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.PanelWrite = New System.Windows.Forms.Panel()
         Me.Ext2 = New System.Windows.Forms.Button()
         Me.BtnWrite = New System.Windows.Forms.Button()
@@ -48,6 +45,14 @@ Partial Class Form1
         Me.NIMWrite = New Bunifu.Framework.UI.BunifuCustomLabel()
         Me.TxtNIM_Write = New System.Windows.Forms.TextBox()
         Me.Panel8 = New System.Windows.Forms.Panel()
+        Me.PanelFinger = New System.Windows.Forms.Panel()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
+        Me.NoJari = New System.Windows.Forms.ComboBox()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.NimFinger = New System.Windows.Forms.Label()
+        Me.CheckRFID = New Bunifu.Framework.UI.BunifuCheckbox()
+        Me.CheckFngr = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.PanelRead = New System.Windows.Forms.Panel()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.NIM = New System.Windows.Forms.TextBox()
@@ -69,22 +74,17 @@ Partial Class Form1
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
-        Me.NoJari = New System.Windows.Forms.ComboBox()
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
-        Me.ID = New System.Windows.Forms.Label()
-        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
         Me.BunifuGradientPanel1.SuspendLayout()
         Me.PanelMENU.SuspendLayout()
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
-        Me.PanelFinger.SuspendLayout()
         Me.PanelWrite.SuspendLayout()
+        Me.PanelFinger.SuspendLayout()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanelRead.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel4.SuspendLayout()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'BunifuElipse1
@@ -306,42 +306,6 @@ Partial Class Form1
         Me.Panel1.Size = New System.Drawing.Size(542, 386)
         Me.Panel1.TabIndex = 1
         '
-        'PanelFinger
-        '
-        Me.PanelFinger.Controls.Add(Me.Label2)
-        Me.PanelFinger.Controls.Add(Me.RichTextBox1)
-        Me.PanelFinger.Controls.Add(Me.NoJari)
-        Me.PanelFinger.Controls.Add(Me.PictureBox2)
-        Me.PanelFinger.Controls.Add(Me.ID)
-        Me.PanelFinger.Location = New System.Drawing.Point(80, 103)
-        Me.PanelFinger.Name = "PanelFinger"
-        Me.PanelFinger.Size = New System.Drawing.Size(394, 204)
-        Me.PanelFinger.TabIndex = 29
-        '
-        'CheckRFID
-        '
-        Me.CheckRFID.BackColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
-        Me.CheckRFID.ChechedOffColor = System.Drawing.Color.FromArgb(CType(CType(132, Byte), Integer), CType(CType(135, Byte), Integer), CType(CType(140, Byte), Integer))
-        Me.CheckRFID.Checked = True
-        Me.CheckRFID.CheckedOnColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
-        Me.CheckRFID.ForeColor = System.Drawing.Color.White
-        Me.CheckRFID.Location = New System.Drawing.Point(445, 342)
-        Me.CheckRFID.Name = "CheckRFID"
-        Me.CheckRFID.Size = New System.Drawing.Size(20, 20)
-        Me.CheckRFID.TabIndex = 28
-        '
-        'CheckFngr
-        '
-        Me.CheckFngr.BackColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
-        Me.CheckFngr.ChechedOffColor = System.Drawing.Color.FromArgb(CType(CType(132, Byte), Integer), CType(CType(135, Byte), Integer), CType(CType(140, Byte), Integer))
-        Me.CheckFngr.Checked = True
-        Me.CheckFngr.CheckedOnColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
-        Me.CheckFngr.ForeColor = System.Drawing.Color.White
-        Me.CheckFngr.Location = New System.Drawing.Point(349, 342)
-        Me.CheckFngr.Name = "CheckFngr"
-        Me.CheckFngr.Size = New System.Drawing.Size(20, 20)
-        Me.CheckFngr.TabIndex = 27
-        '
         'PanelWrite
         '
         Me.PanelWrite.BackColor = System.Drawing.Color.Transparent
@@ -423,6 +387,87 @@ Partial Class Form1
         Me.Panel8.Name = "Panel8"
         Me.Panel8.Size = New System.Drawing.Size(249, 1)
         Me.Panel8.TabIndex = 15
+        '
+        'PanelFinger
+        '
+        Me.PanelFinger.Controls.Add(Me.Label2)
+        Me.PanelFinger.Controls.Add(Me.RichTextBox1)
+        Me.PanelFinger.Controls.Add(Me.NoJari)
+        Me.PanelFinger.Controls.Add(Me.PictureBox2)
+        Me.PanelFinger.Controls.Add(Me.NimFinger)
+        Me.PanelFinger.Location = New System.Drawing.Point(80, 103)
+        Me.PanelFinger.Name = "PanelFinger"
+        Me.PanelFinger.Size = New System.Drawing.Size(394, 204)
+        Me.PanelFinger.TabIndex = 29
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(39, 154)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(40, 13)
+        Me.Label2.TabIndex = 39
+        Me.Label2.Text = "Label2"
+        '
+        'RichTextBox1
+        '
+        Me.RichTextBox1.Location = New System.Drawing.Point(42, 55)
+        Me.RichTextBox1.Name = "RichTextBox1"
+        Me.RichTextBox1.Size = New System.Drawing.Size(182, 96)
+        Me.RichTextBox1.TabIndex = 38
+        Me.RichTextBox1.Text = ""
+        '
+        'NoJari
+        '
+        Me.NoJari.FormattingEnabled = True
+        Me.NoJari.Location = New System.Drawing.Point(42, 30)
+        Me.NoJari.Name = "NoJari"
+        Me.NoJari.Size = New System.Drawing.Size(182, 21)
+        Me.NoJari.TabIndex = 37
+        '
+        'PictureBox2
+        '
+        Me.PictureBox2.Location = New System.Drawing.Point(233, 29)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(124, 138)
+        Me.PictureBox2.TabIndex = 36
+        Me.PictureBox2.TabStop = False
+        '
+        'NimFinger
+        '
+        Me.NimFinger.AutoSize = True
+        Me.NimFinger.Cursor = System.Windows.Forms.Cursors.Default
+        Me.NimFinger.Font = New System.Drawing.Font("Century Gothic", 12.0!)
+        Me.NimFinger.Location = New System.Drawing.Point(38, 5)
+        Me.NimFinger.Name = "NimFinger"
+        Me.NimFinger.Size = New System.Drawing.Size(27, 21)
+        Me.NimFinger.TabIndex = 35
+        Me.NimFinger.Text = "ID"
+        '
+        'CheckRFID
+        '
+        Me.CheckRFID.BackColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
+        Me.CheckRFID.ChechedOffColor = System.Drawing.Color.FromArgb(CType(CType(132, Byte), Integer), CType(CType(135, Byte), Integer), CType(CType(140, Byte), Integer))
+        Me.CheckRFID.Checked = True
+        Me.CheckRFID.CheckedOnColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
+        Me.CheckRFID.ForeColor = System.Drawing.Color.White
+        Me.CheckRFID.Location = New System.Drawing.Point(445, 342)
+        Me.CheckRFID.Name = "CheckRFID"
+        Me.CheckRFID.Size = New System.Drawing.Size(20, 20)
+        Me.CheckRFID.TabIndex = 28
+        '
+        'CheckFngr
+        '
+        Me.CheckFngr.BackColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
+        Me.CheckFngr.ChechedOffColor = System.Drawing.Color.FromArgb(CType(CType(132, Byte), Integer), CType(CType(135, Byte), Integer), CType(CType(140, Byte), Integer))
+        Me.CheckFngr.Checked = True
+        Me.CheckFngr.CheckedOnColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
+        Me.CheckFngr.ForeColor = System.Drawing.Color.White
+        Me.CheckFngr.Location = New System.Drawing.Point(349, 342)
+        Me.CheckFngr.Name = "CheckFngr"
+        Me.CheckFngr.Size = New System.Drawing.Size(20, 20)
+        Me.CheckFngr.TabIndex = 27
         '
         'PanelRead
         '
@@ -616,51 +661,6 @@ Partial Class Form1
         'Timer2
         '
         '
-        'NoJari
-        '
-        Me.NoJari.FormattingEnabled = True
-        Me.NoJari.Location = New System.Drawing.Point(42, 30)
-        Me.NoJari.Name = "NoJari"
-        Me.NoJari.Size = New System.Drawing.Size(182, 21)
-        Me.NoJari.TabIndex = 37
-        '
-        'PictureBox2
-        '
-        Me.PictureBox2.Location = New System.Drawing.Point(233, 29)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(124, 138)
-        Me.PictureBox2.TabIndex = 36
-        Me.PictureBox2.TabStop = False
-        '
-        'ID
-        '
-        Me.ID.AutoSize = True
-        Me.ID.Cursor = System.Windows.Forms.Cursors.Default
-        Me.ID.Font = New System.Drawing.Font("Century Gothic", 12.0!)
-        Me.ID.Location = New System.Drawing.Point(38, 5)
-        Me.ID.Name = "ID"
-        Me.ID.Size = New System.Drawing.Size(27, 21)
-        Me.ID.TabIndex = 35
-        Me.ID.Text = "ID"
-        '
-        'RichTextBox1
-        '
-        Me.RichTextBox1.Location = New System.Drawing.Point(42, 55)
-        Me.RichTextBox1.Name = "RichTextBox1"
-        Me.RichTextBox1.Size = New System.Drawing.Size(182, 96)
-        Me.RichTextBox1.TabIndex = 38
-        Me.RichTextBox1.Text = ""
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(39, 154)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(40, 13)
-        Me.Label2.TabIndex = 39
-        Me.Label2.Text = "Label2"
-        '
         'Form1
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
@@ -681,16 +681,16 @@ Partial Class Form1
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
-        Me.PanelFinger.ResumeLayout(False)
-        Me.PanelFinger.PerformLayout()
         Me.PanelWrite.ResumeLayout(False)
         Me.PanelWrite.PerformLayout()
+        Me.PanelFinger.ResumeLayout(False)
+        Me.PanelFinger.PerformLayout()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PanelRead.ResumeLayout(False)
         Me.PanelRead.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel4.ResumeLayout(False)
         Me.Panel4.PerformLayout()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -743,5 +743,5 @@ Partial Class Form1
     Friend WithEvents RichTextBox1 As RichTextBox
     Friend WithEvents NoJari As ComboBox
     Friend WithEvents PictureBox2 As PictureBox
-    Friend WithEvents ID As Label
+    Friend WithEvents NimFinger As Label
 End Class

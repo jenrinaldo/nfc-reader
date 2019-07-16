@@ -6,6 +6,8 @@ Imports MySql.Data.MySqlClient
 
 Public Class Form1
     Dim WithEvents FpVer As New FlexCodeSDK.FinFPVer
+    Dim WithEvents FpReg As New FlexCodeSDK.FinFPReg
+    Dim uniqueTemplate As Boolean
     Dim userid As String
     Dim finum As Integer
     Dim Template As String
@@ -41,7 +43,7 @@ Public Class Form1
         RFID.Enabled = False
         CheckRFID.Enabled = False
         CheckRFID.Checked = False
-
+        uniqueTemplate = False
         NIM.Enabled = False
 
         Timer1.Enabled = True
@@ -103,6 +105,25 @@ Public Class Form1
 
     End Sub
 
+    Private Sub FPRegist()
+        If Write.Enabled = True Then
+            FpReg = New FlexCodeSDK.FinFPReg
+            FpReg.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
+            FpReg.FPRegistrationStart("YourSecretKey")
+            uniqueTemplate = False
+        End If   
+    End Sub 
+
+    Private Sub FpReg_FPSamplesNeeded(ByVal Samples As Short) Handles FpReg.FPSamplesNeeded
+        Label2.Text = Str(Samples) & "x"
+    End Sub
+
+        Private Sub FpReg_FPRegistrationStatus(ByVal Status As FlexCodeSDK.RegistrationStatus) Handles FpReg.FPRegistrationStatus
+        If Status = FlexCodeSDK.RegistrationStatus.r_OK Then
+            FPLogin()
+        End If
+    End Sub
+
     Private Sub FPLogin()
         Dim commText As String = "SELECT MemberNo, FullName, Template, FingerIndex FROM Members"
         Dim sqlCommand As New MySqlCommand(commText, Conn)
@@ -128,6 +149,10 @@ Public Class Form1
         PictureBox1.Image = Image.FromStream(ms)
     End Sub
 
+    Private Sub FpReg_FPRegistrationTemplate(ByVal FPTemplate As String) Handles FpReg.FPRegistrationTemplate
+        Template = FPTemplate
+    End Sub
+    
     Private Sub konek(ByVal Cmb As String)
         SerialPort1.BaudRate = baudrate
         SerialPort1.PortName = Cmb
@@ -153,6 +178,16 @@ Public Class Form1
 
 
         Write.Enabled = True
+    End Sub
+
+    Private Sub fpAddToDB
+        If uniqueTemplate Then
+            Dim sqlCommand As New MySqlCommand
+            sqlCommand.Connection = Conn
+            sqlCommand.CommandText = "INSERT INTO members(MemberNo, FingerIndex, Template) VALUES('" & NimFinger.Text & "','" & Str(NoJari.SelectedIndex) & ",'" & Template & "')"
+            sqlCommand.ExecuteNonQuery()
+            MsgBox("OK!")
+        End If
     End Sub
 
     Private Sub tampil()
@@ -219,7 +254,9 @@ Public Class Form1
                 If CheckRFID.Checked = False Then
                     sembunyi()
                 End If
-            Case FlexCodeSDK.VerificationStatus.v_NotMatch
+            Case FlexCodeSDK.VerificationStatus.v_NotMatch, FlexCodeSDK.VerificationStatus.v_FPListEmpty 
+                uniqueTemplate = True
+                fpAddToDB()
                 Stts.Text = "No match"
             Case FlexCodeSDK.VerificationStatus.v_OK
                 MsgBox("Match")
@@ -332,7 +369,7 @@ Public Class Form1
         Write.Enabled = False
         Ext.Enabled = False
 
-        ID.Text = TxtNIM_Write.Text
+        NimFinger.Text = TxtNIM_Write.Text
     End Sub
 
     Private Sub gagal()
