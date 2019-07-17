@@ -49,8 +49,18 @@ Partial Class Form1
         Me.Label2 = New System.Windows.Forms.Label()
         Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
         Me.NoJari = New System.Windows.Forms.ComboBox()
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.NimFinger = New System.Windows.Forms.Label()
+        Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
+        Me.RectangleShape2 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
+        Me.RectangleShape1 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
+        Me.PanelPW = New System.Windows.Forms.Panel()
+        Me.BtnNext = New System.Windows.Forms.Button()
+        Me.TxtPass = New System.Windows.Forms.TextBox()
+        Me.TxtUsr = New System.Windows.Forms.TextBox()
+        Me.Panel5 = New System.Windows.Forms.Panel()
+        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.Password = New System.Windows.Forms.Label()
+        Me.User = New System.Windows.Forms.Label()
         Me.CheckRFID = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.CheckFngr = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.PanelRead = New System.Windows.Forms.Panel()
@@ -74,6 +84,7 @@ Partial Class Form1
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.BunifuGradientPanel1.SuspendLayout()
         Me.PanelMENU.SuspendLayout()
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -81,7 +92,7 @@ Partial Class Form1
         Me.Panel1.SuspendLayout()
         Me.PanelWrite.SuspendLayout()
         Me.PanelFinger.SuspendLayout()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.PanelPW.SuspendLayout()
         Me.PanelRead.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel4.SuspendLayout()
@@ -294,8 +305,9 @@ Partial Class Form1
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
-        Me.Panel1.Controls.Add(Me.PanelFinger)
         Me.Panel1.Controls.Add(Me.PanelWrite)
+        Me.Panel1.Controls.Add(Me.PanelFinger)
+        Me.Panel1.Controls.Add(Me.PanelPW)
         Me.Panel1.Controls.Add(Me.CheckRFID)
         Me.Panel1.Controls.Add(Me.CheckFngr)
         Me.Panel1.Controls.Add(Me.RFID)
@@ -390,12 +402,13 @@ Partial Class Form1
         '
         'PanelFinger
         '
+        Me.PanelFinger.Controls.Add(Me.Label3)
         Me.PanelFinger.Controls.Add(Me.Label2)
         Me.PanelFinger.Controls.Add(Me.RichTextBox1)
         Me.PanelFinger.Controls.Add(Me.NoJari)
-        Me.PanelFinger.Controls.Add(Me.PictureBox2)
         Me.PanelFinger.Controls.Add(Me.NimFinger)
-        Me.PanelFinger.Location = New System.Drawing.Point(80, 103)
+        Me.PanelFinger.Controls.Add(Me.ShapeContainer1)
+        Me.PanelFinger.Location = New System.Drawing.Point(82, 99)
         Me.PanelFinger.Name = "PanelFinger"
         Me.PanelFinger.Size = New System.Drawing.Size(394, 204)
         Me.PanelFinger.TabIndex = 29
@@ -404,7 +417,7 @@ Partial Class Form1
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(39, 154)
+        Me.Label2.Location = New System.Drawing.Point(39, 152)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(40, 13)
         Me.Label2.TabIndex = 39
@@ -414,7 +427,7 @@ Partial Class Form1
         '
         Me.RichTextBox1.Location = New System.Drawing.Point(42, 55)
         Me.RichTextBox1.Name = "RichTextBox1"
-        Me.RichTextBox1.Size = New System.Drawing.Size(182, 96)
+        Me.RichTextBox1.Size = New System.Drawing.Size(301, 96)
         Me.RichTextBox1.TabIndex = 38
         Me.RichTextBox1.Text = ""
         '
@@ -427,14 +440,6 @@ Partial Class Form1
         Me.NoJari.Size = New System.Drawing.Size(182, 21)
         Me.NoJari.TabIndex = 37
         '
-        'PictureBox2
-        '
-        Me.PictureBox2.Location = New System.Drawing.Point(233, 29)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(124, 138)
-        Me.PictureBox2.TabIndex = 36
-        Me.PictureBox2.TabStop = False
-        '
         'NimFinger
         '
         Me.NimFinger.AutoSize = True
@@ -445,6 +450,120 @@ Partial Class Form1
         Me.NimFinger.Size = New System.Drawing.Size(27, 21)
         Me.NimFinger.TabIndex = 35
         Me.NimFinger.Text = "ID"
+        '
+        'ShapeContainer1
+        '
+        Me.ShapeContainer1.Location = New System.Drawing.Point(0, 0)
+        Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
+        Me.ShapeContainer1.Name = "ShapeContainer1"
+        Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.RectangleShape2, Me.RectangleShape1})
+        Me.ShapeContainer1.Size = New System.Drawing.Size(394, 204)
+        Me.ShapeContainer1.TabIndex = 40
+        Me.ShapeContainer1.TabStop = False
+        '
+        'RectangleShape2
+        '
+        Me.RectangleShape2.BackColor = System.Drawing.Color.PowderBlue
+        Me.RectangleShape2.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque
+        Me.RectangleShape2.BorderColor = System.Drawing.Color.PowderBlue
+        Me.RectangleShape2.BorderWidth = 3
+        Me.RectangleShape2.CornerRadius = 2
+        Me.RectangleShape2.Location = New System.Drawing.Point(46, 172)
+        Me.RectangleShape2.Name = "RectangleShape2"
+        Me.RectangleShape2.Size = New System.Drawing.Size(292, 9)
+        '
+        'RectangleShape1
+        '
+        Me.RectangleShape1.BackColor = System.Drawing.Color.PowderBlue
+        Me.RectangleShape1.BorderColor = System.Drawing.Color.PowderBlue
+        Me.RectangleShape1.BorderWidth = 3
+        Me.RectangleShape1.CornerRadius = 5
+        Me.RectangleShape1.Location = New System.Drawing.Point(42, 168)
+        Me.RectangleShape1.Name = "RectangleShape1"
+        Me.RectangleShape1.Size = New System.Drawing.Size(300, 17)
+        '
+        'PanelPW
+        '
+        Me.PanelPW.Controls.Add(Me.BtnNext)
+        Me.PanelPW.Controls.Add(Me.TxtPass)
+        Me.PanelPW.Controls.Add(Me.TxtUsr)
+        Me.PanelPW.Controls.Add(Me.Panel5)
+        Me.PanelPW.Controls.Add(Me.Panel3)
+        Me.PanelPW.Controls.Add(Me.Password)
+        Me.PanelPW.Controls.Add(Me.User)
+        Me.PanelPW.Location = New System.Drawing.Point(78, 135)
+        Me.PanelPW.Name = "PanelPW"
+        Me.PanelPW.Size = New System.Drawing.Size(401, 126)
+        Me.PanelPW.TabIndex = 31
+        '
+        'BtnNext
+        '
+        Me.BtnNext.BackColor = System.Drawing.Color.FromArgb(CType(CType(60, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(226, Byte), Integer))
+        Me.BtnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnNext.ForeColor = System.Drawing.Color.White
+        Me.BtnNext.Location = New System.Drawing.Point(310, 91)
+        Me.BtnNext.Name = "BtnNext"
+        Me.BtnNext.Size = New System.Drawing.Size(51, 27)
+        Me.BtnNext.TabIndex = 24
+        Me.BtnNext.Text = "NEXT"
+        Me.BtnNext.UseVisualStyleBackColor = False
+        '
+        'TxtPass
+        '
+        Me.TxtPass.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TxtPass.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtPass.ForeColor = System.Drawing.SystemColors.GrayText
+        Me.TxtPass.Location = New System.Drawing.Point(112, 63)
+        Me.TxtPass.Name = "TxtPass"
+        Me.TxtPass.PasswordChar = Global.Microsoft.VisualBasic.ChrW(8226)
+        Me.TxtPass.Size = New System.Drawing.Size(246, 20)
+        Me.TxtPass.TabIndex = 23
+        '
+        'TxtUsr
+        '
+        Me.TxtUsr.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TxtUsr.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtUsr.ForeColor = System.Drawing.SystemColors.GrayText
+        Me.TxtUsr.Location = New System.Drawing.Point(112, 23)
+        Me.TxtUsr.Name = "TxtUsr"
+        Me.TxtUsr.Size = New System.Drawing.Size(249, 20)
+        Me.TxtUsr.TabIndex = 22
+        '
+        'Panel5
+        '
+        Me.Panel5.BackColor = System.Drawing.Color.Coral
+        Me.Panel5.Location = New System.Drawing.Point(111, 84)
+        Me.Panel5.Name = "Panel5"
+        Me.Panel5.Size = New System.Drawing.Size(249, 1)
+        Me.Panel5.TabIndex = 21
+        '
+        'Panel3
+        '
+        Me.Panel3.BackColor = System.Drawing.Color.Coral
+        Me.Panel3.Location = New System.Drawing.Point(111, 44)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(249, 1)
+        Me.Panel3.TabIndex = 20
+        '
+        'Password
+        '
+        Me.Password.AutoSize = True
+        Me.Password.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Password.Location = New System.Drawing.Point(17, 64)
+        Me.Password.Name = "Password"
+        Me.Password.Size = New System.Drawing.Size(79, 21)
+        Me.Password.TabIndex = 1
+        Me.Password.Text = "Password"
+        '
+        'User
+        '
+        Me.User.AutoSize = True
+        Me.User.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.User.Location = New System.Drawing.Point(17, 23)
+        Me.User.Name = "User"
+        Me.User.Size = New System.Drawing.Size(83, 21)
+        Me.User.TabIndex = 0
+        Me.User.Text = "Username"
         '
         'CheckRFID
         '
@@ -662,6 +781,16 @@ Partial Class Form1
         'Timer2
         '
         '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(37, 186)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(40, 13)
+        Me.Label3.TabIndex = 41
+        Me.Label3.Text = "Label3"
+        '
         'Form1
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
@@ -686,7 +815,8 @@ Partial Class Form1
         Me.PanelWrite.PerformLayout()
         Me.PanelFinger.ResumeLayout(False)
         Me.PanelFinger.PerformLayout()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.PanelPW.ResumeLayout(False)
+        Me.PanelPW.PerformLayout()
         Me.PanelRead.ResumeLayout(False)
         Me.PanelRead.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -742,7 +872,18 @@ Partial Class Form1
     Friend WithEvents Label2 As Label
     Friend WithEvents RichTextBox1 As RichTextBox
     Friend WithEvents NoJari As ComboBox
-    Friend WithEvents PictureBox2 As PictureBox
     Friend WithEvents NimFinger As Label
     Friend WithEvents Read As Bunifu.Framework.UI.BunifuFlatButton
+    Friend WithEvents PanelPW As Panel
+    Friend WithEvents BtnNext As Button
+    Friend WithEvents TxtPass As TextBox
+    Friend WithEvents TxtUsr As TextBox
+    Friend WithEvents Panel5 As Panel
+    Friend WithEvents Panel3 As Panel
+    Friend WithEvents Password As Label
+    Friend WithEvents User As Label
+    Friend WithEvents ShapeContainer1 As PowerPacks.ShapeContainer
+    Friend WithEvents RectangleShape2 As PowerPacks.RectangleShape
+    Friend WithEvents RectangleShape1 As PowerPacks.RectangleShape
+    Friend WithEvents Label3 As Label
 End Class

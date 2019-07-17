@@ -22,6 +22,9 @@ Public Class Form1
     Dim baudrate As String = "9600"
     Dim waktu As Integer = 0
     Dim numbers As String = "1234567890"
+    Dim SN As String = "K520J00874"
+    Dim Verif As String = "06E-B04-3C7-413-D26"
+    Dim Activ As String = "1L6D-450D-E57E-D237-B9D8-7RG2"
     Dim Flag As Integer
     Dim statusFP As Boolean
     Delegate Sub SetTextCallback(ByVal [text] As String)
@@ -29,7 +32,7 @@ Public Class Form1
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Conn = New MySqlConnection
         Conn.ConnectionString = "server = localhost; userid = root; password = ; database = inlislite_v3"
-        Conn.Open()
+
 
         FpVer = New FlexCodeSDK.FinFPVer
         FpReg = New FlexCodeSDK.FinFPReg
@@ -38,10 +41,6 @@ Public Class Form1
         FpVer.PictureSamplePath = My.Application.Info.DirectoryPath & "\FPTemp.BMP"
         FpVer.PictureSampleHeight = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Height))
         FpVer.PictureSampleWidth = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Width))
-
-        FpReg.PictureSamplePath = My.Application.Info.DirectoryPath & "\FPTemp.BMP"
-        FpReg.PictureSampleHeight = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox2.Height))
-        FpReg.PictureSampleWidth = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox2.Width))
 
         Fingerprint.Enabled = False
         CheckFngr.Enabled = False
@@ -63,6 +62,7 @@ Public Class Form1
         PnlWrite.Hide()
         PanelWrite.Hide()
         PanelFinger.Hide()
+        PanelPW.Hide()
 
         PnlRead.Hide()
         PanelRead.Hide()
@@ -113,21 +113,32 @@ Public Class Form1
     Private Sub FPRegist()
         FpVer.FPVerificationStop()
         FpReg = New FlexCodeSDK.FinFPReg
-        FpReg.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
+        FpReg.AddDeviceInfo(SN, Verif, Activ)
         FpReg.FPRegistrationStart("YourSecretKey")
         uniqueTemplate = False
     End Sub
 
     Private Sub FpReg_FPSamplesNeeded(ByVal Samples As Short) Handles FpReg.FPSamplesNeeded
-        Label2.Text = Str(Samples) & "x"
+        Label2.Text = "Tempelkan Jari sebanyak 4x "
+        If Str(Samples) = 4 Then
+            RectangleShape2.Width = 0
+        ElseIf Str(Samples) = 3 Then
+            RectangleShape2.Width = 80
+        ElseIf Str(Samples) = 2 Then
+            RectangleShape2.Width = 160
+        ElseIf Str(Samples) = 1 Then
+            RectangleShape2.Width = 250
+        ElseIf Str(Samples) = 0 Then
+            RectangleShape2.Width = 292
+            Label2.Text = "Registrasi Berhasil"
+            Label3.Text = "Tempelkan lagi jari anda"
+        End If
     End Sub
 
     Private Sub FpReg_FPRegistrationStatus(ByVal Status As FlexCodeSDK.RegistrationStatus) Handles FpReg.FPRegistrationStatus
         If Status = FlexCodeSDK.RegistrationStatus.r_OK Then
             FpReg.FPRegistrationStop()
-            FpVer = New FlexCodeSDK.FinFPVer
-            FpVer.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
-            FpVer.FPVerificationStart()
+            FPVerif()
         End If
     End Sub
 
@@ -135,8 +146,7 @@ Public Class Form1
     Private Sub FPVerif()
         Conn.Close()
         Conn.Open()
-
-        FpVer.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
+        FpVer.AddDeviceInfo(SN, Verif, Activ)
         Dim commText As String = "SELECT MemberNo, FullName, Template, FingerIndex FROM Members"
         Dim sqlCommand As New MySqlCommand(commText, Conn)
         Dim rd As MySqlDataReader = sqlCommand.ExecuteReader()
@@ -155,6 +165,7 @@ Public Class Form1
         balasan.Text = ""
         If FlexCodeSDK.VerificationStatus.v_OK = 1 Then
             MsgBox(bls)
+            PictureBox1.Image = Nothing
             NIM.Text = ""
             Nama.Text = ""
         End If
@@ -172,15 +183,6 @@ Public Class Form1
     Private Sub FpReg_FPRegistrationTemplate(ByVal FPTemplate As String) Handles FpReg.FPRegistrationTemplate
         Template = FPTemplate
         RichTextBox1.Text = FPTemplate
-    End Sub
-
-    Private Sub FpReg_FPRegistrationImage() Handles FpReg.FPRegistrationImage
-        Dim imgFile As FileStream = New FileStream(My.Application.Info.DirectoryPath & "\FPTemp.BMP", FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
-        Dim fileBytes(imgFile.Length) As Byte
-        imgFile.Read(fileBytes, 0, fileBytes.Length)
-        imgFile.Close()
-        Dim ms As MemoryStream = New MemoryStream(fileBytes)
-        PictureBox2.Image = Image.FromStream(ms)
     End Sub
 
     Private Sub konek(ByVal Cmb As String)
@@ -230,6 +232,7 @@ Public Class Form1
         PnlWrite.Hide()
         PanelFinger.Hide()
         PanelWrite.Hide()
+        PanelPW.Hide()
         FPVerif()
 
         NimFinger.Text = "Berhasil"
@@ -248,6 +251,7 @@ Public Class Form1
         PnlRead.Hide()
         PnlWrite.Hide()
         PanelRead.Hide()
+        PanelPW.Hide()
 
         Write.Enabled = False
         Read.Enabled = False
@@ -319,7 +323,6 @@ Public Class Form1
             fpAddToDB()
             uniqueTemplate = False
             FpReg.FPRegistrationStop()
-
         End If
     End Sub
     Private Sub Ext_Click(sender As Object, e As EventArgs) Handles Ext.Click
@@ -377,36 +380,24 @@ Public Class Form1
         PnlWrite.Hide()
         PanelFinger.Hide()
         PanelWrite.Hide()
+        PanelPW.Hide()
     End Sub
 
     Private Sub Write_Click(sender As Object, e As EventArgs) Handles Write.Click
-        FpVer.FPVerificationStop()
-        PnlWrite.Show()
-
         PnlRead.Hide()
         PanelRead.Hide()
+
+        PnlWrite.Show()
+        PanelPW.Show()
         PanelFinger.Hide()
-        PanelWrite.Show()
-
-        Read.Enabled = False
-        Write.Enabled = False
-        Ext.Enabled = False
-
-        TxtNIM_Write.Text = ""
-        TxtNIM_Write.Focus()
-
-        Stts.Text = ""
-        NimFinger.Text = ""
-        NoJari.Text = ""
-        RichTextBox1.Text = ""
-        Label2.Text = ""
-
-        SerialPort1.Write("write" & "#")
-        waktu = 25
-        Timer3.Enabled = True
+        PanelWrite.Hide()
+        TxtUsr.Focus()
+        PictureBox1.Image = Nothing
+        Label3.Text = ""
     End Sub
+
     Private Sub TxtNIM_Write_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtNIM_Write.KeyDown
-        If e.KeyCode = Keys.Enter Then
+        If e.KeyCode = Keys.Enter And PanelWrite.Visible = True Then
             BtnWrite.PerformClick()
         End If
     End Sub
@@ -415,7 +406,7 @@ Public Class Form1
         SerialPort1.Write(TxtNIM_Write.Text & "*")
         Timer3.Enabled = False
         waktu = 0
-
+        RectangleShape2.Width = 0
         Read.Enabled = True
         Write.Enabled = True
         Ext.Enabled = True
@@ -526,13 +517,12 @@ Public Class Form1
         Dim bfr As String
         bfr = NIM.Text
         Conn.Close()
-
         Try
             If Regex.IsMatch(NIM.Text, "^[0-9 ]+$") Then
                 If NIM.Text <> "" Then
                     Stts.Text = ""
                     balasan.Text = ""
-                    PictureBox1.Image = Nothing
+
                     Conn.Open()
                     Query = "CALL FetchData ('" & NIM.Text & "'); "
                     COMMAND = New MySqlCommand(Query, Conn)
@@ -617,13 +607,68 @@ Public Class Form1
     End Sub
 
     Private Sub CheckFngr_Click(sender As Object, e As EventArgs) Handles CheckFngr.Click
-        FpVer.FPVerificationStop()
-        FpVer.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
+        FpVer.AddDeviceInfo(SN, Verif, Activ)
         FpVer.FPVerificationStart()
-        tampil()
-        PictureBox1.Image = Nothing
         If CheckFngr.Checked = True Then
             CheckFngr.Enabled = False
+        End If
+    End Sub
+
+    Private Sub BtnNext_Click(sender As Object, e As EventArgs) Handles BtnNext.Click
+        If TxtUsr.Text = "admin" And TxtPass.Text = "admin" Then
+            FpVer.FPVerificationStop()
+
+            PnlRead.Hide()
+            PanelRead.Hide()
+            PnlWrite.Show()
+            PanelWrite.Show()
+            PanelFinger.Hide()
+            PanelPW.Hide()
+
+            Read.Enabled = False
+            Write.Enabled = False
+            Ext.Enabled = False
+
+            TxtNIM_Write.Text = ""
+            TxtNIM_Write.Focus()
+
+            Stts.Text = ""
+            NimFinger.Text = ""
+            NoJari.Text = ""
+            RichTextBox1.Text = ""
+            Label2.Text = ""
+            TxtUsr.Text = ""
+            TxtPass.Text = ""
+
+            SerialPort1.Write("write" & "#")
+            waktu = 25
+            Timer3.Enabled = True
+        Else
+            If TxtUsr.Text = "" And TxtPass.Text = "" Then
+                MsgBox("No Username and Password found!", MsgBoxStyle.Critical, "Error")
+            Else
+                If TxtUsr.Text = "" Then
+                    MsgBox("No Username found!", MsgBoxStyle.Critical, "Error")
+                Else
+                    If TxtPass.Text = "" Then
+                        MsgBox("No Password found!", MsgBoxStyle.Critical, "Error")
+                    Else
+                        MsgBox("Invalid Username and/or Password!", MsgBoxStyle.Critical, "Error")
+                    End If
+                End If
+            End If
+        End If
+    End Sub
+
+    Private Sub TxtUsr_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtUsr.KeyDown
+        If e.KeyCode = Keys.Enter And PanelPW.Visible = True Then
+            BtnNext.PerformClick()
+        End If
+    End Sub
+
+    Private Sub TxtPass_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtPass.KeyDown
+        If e.KeyCode = Keys.Enter And PanelPW.Visible = True Then
+            BtnNext.PerformClick()
         End If
     End Sub
 End Class
