@@ -33,7 +33,6 @@ Public Class Form1
         Conn = New MySqlConnection
         Conn.ConnectionString = "server = localhost; userid = root; password = ; database = inlislite_v3"
 
-
         FpVer = New FlexCodeSDK.FinFPVer
         FpReg = New FlexCodeSDK.FinFPReg
         FpVer.SetMaxTemplate(100000)
