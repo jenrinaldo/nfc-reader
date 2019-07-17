@@ -146,15 +146,25 @@ Public Class Form1
     Private Sub FPVerif()
         Conn.Close()
         Conn.Open()
+<<<<<<< HEAD
         FpVer.AddDeviceInfo(SN, Verif, Activ)
         Dim commText As String = "SELECT MemberNo, FullName, Template, FingerIndex FROM Members"
         Dim sqlCommand As New MySqlCommand(commText, Conn)
         Dim rd As MySqlDataReader = sqlCommand.ExecuteReader()
         While rd.Read
             FpVer.FPLoad(rd.GetString(0), rd.GetString(3), rd.GetString(2), "YourSecretKey")
+=======
+
+        FpVer.AddDeviceInfo("K520J00874", "06E-B04-3C7-413-D26", "1L6D-450D-E57E-D237-B9D8-7RG2")
+        Dim commText As String = "SELECT MemberNo, Template, FingerIndex FROM Members"
+        COMMAND = New MySqlCommand(commText, Conn)
+        reader = COMMAND.ExecuteReader()
+        While reader.Read
+            FpVer.FPLoad(reader.GetString(0), reader.GetString(2), reader.GetString(1), "YourSecretKey")
+>>>>>>> 8184383d0245aa10ac3372c3a3a369e629596d53
         End While
         FpVer.FPVerificationStart()
-        rd.Close()
+        reader.Close()
     End Sub
 
     Private Sub FPVer_FPVerificationID(ByVal ID As String, ByVal FingerNr As FlexCodeSDK.FingerNumber) Handles FpVer.FPVerificationID
@@ -218,8 +228,8 @@ Public Class Form1
         Stts.Text = ""
         Dim commText As String = "UPDATE `members` SET `template` = '" & RichTextBox1.Text & "', `fingerindex` = '" & Str(NoJari.SelectedIndex) & "' 
                                      WHERE MemberNo = '" & NimFinger.Text & "';"
-        Dim sqlCommand As New MySqlCommand(commText, Conn)
-        sqlCommand.ExecuteNonQuery()
+        COMMAND = New MySqlCommand(commText, Conn)
+        COMMAND.ExecuteNonQuery()
         MsgBox("OK!")
 
         Write.Enabled = True
