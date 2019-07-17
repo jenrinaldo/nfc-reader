@@ -32,15 +32,12 @@ Public Class Form1
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Conn = New MySqlConnection
         Conn.ConnectionString = "server = localhost; userid = root; password = ; database = inlislite_v3"
-
         FpVer = New FlexCodeSDK.FinFPVer
         FpReg = New FlexCodeSDK.FinFPReg
         FpVer.SetMaxTemplate(100000)
-
         FpVer.PictureSamplePath = My.Application.Info.DirectoryPath & "\FPTemp.BMP"
         FpVer.PictureSampleHeight = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Height))
         FpVer.PictureSampleWidth = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Width))
-
         Fingerprint.Enabled = False
         CheckFngr.Enabled = False
         CheckFngr.Checked = False
@@ -49,7 +46,6 @@ Public Class Form1
         CheckRFID.Checked = False
         uniqueTemplate = False
         NIM.Enabled = False
-
         Timer1.Enabled = True
         Timer2.Enabled = False
         Timer3.Enabled = False
