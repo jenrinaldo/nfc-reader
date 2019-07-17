@@ -11,6 +11,9 @@ Public Class Form1
     Dim WithEvents FpVer As New FlexCodeSDK.FinFPVer
     Dim WithEvents FpReg As New FlexCodeSDK.FinFPReg
     Dim uniqueTemplate As Boolean
+    Dim StatusRegis As Boolean = True
+    Dim userId As String
+    Dim fpNum As Integer
     Dim Template As String
     Dim reader As MySqlDataReader
     Dim Conn As MySqlConnection
@@ -132,6 +135,8 @@ Public Class Form1
 
     Private Sub FpReg_FPRegistrationStatus(ByVal Status As FlexCodeSDK.RegistrationStatus) Handles FpReg.FPRegistrationStatus
         If Status = FlexCodeSDK.RegistrationStatus.r_OK Then
+            StatusRegis = False
+            FpReg.FPRegistrationStop()
             FPVerif()
         End If
     End Sub
@@ -153,6 +158,8 @@ Public Class Form1
 
     Private Sub FPVer_FPVerificationID(ByVal ID As String, ByVal FingerNr As FlexCodeSDK.FingerNumber) Handles FpVer.FPVerificationID
         Dim bls As String
+        userId = ID
+        fpNum = FingerNr
         NIM.Text = ID
         bls = balasan.Text
         Stts.Text = ""
@@ -214,6 +221,9 @@ Public Class Form1
         Dim sqlCommand As New MySqlCommand(commText, Conn)
         sqlCommand.ExecuteNonQuery()
         MsgBox("OK!")
+        FpVer.FPUnload(userId, fpNum)
+        FpVer.FPVerificationStop()
+
 
         Write.Enabled = True
         Read.Enabled = True
@@ -232,6 +242,7 @@ Public Class Form1
         NoJari.Text = ""
         RichTextBox1.Text = ""
         Label2.Text = ""
+        PictureBox1.Image = Nothing
     End Sub
 
     Private Sub tampil()
@@ -278,7 +289,6 @@ Public Class Form1
     End Sub
 
     Private Sub FPVer_FPVerificationStatus(ByVal Status As FlexCodeSDK.VerificationStatus) Handles FpVer.FPVerificationStatus
-        FpVer.FPVerificationStop()
         Select Case Status
             Case FlexCodeSDK.VerificationStatus.v_ActivationIncorrect
                 Stts.Text = "Activation / verification code is" & vbNewLine & "incorrent or not set"
@@ -309,6 +319,8 @@ Public Class Form1
                 Stts.Text = "Verification failed"
             Case FlexCodeSDK.VerificationStatus.v_VerifyCaptureStop
                 Stts.Text = "Stop verify"
+            Case FlexCodeSDK.VerificationStatus.v_OK
+                Exit Select
             Case Else
                 statusFP = False
                 CheckFngr.Checked = True
@@ -316,7 +328,6 @@ Public Class Form1
         If uniqueTemplate And RichTextBox1.Text <> "" Then
             fpAddToDB()
             uniqueTemplate = False
-            FpReg.FPRegistrationStop()
         End If
     End Sub
     Private Sub Ext_Click(sender As Object, e As EventArgs) Handles Ext.Click
@@ -405,8 +416,7 @@ Public Class Form1
         Write.Enabled = False
         Ext.Enabled = False
 
-        PnlWrite.Show()
-        PanelWrite.Hide()
+        NIMWrite.Enabled = False
     End Sub
 
     Private Sub passing()
@@ -511,7 +521,7 @@ Public Class Form1
         bfr = NIM.Text
         Conn.Close()
         Try
-            If Regex.IsMatch(NIM.Text, "^[0-9 ]+$") Then
+            If Regex.IsMatch(NIM.Text, "^[0-9 ]+$") And RichTextBox1.Text = "" Then
                 If NIM.Text <> "" Then
                     Stts.Text = ""
                     balasan.Text = ""
@@ -520,7 +530,7 @@ Public Class Form1
                     Query = "CALL FetchData ('" & NIM.Text & "'); "
                     COMMAND = New MySqlCommand(Query, Conn)
                     reader = COMMAND.ExecuteReader()
-                    If reader.Read() = True Then
+                    If reader.Read() Then
                         Nama.Text = reader("FullName".ToString())
                         reader.Close()
                         Query = "CALL GetTimeDif('" & NIM.Text & "');"
@@ -530,6 +540,7 @@ Public Class Form1
                             Try
                                 Flag = reader.GetInt16("Date")
                                 If Flag = 0 Then
+
                                     balasan.Text = "Terimakasih Telah Berkunjung Kembali"
                                     Conn.Close()
                                 ElseIf Flag < 0 Then
@@ -563,6 +574,8 @@ Public Class Form1
             ElseIf Regex.IsMatch(NIM.Text, "Write success!") Then
                 NIM.Text = ""
                 MsgBox("Penulisan RFID Tag Sukses")
+                PnlWrite.Show()
+                PanelWrite.Hide()
                 PanelFinger.Show()
                 passing()
                 FPRegist()
@@ -570,6 +583,19 @@ Public Class Form1
                 NIM.Text = ""
                 MessageBox.Show("Penulisan RFID Tag Gagal", "Warning!", MessageBoxButtons.OK)
                 gagal()
+            ElseIf RichTextBox1.Text <> "" Then
+                MsgBox("Jari anda telah terdaftar")
+                RichTextBox1.Text = ""
+                NIM.Text = ""
+                PictureBox1.Image = Nothing
+                PanelFinger.Hide()
+                PnlWrite.Hide()
+
+                Read.Enabled = True
+                Write.Enabled = True
+                Ext.Enabled = True
+                PanelRead.Show()
+                PnlRead.Show()
             Else
                 NIM.Text = ""
                 Nama.Text = ""

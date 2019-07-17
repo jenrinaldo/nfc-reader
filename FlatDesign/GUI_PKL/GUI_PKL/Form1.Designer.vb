@@ -46,6 +46,7 @@ Partial Class Form1
         Me.TxtNIM_Write = New System.Windows.Forms.TextBox()
         Me.Panel8 = New System.Windows.Forms.Panel()
         Me.PanelFinger = New System.Windows.Forms.Panel()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
         Me.NoJari = New System.Windows.Forms.ComboBox()
@@ -84,7 +85,6 @@ Partial Class Form1
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
-        Me.Label3 = New System.Windows.Forms.Label()
         Me.BunifuGradientPanel1.SuspendLayout()
         Me.PanelMENU.SuspendLayout()
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -412,6 +412,16 @@ Partial Class Form1
         Me.PanelFinger.Name = "PanelFinger"
         Me.PanelFinger.Size = New System.Drawing.Size(394, 204)
         Me.PanelFinger.TabIndex = 29
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(37, 186)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(40, 13)
+        Me.Label3.TabIndex = 41
+        Me.Label3.Text = "Label3"
         '
         'Label2
         '
@@ -780,16 +790,6 @@ Partial Class Form1
         '
         'Timer2
         '
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(37, 186)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(40, 13)
-        Me.Label3.TabIndex = 41
-        Me.Label3.Text = "Label3"
         '
         'Form1
         '
