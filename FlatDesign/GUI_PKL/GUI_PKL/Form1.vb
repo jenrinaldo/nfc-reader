@@ -132,7 +132,6 @@ Public Class Form1
 
     Private Sub FpReg_FPRegistrationStatus(ByVal Status As FlexCodeSDK.RegistrationStatus) Handles FpReg.FPRegistrationStatus
         If Status = FlexCodeSDK.RegistrationStatus.r_OK Then
-            FpReg.FPRegistrationStop()
             FPVerif()
         End If
     End Sub
@@ -279,6 +278,7 @@ Public Class Form1
     End Sub
 
     Private Sub FPVer_FPVerificationStatus(ByVal Status As FlexCodeSDK.VerificationStatus) Handles FpVer.FPVerificationStatus
+        FpVer.FPVerificationStop()
         Select Case Status
             Case FlexCodeSDK.VerificationStatus.v_ActivationIncorrect
                 Stts.Text = "Activation / verification code is" & vbNewLine & "incorrent or not set"
