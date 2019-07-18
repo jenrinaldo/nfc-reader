@@ -6,6 +6,8 @@ Imports System.Management
 Imports System.Text.RegularExpressions
 Imports System.Media
 Imports MySql.Data.MySqlClient
+Imports System.Configuration
+
 
 Public Class Form1
     Dim WithEvents FpVer As New FlexCodeSDK.FinFPVer
@@ -32,9 +34,11 @@ Public Class Form1
     Dim statusFP As Boolean
     Delegate Sub SetTextCallback(ByVal [text] As String)
 
+    Public connString1 As String = ConfigurationManager.ConnectionStrings("MySqlConnectionString").ToString()
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Conn = New MySqlConnection
-        Conn.ConnectionString = "server = localhost; userid = root; password = ; database = inlislite_v3"
+
+        Conn = New MySqlConnection(connString1)
         FpVer = New FlexCodeSDK.FinFPVer
         FpReg = New FlexCodeSDK.FinFPReg
         FpVer.SetMaxTemplate(100000)
