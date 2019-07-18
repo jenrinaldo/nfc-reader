@@ -37,79 +37,82 @@ Public Class Form1
     Public connString1 As String = ConfigurationManager.ConnectionStrings("MySqlConnectionString").ToString()
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Try
+            Conn = New MySqlConnection(connString1)
+            FpVer = New FlexCodeSDK.FinFPVer
+            FpReg = New FlexCodeSDK.FinFPReg
+            FpVer.SetMaxTemplate(100000)
+            FpVer.PictureSamplePath = My.Application.Info.DirectoryPath & "\FPTemp.BMP"
+            FpVer.PictureSampleHeight = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Height))
+            FpVer.PictureSampleWidth = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Width))
+            Fingerprint.Enabled = False
+            CheckFngr.Enabled = False
+            CheckFngr.Checked = False
+            RFID.Enabled = False
+            CheckRFID.Enabled = False
+            CheckRFID.Checked = False
+            uniqueTemplate = False
+            NIM.Enabled = False
+            Timer1.Enabled = True
+            Timer2.Enabled = False
+            Timer3.Enabled = False
 
-        Conn = New MySqlConnection(connString1)
-        FpVer = New FlexCodeSDK.FinFPVer
-        FpReg = New FlexCodeSDK.FinFPReg
-        FpVer.SetMaxTemplate(100000)
-        FpVer.PictureSamplePath = My.Application.Info.DirectoryPath & "\FPTemp.BMP"
-        FpVer.PictureSampleHeight = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Height))
-        FpVer.PictureSampleWidth = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Width))
-        Fingerprint.Enabled = False
-        CheckFngr.Enabled = False
-        CheckFngr.Checked = False
-        RFID.Enabled = False
-        CheckRFID.Enabled = False
-        CheckRFID.Checked = False
-        uniqueTemplate = False
-        NIM.Enabled = False
-        Timer1.Enabled = True
-        Timer2.Enabled = False
-        Timer3.Enabled = False
+            BtnCon.Enabled = False
+            Write.Enabled = False
+            Read.Enabled = False
+            TxtNIM_Write.Enabled = False
 
-        BtnCon.Enabled = False
-        Write.Enabled = False
-        Read.Enabled = False
-        TxtNIM_Write.Enabled = False
+            PnlWrite.Hide()
+            PanelWrite.Hide()
+            PanelFinger.Hide()
+            PanelPW.Hide()
 
-        PnlWrite.Hide()
-        PanelWrite.Hide()
-        PanelFinger.Hide()
-        PanelPW.Hide()
+            PnlRead.Hide()
+            PanelRead.Hide()
 
-        PnlRead.Hide()
-        PanelRead.Hide()
+            Stts.Text = ""
+            Nama.Text = ""
+            balasan.Text = ""
+            TxtNIM_Write.Text = ""
 
-        Stts.Text = ""
-        Nama.Text = ""
-        balasan.Text = ""
-        TxtNIM_Write.Text = ""
+            Dim searcher As New ManagementObjectSearcher("root\CIMV2", "Select * FROM Win32_PnPEntity")
+            For Each queryObj As ManagementObject In searcher.Get()
+                If queryObj("Description") = "USB-SERIAL CH340" Then
+                    string1 = queryObj("Description")
+                    string2 = queryObj("Name")
+                    hasil = string2.Replace(string1, "")
+                    hasil = hasil.Replace("(", "")
+                    hasil = hasil.Replace(")", "")
+                    hasil = hasil.Replace(" ", "")
+                End If
+            Next
 
-        Dim searcher As New ManagementObjectSearcher("root\CIMV2", "Select * FROM Win32_PnPEntity")
-        For Each queryObj As ManagementObject In searcher.Get()
-            If queryObj("Description") = "USB-SERIAL CH340" Then
-                string1 = queryObj("Description")
-                string2 = queryObj("Name")
-                hasil = string2.Replace(string1, "")
-                hasil = hasil.Replace("(", "")
-                hasil = hasil.Replace(")", "")
-                hasil = hasil.Replace(" ", "")
+            If string1 = "USB-SERIAL CH340" And statusFP = False Then
+                konek(hasil)
+                tampil()
+                FPVerif()
+                CheckRFID.Checked = True
+                CheckFngr.Checked = True
+            ElseIf string1 = "USB-SERIAL CH340" And statusFP = True Then
+                konek(hasil)
+                tampil()
+                CheckRFID.Checked = True
+                CheckFngr.Checked = False
+                CheckFngr.Enabled = True
+            ElseIf string1 <> "USB-SERIAL CH340" And statusFP = False Then
+                tampil()
+                FPVerif()
+                CheckRFID.Checked = False
+                CheckFngr.Checked = True
+            Else
+                CheckRFID.Checked = False
+                CheckFngr.Checked = False
+                CheckFngr.Enabled = True
+                sembunyi()
             End If
-        Next
-
-        If string1 = "USB-SERIAL CH340" And statusFP = False Then
-            konek(hasil)
-            tampil()
-            FPVerif()
-            CheckRFID.Checked = True
-            CheckFngr.Checked = True
-        ElseIf string1 = "USB-SERIAL CH340" And statusFP = True Then
-            konek(hasil)
-            tampil()
-            CheckRFID.Checked = True
-            CheckFngr.Checked = False
-            CheckFngr.Enabled = True
-        ElseIf string1 <> "USB-SERIAL CH340" And statusFP = False Then
-            tampil()
-            FPVerif()
-            CheckRFID.Checked = False
-            CheckFngr.Checked = True
-        Else
-            CheckRFID.Checked = False
-            CheckFngr.Checked = False
-            CheckFngr.Enabled = True
-            sembunyi()
-        End If
+        Catch ex As Exception
+            MsgBox("Periksa Sambungan Database", MsgBoxStyle.Critical, "Konfigurasi Database Salah")
+        End Try
 
     End Sub
 
