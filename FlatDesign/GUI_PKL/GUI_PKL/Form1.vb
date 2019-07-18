@@ -33,6 +33,8 @@ Public Class Form1
     Delegate Sub SetTextCallback(ByVal [text] As String)
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        MsgBox("")
+
         Conn = New MySqlConnection
         Conn.ConnectionString = "server = localhost; userid = root; password = ; database = inlislite_v3"
         FpVer = New FlexCodeSDK.FinFPVer
@@ -152,7 +154,6 @@ Public Class Form1
         While rd.Read
             FpVer.FPLoad(rd.GetString(0), rd.GetString(3), rd.GetString(2), "YourSecretKey")
         End While
-        MsgBox("")
         FpVer.FPVerificationStart()
         rd.Close()
     End Sub
@@ -392,6 +393,10 @@ Public Class Form1
     Private Sub Write_Click(sender As Object, e As EventArgs) Handles Write.Click
         PnlRead.Hide()
         PanelRead.Hide()
+        NIMpw.Hide()
+        CheckNIM.Hide()
+        BtnNext2.SendToBack()
+        BtnNext.BringToFront()
 
         PnlWrite.Show()
         PanelPW.Show()
@@ -666,29 +671,10 @@ Public Class Form1
 
             PnlRead.Hide()
             PanelRead.Hide()
-            PnlWrite.Show()
-            PanelWrite.Show()
             PanelFinger.Hide()
-            PanelPW.Hide()
 
-            Read.Enabled = False
-            Write.Enabled = False
-            Ext.Enabled = False
-
-            TxtNIM_Write.Text = ""
-            TxtNIM_Write.Focus()
-
-            Stts.Text = ""
-            NimFinger.Text = ""
-            NoJari.Text = ""
-            RichTextBox1.Text = ""
-            Label2.Text = ""
-            TxtUsr.Text = ""
-            TxtPass.Text = ""
-
-            SerialPort1.Write("write" & "#")
-            waktu = 25
-            Timer3.Enabled = True
+            CheckNIM.Focus()
+            CheckNIM.Text = ""
         Else
             If TxtUsr.Text = "" And TxtPass.Text = "" Then
                 MsgBox("No Username and Password found!", MsgBoxStyle.Critical, "Error")
@@ -716,6 +702,31 @@ Public Class Form1
         If e.KeyCode = Keys.Enter And PanelPW.Visible = True Then
             BtnNext.PerformClick()
         End If
+    End Sub
+
+    Private Sub BtnNext2_Click(sender As Object, e As EventArgs) Handles BtnNext2.Click
+        Read.Enabled = False
+        Write.Enabled = False
+        Ext.Enabled = False
+
+        PanelPW.Hide()
+        PnlWrite.Show()
+        PanelWrite.Show()
+
+        TxtNIM_Write.Text = ""
+        TxtNIM_Write.Focus()
+
+        Stts.Text = ""
+        NimFinger.Text = ""
+        NoJari.Text = ""
+        RichTextBox1.Text = ""
+        Label2.Text = ""
+        TxtUsr.Text = ""
+        TxtPass.Text = ""
+
+        SerialPort1.Write("write" & "#")
+        waktu = 25
+        Timer3.Enabled = True
     End Sub
 
 End Class
