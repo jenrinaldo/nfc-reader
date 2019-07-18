@@ -152,6 +152,7 @@ Public Class Form1
         While rd.Read
             FpVer.FPLoad(rd.GetString(0), rd.GetString(3), rd.GetString(2), "YourSecretKey")
         End While
+        MsgBox("")
         FpVer.FPVerificationStart()
         rd.Close()
     End Sub
