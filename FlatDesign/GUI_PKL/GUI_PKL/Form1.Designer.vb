@@ -39,16 +39,16 @@ Partial Class Form1
         Me.RFID = New Bunifu.Framework.UI.BunifuImageButton()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.PanelPW = New System.Windows.Forms.Panel()
-        Me.BtnNext2 = New System.Windows.Forms.Button()
+        Me.CheckNIM = New System.Windows.Forms.TextBox()
         Me.NIMpw = New System.Windows.Forms.Label()
-        Me.CheckNIM = New Bunifu.Framework.UI.BunifuMaterialTextbox()
-        Me.BtnNext = New System.Windows.Forms.Button()
         Me.TxtPass = New System.Windows.Forms.TextBox()
         Me.TxtUsr = New System.Windows.Forms.TextBox()
         Me.Panel5 = New System.Windows.Forms.Panel()
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Password = New System.Windows.Forms.Label()
         Me.User = New System.Windows.Forms.Label()
+        Me.BtnNext = New System.Windows.Forms.Button()
+        Me.BtnNext2 = New System.Windows.Forms.Button()
         Me.PanelWrite = New System.Windows.Forms.Panel()
         Me.Ext2 = New System.Windows.Forms.Button()
         Me.BtnWrite = New System.Windows.Forms.Button()
@@ -308,8 +308,8 @@ Partial Class Form1
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
-        Me.Panel1.Controls.Add(Me.PanelPW)
         Me.Panel1.Controls.Add(Me.PanelWrite)
+        Me.Panel1.Controls.Add(Me.PanelPW)
         Me.Panel1.Controls.Add(Me.PanelFinger)
         Me.Panel1.Controls.Add(Me.CheckRFID)
         Me.Panel1.Controls.Add(Me.CheckFngr)
@@ -323,8 +323,8 @@ Partial Class Form1
         '
         'PanelPW
         '
-        Me.PanelPW.Controls.Add(Me.NIMpw)
         Me.PanelPW.Controls.Add(Me.CheckNIM)
+        Me.PanelPW.Controls.Add(Me.NIMpw)
         Me.PanelPW.Controls.Add(Me.TxtPass)
         Me.PanelPW.Controls.Add(Me.TxtUsr)
         Me.PanelPW.Controls.Add(Me.Panel5)
@@ -338,17 +338,13 @@ Partial Class Form1
         Me.PanelPW.Size = New System.Drawing.Size(401, 147)
         Me.PanelPW.TabIndex = 31
         '
-        'BtnNext2
+        'CheckNIM
         '
-        Me.BtnNext2.BackColor = System.Drawing.Color.FromArgb(CType(CType(60, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(226, Byte), Integer))
-        Me.BtnNext2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.BtnNext2.ForeColor = System.Drawing.Color.White
-        Me.BtnNext2.Location = New System.Drawing.Point(310, 92)
-        Me.BtnNext2.Name = "BtnNext2"
-        Me.BtnNext2.Size = New System.Drawing.Size(51, 31)
-        Me.BtnNext2.TabIndex = 34
-        Me.BtnNext2.Text = "NEXT"
-        Me.BtnNext2.UseVisualStyleBackColor = False
+        Me.CheckNIM.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!)
+        Me.CheckNIM.Location = New System.Drawing.Point(111, 96)
+        Me.CheckNIM.Name = "CheckNIM"
+        Me.CheckNIM.Size = New System.Drawing.Size(193, 24)
+        Me.CheckNIM.TabIndex = 35
         '
         'NIMpw
         '
@@ -359,37 +355,6 @@ Partial Class Form1
         Me.NIMpw.Size = New System.Drawing.Size(50, 21)
         Me.NIMpw.TabIndex = 33
         Me.NIMpw.Text = "NIM :"
-        '
-        'CheckNIM
-        '
-        Me.CheckNIM.Cursor = System.Windows.Forms.Cursors.IBeam
-        Me.CheckNIM.Font = New System.Drawing.Font("Century Gothic", 9.75!)
-        Me.CheckNIM.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.CheckNIM.HintForeColor = System.Drawing.Color.Empty
-        Me.CheckNIM.HintText = ""
-        Me.CheckNIM.isPassword = False
-        Me.CheckNIM.LineFocusedColor = System.Drawing.Color.Coral
-        Me.CheckNIM.LineIdleColor = System.Drawing.Color.Gray
-        Me.CheckNIM.LineMouseHoverColor = System.Drawing.Color.Blue
-        Me.CheckNIM.LineThickness = 3
-        Me.CheckNIM.Location = New System.Drawing.Point(104, 91)
-        Me.CheckNIM.Margin = New System.Windows.Forms.Padding(5)
-        Me.CheckNIM.Name = "CheckNIM"
-        Me.CheckNIM.Size = New System.Drawing.Size(199, 31)
-        Me.CheckNIM.TabIndex = 32
-        Me.CheckNIM.TextAlign = System.Windows.Forms.HorizontalAlignment.Left
-        '
-        'BtnNext
-        '
-        Me.BtnNext.BackColor = System.Drawing.Color.FromArgb(CType(CType(60, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(226, Byte), Integer))
-        Me.BtnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.BtnNext.ForeColor = System.Drawing.Color.White
-        Me.BtnNext.Location = New System.Drawing.Point(310, 92)
-        Me.BtnNext.Name = "BtnNext"
-        Me.BtnNext.Size = New System.Drawing.Size(51, 31)
-        Me.BtnNext.TabIndex = 24
-        Me.BtnNext.Text = "NEXT"
-        Me.BtnNext.UseVisualStyleBackColor = False
         '
         'TxtPass
         '
@@ -447,6 +412,30 @@ Partial Class Form1
         Me.User.Size = New System.Drawing.Size(83, 21)
         Me.User.TabIndex = 0
         Me.User.Text = "Username"
+        '
+        'BtnNext
+        '
+        Me.BtnNext.BackColor = System.Drawing.Color.FromArgb(CType(CType(60, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(226, Byte), Integer))
+        Me.BtnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnNext.ForeColor = System.Drawing.Color.White
+        Me.BtnNext.Location = New System.Drawing.Point(310, 92)
+        Me.BtnNext.Name = "BtnNext"
+        Me.BtnNext.Size = New System.Drawing.Size(51, 31)
+        Me.BtnNext.TabIndex = 24
+        Me.BtnNext.Text = "NEXT"
+        Me.BtnNext.UseVisualStyleBackColor = False
+        '
+        'BtnNext2
+        '
+        Me.BtnNext2.BackColor = System.Drawing.Color.FromArgb(CType(CType(60, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(226, Byte), Integer))
+        Me.BtnNext2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnNext2.ForeColor = System.Drawing.Color.White
+        Me.BtnNext2.Location = New System.Drawing.Point(310, 92)
+        Me.BtnNext2.Name = "BtnNext2"
+        Me.BtnNext2.Size = New System.Drawing.Size(51, 31)
+        Me.BtnNext2.TabIndex = 34
+        Me.BtnNext2.Text = "NEXT"
+        Me.BtnNext2.UseVisualStyleBackColor = False
         '
         'PanelWrite
         '
@@ -933,7 +922,7 @@ Partial Class Form1
     Friend WithEvents RectangleShape2 As PowerPacks.RectangleShape
     Friend WithEvents RectangleShape1 As PowerPacks.RectangleShape
     Friend WithEvents Label3 As Label
-    Friend WithEvents CheckNIM As Bunifu.Framework.UI.BunifuMaterialTextbox
     Friend WithEvents NIMpw As Label
     Friend WithEvents BtnNext2 As Button
+    Friend WithEvents CheckNIM As TextBox
 End Class

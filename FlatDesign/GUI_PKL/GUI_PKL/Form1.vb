@@ -33,8 +33,6 @@ Public Class Form1
     Delegate Sub SetTextCallback(ByVal [text] As String)
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        MsgBox("")
-
         Conn = New MySqlConnection
         Conn.ConnectionString = "server = localhost; userid = root; password = ; database = inlislite_v3"
         FpVer = New FlexCodeSDK.FinFPVer
@@ -58,6 +56,7 @@ Public Class Form1
         BtnCon.Enabled = False
         Write.Enabled = False
         Read.Enabled = False
+        TxtNIM_Write.Enabled = False
 
         PnlWrite.Hide()
         PanelWrite.Hide()
@@ -166,8 +165,12 @@ Public Class Form1
         bls = balasan.Text
         Stts.Text = ""
         balasan.Text = ""
-        If FlexCodeSDK.VerificationStatus.v_OK = 1 Then
+        If FlexCodeSDK.VerificationStatus.v_OK = 1 And bls <> "" Then
             MsgBox(bls)
+            PictureBox1.Image = Nothing
+            NIM.Text = ""
+            Nama.Text = ""
+        Else
             PictureBox1.Image = Nothing
             NIM.Text = ""
             Nama.Text = ""
@@ -304,7 +307,7 @@ Public Class Form1
                 Stts.Text = "Multiple match"
             Case FlexCodeSDK.VerificationStatus.v_NoDevice
                 statusFP = True
-                MessageBox.Show("USB Port Fingerprint Tidak Terdeteksi", "Warning!", MessageBoxButtons.OK)
+                Stts.Text = "Fingerprint Tidak" & vbNewLine & "Terpasang"
                 If CheckFngr.Checked = True Then
                     CheckFngr.Checked = False
                     CheckFngr.Enabled = True
@@ -314,6 +317,7 @@ Public Class Form1
                 End If
             Case FlexCodeSDK.VerificationStatus.v_NotMatch, FlexCodeSDK.VerificationStatus.v_FPListEmpty
                 Stts.Text = "No Match"
+                PictureBox1.Image = Nothing
                 uniqueTemplate = True
             Case FlexCodeSDK.VerificationStatus.v_PoorImageQuality
                 Stts.Text = "Poor image quality"
@@ -393,24 +397,27 @@ Public Class Form1
     Private Sub Write_Click(sender As Object, e As EventArgs) Handles Write.Click
         PnlRead.Hide()
         PanelRead.Hide()
-        NIMpw.Hide()
-        CheckNIM.Hide()
-        BtnNext2.SendToBack()
-        BtnNext.BringToFront()
 
         PnlWrite.Show()
         PanelPW.Show()
+        NIMpw.Hide()
+        CheckNIM.Hide()
+        CheckNIM.Text = ""
+
         PanelFinger.Hide()
         PanelWrite.Hide()
         TxtUsr.Focus()
         PictureBox1.Image = Nothing
         Label3.Text = ""
-    End Sub
+        Stts.Text = ""
 
-    Private Sub TxtNIM_Write_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtNIM_Write.KeyDown
-        If e.KeyCode = Keys.Enter And PanelWrite.Visible = True Then
-            BtnWrite.PerformClick()
-        End If
+        TxtUsr.Enabled = True
+        TxtUsr.Text = ""
+        TxtPass.Enabled = True
+        TxtPass.Text = ""
+
+        BtnNext.Show()
+        BtnNext2.Hide()
     End Sub
 
     Private Sub BtnWrite_Click(sender As Object, e As EventArgs) Handles BtnWrite.Click
@@ -421,8 +428,6 @@ Public Class Form1
         Read.Enabled = False
         Write.Enabled = False
         Ext.Enabled = False
-
-        TxtNIM_Write.Enabled = False
 
         Ext2.Enabled = False
         BtnWrite.Enabled = False
@@ -468,21 +473,21 @@ Public Class Form1
     End Sub
 
 
-    Private Sub TxtNIM_Write_TextChanged(sender As Object, e As EventArgs) Handles TxtNIM_Write.TextChanged
-        Dim theText As String = TxtNIM_Write.Text
+    Private Sub CheckNIM_TextChanged(sender As Object, e As EventArgs) Handles CheckNIM.TextChanged
+        Dim theText As String = CheckNIM.Text
         Dim Letter As String
-        Dim SelectionIndex As Integer = TxtNIM_Write.SelectionStart
+        Dim SelectionIndex As Integer = CheckNIM.SelectionStart
         Dim Change As Integer
-        For x As Integer = 0 To TxtNIM_Write.Text.Length - 1
-            Letter = TxtNIM_Write.Text.Substring(x, 1)
+        For x As Integer = 0 To CheckNIM.Text.Length - 1
+            Letter = CheckNIM.Text.Substring(x, 1)
             If numbers.Contains(Letter) = False Then
                 SystemSounds.Beep.Play()
                 theText = theText.Replace(Letter, String.Empty)
                 Change = 1
             End If
         Next
-        TxtNIM_Write.Text = theText
-        TxtNIM_Write.Select(SelectionIndex - Change, 0)
+        CheckNIM.Text = theText
+        CheckNIM.Select(SelectionIndex - Change, 0)
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
@@ -529,10 +534,10 @@ Public Class Form1
         bfr = NIM.Text
         Conn.Close()
 
+        Stts.Text = ""
         Try
             If Regex.IsMatch(NIM.Text, "^[0-9 ]+$") And RichTextBox1.Text = "" Then
                 If NIM.Text <> "" Then
-                    Stts.Text = ""
                     balasan.Text = ""
 
                     Conn.Open()
@@ -588,7 +593,6 @@ Public Class Form1
                 passing()
                 FPRegist()
 
-                TxtNIM_Write.Enabled = True
                 BtnWrite.Enabled = True
                 Ext2.Enabled = True
             ElseIf Regex.IsMatch(NIM.Text, "Write success!") And CheckFngr.Checked = False Then
@@ -602,7 +606,6 @@ Public Class Form1
                 Write.Enabled = True
                 Read.Enabled = True
                 Ext.Enabled = True
-                TxtNIM_Write.Enabled = True
                 BtnWrite.Enabled = True
                 Ext2.Enabled = True
 
@@ -671,10 +674,17 @@ Public Class Form1
 
             PnlRead.Hide()
             PanelRead.Hide()
-            PanelFinger.Hide()
+            PnlWrite.Show()
+            NIMpw.Show()
+            CheckNIM.Show()
+
+            BtnNext.Hide()
+            BtnNext2.Show()
 
             CheckNIM.Focus()
-            CheckNIM.Text = ""
+            TxtUsr.Enabled = False
+            TxtPass.Enabled = False
+
         Else
             If TxtUsr.Text = "" And TxtPass.Text = "" Then
                 MsgBox("No Username and Password found!", MsgBoxStyle.Critical, "Error")
@@ -705,28 +715,54 @@ Public Class Form1
     End Sub
 
     Private Sub BtnNext2_Click(sender As Object, e As EventArgs) Handles BtnNext2.Click
-        Read.Enabled = False
-        Write.Enabled = False
-        Ext.Enabled = False
+        Conn.Close()
+        Conn.Open()
 
-        PanelPW.Hide()
-        PnlWrite.Show()
-        PanelWrite.Show()
+        Query = "CALL FetchData ('" & CheckNIM.Text & "'); "
+        COMMAND = New MySqlCommand(Query, Conn)
+        reader = COMMAND.ExecuteReader()
+        If reader.Read Then
+            PanelWrite.Show()
+            PanelFinger.Hide()
+            PanelPW.Hide()
 
-        TxtNIM_Write.Text = ""
-        TxtNIM_Write.Focus()
+            Read.Enabled = False
+            Write.Enabled = False
+            Ext.Enabled = False
 
-        Stts.Text = ""
-        NimFinger.Text = ""
-        NoJari.Text = ""
-        RichTextBox1.Text = ""
-        Label2.Text = ""
-        TxtUsr.Text = ""
-        TxtPass.Text = ""
+            TxtNIM_Write.Text = CheckNIM.Text
+            TxtNIM_Write.Focus()
 
-        SerialPort1.Write("write" & "#")
-        waktu = 25
-        Timer3.Enabled = True
+            Stts.Text = ""
+            NimFinger.Text = ""
+            NoJari.Text = ""
+            RichTextBox1.Text = ""
+            Label2.Text = ""
+            TxtUsr.Text = ""
+            TxtPass.Text = ""
+
+            SerialPort1.Write("write" & "#")
+            waktu = 25
+            Timer3.Enabled = True
+        Else
+            MsgBox("PERIKSA NIM KEMBALI", MsgBoxStyle.Critical, "NIM TIDAK TERSEDIA")
+            CheckNIM.Text = ""
+            NIMpw.Hide()
+            CheckNIM.Hide()
+            BtnNext.Show()
+            BtnNext2.Hide()
+
+            TxtUsr.Enabled = True
+            TxtUsr.Text = ""
+            TxtPass.Enabled = True
+            TxtPass.Text = ""
+        End If
+
     End Sub
 
+    Private Sub CheckNIM_KeyDown(sender As Object, e As KeyEventArgs) Handles CheckNIM.KeyDown
+        If e.KeyCode = Keys.Enter And BtnNext2.Visible = True Then
+            BtnNext2.PerformClick()
+        End If
+    End Sub
 End Class
