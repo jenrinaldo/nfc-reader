@@ -33,8 +33,9 @@ Public Class Form1
     Delegate Sub SetTextCallback(ByVal [text] As String)
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        MsgBox("Selamat Datang di Inlislite!")
         Conn = New MySqlConnection
-        Conn.ConnectionString = "server = localhost; userid = root; password = ; database = inlislite_v3"
+        Conn.ConnectionString = "server = localhost; port = 3309; userid = root; password = ; database = inlislite_v3"
         FpVer = New FlexCodeSDK.FinFPVer
         FpReg = New FlexCodeSDK.FinFPReg
         FpVer.SetMaxTemplate(100000)
@@ -152,7 +153,6 @@ Public Class Form1
         While rd.Read
             FpVer.FPLoad(rd.GetString(0), rd.GetString(3), rd.GetString(2), "YourSecretKey")
         End While
-        MsgBox("")
         FpVer.FPVerificationStart()
         rd.Close()
     End Sub
@@ -165,8 +165,12 @@ Public Class Form1
         bls = balasan.Text
         Stts.Text = ""
         balasan.Text = ""
-        If FlexCodeSDK.VerificationStatus.v_OK = 1 Then
+        If FlexCodeSDK.VerificationStatus.v_OK = 1 And bls <> "" Then
             MsgBox(bls)
+            PictureBox1.Image = Nothing
+            NIM.Text = ""
+            Nama.Text = ""
+        Else
             PictureBox1.Image = Nothing
             NIM.Text = ""
             Nama.Text = ""
