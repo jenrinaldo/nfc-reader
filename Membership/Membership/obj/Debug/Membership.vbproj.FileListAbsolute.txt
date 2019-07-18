@@ -1,0 +1,15 @@
+D:\Kuliah\MATERI PKL\nfc-reader\Membership\Membership\bin\Debug\Membership.exe.config
+D:\Kuliah\MATERI PKL\nfc-reader\Membership\Membership\bin\Debug\Membership.exe
+D:\Kuliah\MATERI PKL\nfc-reader\Membership\Membership\bin\Debug\Membership.pdb
+D:\Kuliah\MATERI PKL\nfc-reader\Membership\Membership\bin\Debug\Membership.xml
+D:\Kuliah\MATERI PKL\nfc-reader\Membership\Membership\bin\Debug\MySql.Data.dll
+D:\Kuliah\MATERI PKL\nfc-reader\Membership\Membership\bin\Debug\Google.Protobuf.dll
+D:\Kuliah\MATERI PKL\nfc-reader\Membership\Membership\bin\Debug\BouncyCastle.Crypto.dll
+D:\Kuliah\MATERI PKL\nfc-reader\Membership\Membership\bin\Debug\MySql.Data.xml
+D:\Kuliah\MATERI PKL\nfc-reader\Membership\Membership\obj\Debug\Membership.vbprojResolveAssemblyReference.cache
+D:\Kuliah\MATERI PKL\nfc-reader\Membership\Membership\obj\Debug\Membership.SrcWin.resources
+D:\Kuliah\MATERI PKL\nfc-reader\Membership\Membership\obj\Debug\Membership.Resources.resources
+D:\Kuliah\MATERI PKL\nfc-reader\Membership\Membership\obj\Debug\Membership.vbproj.GenerateResource.Cache
+D:\Kuliah\MATERI PKL\nfc-reader\Membership\Membership\obj\Debug\Membership.exe
+D:\Kuliah\MATERI PKL\nfc-reader\Membership\Membership\obj\Debug\Membership.xml
+D:\Kuliah\MATERI PKL\nfc-reader\Membership\Membership\obj\Debug\Membership.pdb
