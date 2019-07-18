@@ -417,7 +417,10 @@ Public Class Form1
         Write.Enabled = False
         Ext.Enabled = False
 
-        NIMWrite.Enabled = False
+        TxtNIM_Write.Enabled = False
+
+        Ext2.Enabled = False
+        BtnWrite.Enabled = False
     End Sub
 
     Private Sub passing()
@@ -495,7 +498,6 @@ Public Class Form1
             Ext.Enabled = True
 
             Stts.Show()
-
             PanelRead.Show()
             PnlRead.Show()
 
@@ -521,6 +523,7 @@ Public Class Form1
         Dim bfr As String
         bfr = NIM.Text
         Conn.Close()
+
         Try
             If Regex.IsMatch(NIM.Text, "^[0-9 ]+$") And RichTextBox1.Text = "" Then
                 If NIM.Text <> "" Then
@@ -541,7 +544,6 @@ Public Class Form1
                             Try
                                 Flag = reader.GetInt16("Date")
                                 If Flag = 0 Then
-
                                     balasan.Text = "Terimakasih Telah Berkunjung Kembali"
                                     Conn.Close()
                                 ElseIf Flag < 0 Then
@@ -572,7 +574,7 @@ Public Class Form1
             ElseIf Regex.IsMatch(NIM.Text, "DataKosong") Then
                 NIM.Text = ""
                 Stts.Text = "Data Kosong"
-            ElseIf Regex.IsMatch(NIM.Text, "Write success!") Then
+            ElseIf Regex.IsMatch(NIM.Text, "Write success!") And CheckFngr.Checked = True Then
                 NIM.Text = ""
                 MsgBox("Penulisan RFID Tag Sukses")
                 PnlWrite.Show()
@@ -580,10 +582,33 @@ Public Class Form1
                 PanelFinger.Show()
                 passing()
                 FPRegist()
+
+                TxtNIM_Write.Enabled = True
+                BtnWrite.Enabled = True
+                Ext2.Enabled = True
+            ElseIf Regex.IsMatch(NIM.Text, "Write success!") And CheckFngr.Checked = False Then
+                NIM.Text = ""
+                MsgBox("Penulisan RFID Tag Sukses, Fingerprint tidak tersambung")
+                PnlWrite.Hide()
+                PanelWrite.Hide()
+                PnlRead.Show()
+                PanelRead.Show()
+
+                Write.Enabled = True
+                Read.Enabled = True
+                Ext.Enabled = True
+                TxtNIM_Write.Enabled = True
+                BtnWrite.Enabled = True
+                Ext2.Enabled = True
+
             ElseIf Regex.IsMatch(NIM.Text, "Write failed!") Then
                 NIM.Text = ""
                 MessageBox.Show("Penulisan RFID Tag Gagal", "Warning!", MessageBoxButtons.OK)
                 gagal()
+
+                Write.Enabled = False
+                Read.Enabled = False
+                Ext.Enabled = False
             ElseIf RichTextBox1.Text <> "" Then
                 MsgBox("Jari anda telah terdaftar")
                 RichTextBox1.Text = ""
