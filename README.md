@@ -1,30 +1,7 @@
-# RFID Reader with ACS-ACR122U-Tool and Arduino Uno + RFID RC522
+# GUI for Buku Tamu Perpustakaan UB
 
-## ACS-ACR122U-Tool
+## Build with VB.Net + Flexcode 4500
 
-Python code to read/write nfc card with ACR122U in python folder
-
-### Environtment
-
-- pyscard
-- python 3
-
-### Command List
-
-    $ python nfc.py read
-
-### How to read data
-
-- Connect the reader to computer and put a card on the reader.
-- Read all data in card with 'read' command
-
-## Arduino Uno RFID Reader <Mifare 1K Classic Only> with RFID RC522
-   The code in Arduino folder
-
-
-
-## Thanks to
-
-[Kim Dong Min](https://github.com/rocky112358/ACS-ACR122U-Tool)
+- For NFC Reader with ACR122U please check the [ACR122U](https://github.com/jenrinaldo/nfc-reader/tree/acr122u) branch
 
 GNU General Public License v3.0
