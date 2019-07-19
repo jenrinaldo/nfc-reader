@@ -111,8 +111,25 @@ Public Class Form1
                 sembunyi()
             End If
         Catch ex As Exception
-            MsgBox("Periksa Sambungan Database", MsgBoxStyle.Critical, "Konfigurasi Database Salah")
+            MsgBox("Periksa Konfigurasi Database", MsgBoxStyle.Critical, "Error")
+            Read.Enabled = False
+            Write.Enabled = False
+            CheckRFID.Enabled = False
+            CheckFngr.Enabled = False
+            BtnScanPort.Enabled = False
+            BtnCon.Enabled = False
+            BtnDiscon.Enabled = False
+            CmbPort.Enabled = False
+            CheckFngr.Checked = False
+            CheckRFID.Checked = False
+
+            PnlRead.Hide()
+            PanelRead.Hide()
+
+            CmbPort.Text = ""
+            Ext.Enabled = True
         End Try
+
 
     End Sub
 
@@ -670,6 +687,7 @@ Public Class Form1
     Private Sub CheckFngr_Click(sender As Object, e As EventArgs) Handles CheckFngr.Click
         FpVer.AddDeviceInfo(SN, Verif, Activ)
         FpVer.FPVerificationStart()
+        tampil()
         If CheckFngr.Checked = True Then
             CheckFngr.Enabled = False
         End If
