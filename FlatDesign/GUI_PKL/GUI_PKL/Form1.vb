@@ -638,9 +638,9 @@ Public Class Form1
                 MessageBox.Show("Penulisan RFID Tag Gagal", "Warning!", MessageBoxButtons.OK)
                 gagal()
 
-                Write.Enabled = False
-                Read.Enabled = False
-                Ext.Enabled = False
+                Write.Enabled = True
+                Read.Enabled = True
+                Ext.Enabled = True
             ElseIf RichTextBox1.Text <> "" Then
                 MsgBox("Jari anda telah terdaftar")
                 RichTextBox1.Text = ""
