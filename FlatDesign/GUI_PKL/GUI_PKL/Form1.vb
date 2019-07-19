@@ -641,6 +641,9 @@ Public Class Form1
                 Write.Enabled = True
                 Read.Enabled = True
                 Ext.Enabled = True
+                BtnWrite.Enabled = True
+                Ext2.Enabled = True
+
             ElseIf RichTextBox1.Text <> "" Then
                 MsgBox("Jari anda telah terdaftar")
                 RichTextBox1.Text = ""
