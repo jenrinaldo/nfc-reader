@@ -6,11 +6,16 @@ Imports System.Management
 Imports System.Text.RegularExpressions
 Imports System.Media
 Imports MySql.Data.MySqlClient
+Imports System.Configuration
+
 
 Public Class Form1
     Dim WithEvents FpVer As New FlexCodeSDK.FinFPVer
     Dim WithEvents FpReg As New FlexCodeSDK.FinFPReg
     Dim uniqueTemplate As Boolean
+    Dim StatusRegis As Boolean = True
+    Dim userId As String
+    Dim fpNum As Integer
     Dim Template As String
     Dim reader As MySqlDataReader
     Dim Conn As MySqlConnection
@@ -29,79 +34,102 @@ Public Class Form1
     Dim statusFP As Boolean
     Delegate Sub SetTextCallback(ByVal [text] As String)
 
+    Public connString1 As String = ConfigurationManager.ConnectionStrings("MySqlConnectionString").ToString()
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Conn = New MySqlConnection
-        Conn.ConnectionString = "server = localhost; userid = root; password = ; database = inlislite_v3"
-        FpVer = New FlexCodeSDK.FinFPVer
-        FpReg = New FlexCodeSDK.FinFPReg
-        FpVer.SetMaxTemplate(100000)
-        FpVer.PictureSamplePath = My.Application.Info.DirectoryPath & "\FPTemp.BMP"
-        FpVer.PictureSampleHeight = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Height))
-        FpVer.PictureSampleWidth = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Width))
-        Fingerprint.Enabled = False
-        CheckFngr.Enabled = False
-        CheckFngr.Checked = False
-        RFID.Enabled = False
-        CheckRFID.Enabled = False
-        CheckRFID.Checked = False
-        uniqueTemplate = False
-        NIM.Enabled = False
-        Timer1.Enabled = True
-        Timer2.Enabled = False
-        Timer3.Enabled = False
+        Try
+            Conn = New MySqlConnection(connString1)
+            FpVer = New FlexCodeSDK.FinFPVer
+            FpReg = New FlexCodeSDK.FinFPReg
+            FpVer.SetMaxTemplate(100000)
+            FpVer.PictureSamplePath = My.Application.Info.DirectoryPath & "\FPTemp.BMP"
+            FpVer.PictureSampleHeight = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Height))
+            FpVer.PictureSampleWidth = Convert.ToInt32(Compatibility.VB6.PixelsToTwipsY(PictureBox1.Width))
+            Fingerprint.Enabled = False
+            CheckFngr.Enabled = False
+            CheckFngr.Checked = False
+            RFID.Enabled = False
+            CheckRFID.Enabled = False
+            CheckRFID.Checked = False
+            uniqueTemplate = False
+            NIM.Enabled = False
+            Timer1.Enabled = True
+            Timer2.Enabled = False
+            Timer3.Enabled = False
 
-        BtnCon.Enabled = False
-        Write.Enabled = False
-        Read.Enabled = False
+            BtnCon.Enabled = False
+            Write.Enabled = False
+            Read.Enabled = False
+            TxtNIM_Write.Enabled = False
 
-        PnlWrite.Hide()
-        PanelWrite.Hide()
-        PanelFinger.Hide()
-        PanelPW.Hide()
+            PnlWrite.Hide()
+            PanelWrite.Hide()
+            PanelFinger.Hide()
+            PanelPW.Hide()
 
-        PnlRead.Hide()
-        PanelRead.Hide()
+            PnlRead.Hide()
+            PanelRead.Hide()
 
-        Stts.Text = ""
-        Nama.Text = ""
-        balasan.Text = ""
-        TxtNIM_Write.Text = ""
+            Stts.Text = ""
+            Nama.Text = ""
+            balasan.Text = ""
+            TxtNIM_Write.Text = ""
 
-        Dim searcher As New ManagementObjectSearcher("root\CIMV2", "Select * FROM Win32_PnPEntity")
-        For Each queryObj As ManagementObject In searcher.Get()
-            If queryObj("Description") = "USB-SERIAL CH340" Then
-                string1 = queryObj("Description")
-                string2 = queryObj("Name")
-                hasil = string2.Replace(string1, "")
-                hasil = hasil.Replace("(", "")
-                hasil = hasil.Replace(")", "")
-                hasil = hasil.Replace(" ", "")
+            Dim searcher As New ManagementObjectSearcher("root\CIMV2", "Select * FROM Win32_PnPEntity")
+            For Each queryObj As ManagementObject In searcher.Get()
+                If queryObj("Description") = "USB-SERIAL CH340" Then
+                    string1 = queryObj("Description")
+                    string2 = queryObj("Name")
+                    hasil = string2.Replace(string1, "")
+                    hasil = hasil.Replace("(", "")
+                    hasil = hasil.Replace(")", "")
+                    hasil = hasil.Replace(" ", "")
+                End If
+            Next
+
+            If string1 = "USB-SERIAL CH340" And statusFP = False Then
+                konek(hasil)
+                tampil()
+                FPVerif()
+                CheckRFID.Checked = True
+                CheckFngr.Checked = True
+            ElseIf string1 = "USB-SERIAL CH340" And statusFP = True Then
+                konek(hasil)
+                tampil()
+                CheckRFID.Checked = True
+                CheckFngr.Checked = False
+                CheckFngr.Enabled = True
+            ElseIf string1 <> "USB-SERIAL CH340" And statusFP = False Then
+                tampil()
+                FPVerif()
+                CheckRFID.Checked = False
+                CheckFngr.Checked = True
+            Else
+                CheckRFID.Checked = False
+                CheckFngr.Checked = False
+                CheckFngr.Enabled = True
+                sembunyi()
             End If
-        Next
+        Catch ex As Exception
+            MsgBox("Periksa Konfigurasi Database", MsgBoxStyle.Critical, "Error")
+            Read.Enabled = False
+            Write.Enabled = False
+            CheckRFID.Enabled = False
+            CheckFngr.Enabled = False
+            BtnScanPort.Enabled = False
+            BtnCon.Enabled = False
+            BtnDiscon.Enabled = False
+            CmbPort.Enabled = False
+            CheckFngr.Checked = False
+            CheckRFID.Checked = False
 
-        If string1 = "USB-SERIAL CH340" And statusFP = False Then
-            konek(hasil)
-            tampil()
-            FPVerif()
-            CheckRFID.Checked = True
-            CheckFngr.Checked = True
-        ElseIf string1 = "USB-SERIAL CH340" And statusFP = True Then
-            konek(hasil)
-            tampil()
-            CheckRFID.Checked = True
-            CheckFngr.Checked = False
-            CheckFngr.Enabled = True
-        ElseIf string1 <> "USB-SERIAL CH340" And statusFP = False Then
-            tampil()
-            FPVerif()
-            CheckRFID.Checked = False
-            CheckFngr.Checked = True
-        Else
-            CheckRFID.Checked = False
-            CheckFngr.Checked = False
-            CheckFngr.Enabled = True
-            sembunyi()
-        End If
+            PnlRead.Hide()
+            PanelRead.Hide()
+
+            CmbPort.Text = ""
+            Ext.Enabled = True
+        End Try
+
 
     End Sub
 
@@ -132,6 +160,8 @@ Public Class Form1
 
     Private Sub FpReg_FPRegistrationStatus(ByVal Status As FlexCodeSDK.RegistrationStatus) Handles FpReg.FPRegistrationStatus
         If Status = FlexCodeSDK.RegistrationStatus.r_OK Then
+            StatusRegis = False
+            FpReg.FPRegistrationStop()
             FPVerif()
         End If
     End Sub
@@ -153,12 +183,18 @@ Public Class Form1
 
     Private Sub FPVer_FPVerificationID(ByVal ID As String, ByVal FingerNr As FlexCodeSDK.FingerNumber) Handles FpVer.FPVerificationID
         Dim bls As String
+        userId = ID
+        fpNum = FingerNr
         NIM.Text = ID
         bls = balasan.Text
         Stts.Text = ""
         balasan.Text = ""
-        If FlexCodeSDK.VerificationStatus.v_OK = 1 Then
+        If FlexCodeSDK.VerificationStatus.v_OK = 1 And bls <> "" Then
             MsgBox(bls)
+            PictureBox1.Image = Nothing
+            NIM.Text = ""
+            Nama.Text = ""
+        Else
             PictureBox1.Image = Nothing
             NIM.Text = ""
             Nama.Text = ""
@@ -214,6 +250,9 @@ Public Class Form1
         Dim sqlCommand As New MySqlCommand(commText, Conn)
         sqlCommand.ExecuteNonQuery()
         MsgBox("OK!")
+        FpVer.FPUnload(userId, fpNum)
+        FpVer.FPVerificationStop()
+
 
         Write.Enabled = True
         Read.Enabled = True
@@ -232,6 +271,7 @@ Public Class Form1
         NoJari.Text = ""
         RichTextBox1.Text = ""
         Label2.Text = ""
+        PictureBox1.Image = Nothing
     End Sub
 
     Private Sub tampil()
@@ -278,7 +318,6 @@ Public Class Form1
     End Sub
 
     Private Sub FPVer_FPVerificationStatus(ByVal Status As FlexCodeSDK.VerificationStatus) Handles FpVer.FPVerificationStatus
-        FpVer.FPVerificationStop()
         Select Case Status
             Case FlexCodeSDK.VerificationStatus.v_ActivationIncorrect
                 Stts.Text = "Activation / verification code is" & vbNewLine & "incorrent or not set"
@@ -292,7 +331,7 @@ Public Class Form1
                 Stts.Text = "Multiple match"
             Case FlexCodeSDK.VerificationStatus.v_NoDevice
                 statusFP = True
-                MessageBox.Show("USB Port Fingerprint Tidak Terdeteksi", "Warning!", MessageBoxButtons.OK)
+                Stts.Text = "Fingerprint Tidak" & vbNewLine & "Terpasang"
                 If CheckFngr.Checked = True Then
                     CheckFngr.Checked = False
                     CheckFngr.Enabled = True
@@ -302,6 +341,7 @@ Public Class Form1
                 End If
             Case FlexCodeSDK.VerificationStatus.v_NotMatch, FlexCodeSDK.VerificationStatus.v_FPListEmpty
                 Stts.Text = "No Match"
+                PictureBox1.Image = Nothing
                 uniqueTemplate = True
             Case FlexCodeSDK.VerificationStatus.v_PoorImageQuality
                 Stts.Text = "Poor image quality"
@@ -309,6 +349,8 @@ Public Class Form1
                 Stts.Text = "Verification failed"
             Case FlexCodeSDK.VerificationStatus.v_VerifyCaptureStop
                 Stts.Text = "Stop verify"
+            Case FlexCodeSDK.VerificationStatus.v_OK
+                Exit Select
             Case Else
                 statusFP = False
                 CheckFngr.Checked = True
@@ -316,7 +358,6 @@ Public Class Form1
         If uniqueTemplate And RichTextBox1.Text <> "" Then
             fpAddToDB()
             uniqueTemplate = False
-            FpReg.FPRegistrationStop()
         End If
     End Sub
     Private Sub Ext_Click(sender As Object, e As EventArgs) Handles Ext.Click
@@ -383,17 +424,24 @@ Public Class Form1
 
         PnlWrite.Show()
         PanelPW.Show()
+        NIMpw.Hide()
+        CheckNIM.Hide()
+        CheckNIM.Text = ""
+
         PanelFinger.Hide()
         PanelWrite.Hide()
         TxtUsr.Focus()
         PictureBox1.Image = Nothing
         Label3.Text = ""
-    End Sub
+        Stts.Text = ""
 
-    Private Sub TxtNIM_Write_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtNIM_Write.KeyDown
-        If e.KeyCode = Keys.Enter And PanelWrite.Visible = True Then
-            BtnWrite.PerformClick()
-        End If
+        TxtUsr.Enabled = True
+        TxtUsr.Text = ""
+        TxtPass.Enabled = True
+        TxtPass.Text = ""
+
+        BtnNext.Show()
+        BtnNext2.Hide()
     End Sub
 
     Private Sub BtnWrite_Click(sender As Object, e As EventArgs) Handles BtnWrite.Click
@@ -405,8 +453,8 @@ Public Class Form1
         Write.Enabled = False
         Ext.Enabled = False
 
-        PnlWrite.Show()
-        PanelWrite.Hide()
+        Ext2.Enabled = False
+        BtnWrite.Enabled = False
     End Sub
 
     Private Sub passing()
@@ -449,21 +497,21 @@ Public Class Form1
     End Sub
 
 
-    Private Sub TxtNIM_Write_TextChanged(sender As Object, e As EventArgs) Handles TxtNIM_Write.TextChanged
-        Dim theText As String = TxtNIM_Write.Text
+    Private Sub CheckNIM_TextChanged(sender As Object, e As EventArgs) Handles CheckNIM.TextChanged
+        Dim theText As String = CheckNIM.Text
         Dim Letter As String
-        Dim SelectionIndex As Integer = TxtNIM_Write.SelectionStart
+        Dim SelectionIndex As Integer = CheckNIM.SelectionStart
         Dim Change As Integer
-        For x As Integer = 0 To TxtNIM_Write.Text.Length - 1
-            Letter = TxtNIM_Write.Text.Substring(x, 1)
+        For x As Integer = 0 To CheckNIM.Text.Length - 1
+            Letter = CheckNIM.Text.Substring(x, 1)
             If numbers.Contains(Letter) = False Then
                 SystemSounds.Beep.Play()
                 theText = theText.Replace(Letter, String.Empty)
                 Change = 1
             End If
         Next
-        TxtNIM_Write.Text = theText
-        TxtNIM_Write.Select(SelectionIndex - Change, 0)
+        CheckNIM.Text = theText
+        CheckNIM.Select(SelectionIndex - Change, 0)
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
@@ -484,7 +532,6 @@ Public Class Form1
             Ext.Enabled = True
 
             Stts.Show()
-
             PanelRead.Show()
             PnlRead.Show()
 
@@ -510,17 +557,18 @@ Public Class Form1
         Dim bfr As String
         bfr = NIM.Text
         Conn.Close()
+
+        Stts.Text = ""
         Try
-            If Regex.IsMatch(NIM.Text, "^[0-9 ]+$") Then
+            If Regex.IsMatch(NIM.Text, "^[0-9 ]+$") And RichTextBox1.Text = "" Then
                 If NIM.Text <> "" Then
-                    Stts.Text = ""
                     balasan.Text = ""
 
                     Conn.Open()
                     Query = "CALL FetchData ('" & NIM.Text & "'); "
                     COMMAND = New MySqlCommand(Query, Conn)
                     reader = COMMAND.ExecuteReader()
-                    If reader.Read() = True Then
+                    If reader.Read() Then
                         Nama.Text = reader("FullName".ToString())
                         reader.Close()
                         Query = "CALL GetTimeDif('" & NIM.Text & "');"
@@ -560,16 +608,55 @@ Public Class Form1
             ElseIf Regex.IsMatch(NIM.Text, "DataKosong") Then
                 NIM.Text = ""
                 Stts.Text = "Data Kosong"
-            ElseIf Regex.IsMatch(NIM.Text, "Write success!") Then
+            ElseIf Regex.IsMatch(NIM.Text, "Write success!") And CheckFngr.Checked = True Then
                 NIM.Text = ""
                 MsgBox("Penulisan RFID Tag Sukses")
+                PnlWrite.Show()
+                PanelWrite.Hide()
                 PanelFinger.Show()
                 passing()
                 FPRegist()
+
+                BtnWrite.Enabled = True
+                Ext2.Enabled = True
+            ElseIf Regex.IsMatch(NIM.Text, "Write success!") And CheckFngr.Checked = False Then
+                NIM.Text = ""
+                MsgBox("Penulisan RFID Tag Sukses, Fingerprint tidak tersambung")
+                PnlWrite.Hide()
+                PanelWrite.Hide()
+                PnlRead.Show()
+                PanelRead.Show()
+
+                Write.Enabled = True
+                Read.Enabled = True
+                Ext.Enabled = True
+                BtnWrite.Enabled = True
+                Ext2.Enabled = True
+
             ElseIf Regex.IsMatch(NIM.Text, "Write failed!") Then
                 NIM.Text = ""
                 MessageBox.Show("Penulisan RFID Tag Gagal", "Warning!", MessageBoxButtons.OK)
                 gagal()
+
+                Write.Enabled = True
+                Read.Enabled = True
+                Ext.Enabled = True
+                BtnWrite.Enabled = True
+                Ext2.Enabled = True
+
+            ElseIf RichTextBox1.Text <> "" Then
+                MsgBox("Jari anda telah terdaftar")
+                RichTextBox1.Text = ""
+                NIM.Text = ""
+                PictureBox1.Image = Nothing
+                PanelFinger.Hide()
+                PnlWrite.Hide()
+
+                Read.Enabled = True
+                Write.Enabled = True
+                Ext.Enabled = True
+                PanelRead.Show()
+                PnlRead.Show()
             Else
                 NIM.Text = ""
                 Nama.Text = ""
@@ -603,6 +690,7 @@ Public Class Form1
     Private Sub CheckFngr_Click(sender As Object, e As EventArgs) Handles CheckFngr.Click
         FpVer.AddDeviceInfo(SN, Verif, Activ)
         FpVer.FPVerificationStart()
+        tampil()
         If CheckFngr.Checked = True Then
             CheckFngr.Enabled = False
         End If
@@ -615,28 +703,16 @@ Public Class Form1
             PnlRead.Hide()
             PanelRead.Hide()
             PnlWrite.Show()
-            PanelWrite.Show()
-            PanelFinger.Hide()
-            PanelPW.Hide()
+            NIMpw.Show()
+            CheckNIM.Show()
 
-            Read.Enabled = False
-            Write.Enabled = False
-            Ext.Enabled = False
+            BtnNext.Hide()
+            BtnNext2.Show()
 
-            TxtNIM_Write.Text = ""
-            TxtNIM_Write.Focus()
+            CheckNIM.Focus()
+            TxtUsr.Enabled = False
+            TxtPass.Enabled = False
 
-            Stts.Text = ""
-            NimFinger.Text = ""
-            NoJari.Text = ""
-            RichTextBox1.Text = ""
-            Label2.Text = ""
-            TxtUsr.Text = ""
-            TxtPass.Text = ""
-
-            SerialPort1.Write("write" & "#")
-            waktu = 25
-            Timer3.Enabled = True
         Else
             If TxtUsr.Text = "" And TxtPass.Text = "" Then
                 MsgBox("No Username and Password found!", MsgBoxStyle.Critical, "Error")
@@ -666,4 +742,55 @@ Public Class Form1
         End If
     End Sub
 
+    Private Sub BtnNext2_Click(sender As Object, e As EventArgs) Handles BtnNext2.Click
+        Conn.Close()
+        Conn.Open()
+
+        Query = "CALL FetchData ('" & CheckNIM.Text & "'); "
+        COMMAND = New MySqlCommand(Query, Conn)
+        reader = COMMAND.ExecuteReader()
+        If reader.Read Then
+            PanelWrite.Show()
+            PanelFinger.Hide()
+            PanelPW.Hide()
+
+            Read.Enabled = False
+            Write.Enabled = False
+            Ext.Enabled = False
+
+            TxtNIM_Write.Text = CheckNIM.Text
+            TxtNIM_Write.Focus()
+
+            Stts.Text = ""
+            NimFinger.Text = ""
+            NoJari.Text = ""
+            RichTextBox1.Text = ""
+            Label2.Text = ""
+            TxtUsr.Text = ""
+            TxtPass.Text = ""
+
+            SerialPort1.Write("write" & "#")
+            waktu = 25
+            Timer3.Enabled = True
+        Else
+            MsgBox("PERIKSA NIM KEMBALI", MsgBoxStyle.Critical, "NIM TIDAK TERSEDIA")
+            CheckNIM.Text = ""
+            NIMpw.Hide()
+            CheckNIM.Hide()
+            BtnNext.Show()
+            BtnNext2.Hide()
+
+            TxtUsr.Enabled = True
+            TxtUsr.Text = ""
+            TxtPass.Enabled = True
+            TxtPass.Text = ""
+        End If
+
+    End Sub
+
+    Private Sub CheckNIM_KeyDown(sender As Object, e As KeyEventArgs) Handles CheckNIM.KeyDown
+        If e.KeyCode = Keys.Enter And BtnNext2.Visible = True Then
+            BtnNext2.PerformClick()
+        End If
+    End Sub
 End Class

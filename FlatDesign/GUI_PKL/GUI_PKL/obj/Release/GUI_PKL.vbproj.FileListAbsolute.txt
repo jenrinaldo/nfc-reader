@@ -1,0 +1,24 @@
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Release\Interop.FlexCodeSDK.dll
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Release\GUI_PKL.vbproj.ResolveComReference.cache
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Release\Bunifu_UI_v1.5.3.dll
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Release\Microsoft.VisualBasic.PowerPacks.dll
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Release\MySql.Data.dll
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Release\Google.Protobuf.dll
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Release\BouncyCastle.Crypto.dll
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Release\Microsoft.VisualBasic.PowerPacks.xml
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Release\MySql.Data.xml
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Release\GUI_PKL.vbprojResolveAssemblyReference.cache
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Release\GUI_PKL.Form1.resources
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Release\GUI_PKL.Resources.resources
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Release\GUI_PKL.vbproj.GenerateResource.Cache
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Release\Buku Tamu Perpustakaan UB.exe.config
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Release\Buku Tamu Perpustakaan UB.exe
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Release\Buku Tamu Perpustakaan UB.xml
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Release\Buku Tamu Perpustakaan UB.pdb
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Release\Buku Tamu Perpustakaan UB.exe.manifest
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Release\Buku Tamu Perpustakaan UB.application
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Release\Buku Tamu Perpustakaan UB.exe
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Release\Buku Tamu Perpustakaan UB.pdb
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Release\Buku Tamu Perpustakaan UB.xml
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Release\Buku Tamu Perpustakaan UB.exe.manifest
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Release\Buku Tamu Perpustakaan UB.application
