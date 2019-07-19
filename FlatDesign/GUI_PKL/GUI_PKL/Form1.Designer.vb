@@ -39,6 +39,8 @@ Partial Class Form1
         Me.RFID = New Bunifu.Framework.UI.BunifuImageButton()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.PanelPW = New System.Windows.Forms.Panel()
+        Me.CheckBox2 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.CheckNIM = New System.Windows.Forms.TextBox()
         Me.NIMpw = New System.Windows.Forms.Label()
         Me.TxtPass = New System.Windows.Forms.TextBox()
@@ -308,9 +310,9 @@ Partial Class Form1
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
-        Me.Panel1.Controls.Add(Me.PanelWrite)
-        Me.Panel1.Controls.Add(Me.PanelPW)
         Me.Panel1.Controls.Add(Me.PanelFinger)
+        Me.Panel1.Controls.Add(Me.PanelPW)
+        Me.Panel1.Controls.Add(Me.PanelWrite)
         Me.Panel1.Controls.Add(Me.CheckRFID)
         Me.Panel1.Controls.Add(Me.CheckFngr)
         Me.Panel1.Controls.Add(Me.RFID)
@@ -323,6 +325,8 @@ Partial Class Form1
         '
         'PanelPW
         '
+        Me.PanelPW.Controls.Add(Me.CheckBox2)
+        Me.PanelPW.Controls.Add(Me.CheckBox1)
         Me.PanelPW.Controls.Add(Me.CheckNIM)
         Me.PanelPW.Controls.Add(Me.NIMpw)
         Me.PanelPW.Controls.Add(Me.TxtPass)
@@ -337,6 +341,28 @@ Partial Class Form1
         Me.PanelPW.Name = "PanelPW"
         Me.PanelPW.Size = New System.Drawing.Size(401, 147)
         Me.PanelPW.TabIndex = 31
+        '
+        'CheckBox2
+        '
+        Me.CheckBox2.AutoSize = True
+        Me.CheckBox2.Font = New System.Drawing.Font("Century Gothic", 8.25!)
+        Me.CheckBox2.Location = New System.Drawing.Point(208, 124)
+        Me.CheckBox2.Name = "CheckBox2"
+        Me.CheckBox2.Size = New System.Drawing.Size(96, 20)
+        Me.CheckBox2.TabIndex = 37
+        Me.CheckBox2.Text = "FINGERPRINT"
+        Me.CheckBox2.UseVisualStyleBackColor = True
+        '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Font = New System.Drawing.Font("Century Gothic", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBox1.Location = New System.Drawing.Point(111, 124)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(50, 20)
+        Me.CheckBox1.TabIndex = 36
+        Me.CheckBox1.Text = "RFID"
+        Me.CheckBox1.UseVisualStyleBackColor = True
         '
         'CheckNIM
         '
@@ -925,4 +951,6 @@ Partial Class Form1
     Friend WithEvents NIMpw As Label
     Friend WithEvents BtnNext2 As Button
     Friend WithEvents CheckNIM As TextBox
+    Friend WithEvents CheckBox2 As CheckBox
+    Friend WithEvents CheckBox1 As CheckBox
 End Class
