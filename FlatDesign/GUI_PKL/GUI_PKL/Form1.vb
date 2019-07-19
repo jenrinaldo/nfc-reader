@@ -52,7 +52,9 @@ Public Class Form1
             CheckRFID.Enabled = False
             CheckRFID.Checked = False
             uniqueTemplate = False
-            NIM.Enabled = False
+
+            NIM.Focus()
+            NIM.Enabled = True
             Timer1.Enabled = True
             Timer2.Enabled = False
             Timer3.Enabled = False
@@ -90,23 +92,31 @@ Public Class Form1
                 konek(hasil)
                 FPVerif()
                 CheckRFID.Checked = True
+                CheckBox1.Enabled = True
                 CheckFngr.Checked = True
+                CheckBox2.Enabled = True
             ElseIf string1 = "USB-SERIAL CH340" And statusFP = True Then
                 konek(hasil)
                 CheckRFID.Checked = True
+                CheckBox1.Enabled = True
                 CheckFngr.Checked = False
+                CheckBox2.Enabled = False
+
                 CheckFngr.Enabled = True
             ElseIf string1 <> "USB-SERIAL CH340" And statusFP = False Then
                 FPVerif()
                 CheckRFID.Checked = False
+                CheckBox1.Enabled = False
                 CheckFngr.Checked = True
+                CheckBox2.Enabled = True
             Else
                 CheckRFID.Checked = False
+                CheckBox1.Enabled = False
                 CheckFngr.Checked = False
                 CheckFngr.Enabled = True
+                CheckBox2.Enabled = False
                 sembunyi()
             End If
-            AksesTulis()
         Catch ex As Exception
             MsgBox("Periksa Konfigurasi Database", MsgBoxStyle.Critical, "Error")
             Read.Enabled = False
@@ -280,6 +290,8 @@ Public Class Form1
         PanelRead.Show()
         PanelPW.Hide()
 
+        NIM.Enabled = True
+
         Write.Enabled = False
         Read.Enabled = False
 
@@ -323,6 +335,7 @@ Public Class Form1
             Case FlexCodeSDK.VerificationStatus.v_NoDevice
                 statusFP = True
                 Stts.Text = "Fingerprint Tidak" & vbNewLine & "Terpasang"
+                CheckBox2.Enabled = False
                 If CheckFngr.Checked = True Then
                     CheckFngr.Checked = False
                     CheckFngr.Enabled = True
@@ -390,11 +403,13 @@ Public Class Form1
     Private Sub BtnCon_Click(sender As Object, e As EventArgs) Handles BtnCon.Click
         Read.Enabled = True
         Write.Enabled = True
+        CheckBox1.Enabled = True
         konek(CmbPort.SelectedItem)
     End Sub
 
     Private Sub BtnDiscon_Click(sender As Object, e As EventArgs) Handles BtnDiscon.Click
         diskonek()
+        CheckBox1.Enabled = False
         If CheckFngr.Checked = False Then
             sembunyi()
         End If
@@ -402,6 +417,8 @@ Public Class Form1
 
     Private Sub Read_Click(sender As Object, e As EventArgs) Handles Read.Click
         Stts.Text = ""
+        NimFinger.Text = ""
+        NoJari.SelectedText = ""
         PnlRead.Show()
         PanelRead.Show()
 
@@ -414,6 +431,9 @@ Public Class Form1
     Private Sub Write_Click(sender As Object, e As EventArgs) Handles Write.Click
         PnlRead.Hide()
         PanelRead.Hide()
+
+        NimFinger.Text = ""
+        NoJari.SelectedText = ""
 
         PnlWrite.Show()
         PanelPW.Show()
@@ -552,6 +572,12 @@ Public Class Form1
         End If
     End Sub
 
+    Private Sub NIM_KeyDown(sender As Object, e As KeyEventArgs) Handles NIM.KeyDown
+        If e.KeyCode = Keys.Enter And NIM.Text <> "" Then
+            NIM.Text = ""
+        End If
+    End Sub
+
     Private Sub NIM_TextChanged(sender As Object, e As EventArgs) Handles NIM.TextChanged
         Dim bfr As String
         bfr = NIM.Text
@@ -685,6 +711,7 @@ Public Class Form1
         Try
             Dim Incoming As String = SerialPort1.ReadExisting()
         Catch ex As Exception
+            CheckBox1.Enabled = False
             diskonek()
             If CheckFngr.Checked = False Then
                 sembunyi()
@@ -704,6 +731,7 @@ Public Class Form1
         FpVer.FPVerificationStart()
         Stts.Text = ""
         If CheckFngr.Checked = True Then
+            CheckBox2.Enabled = True
             Read.Enabled = True
             Write.Enabled = True
             CheckFngr.Enabled = False
