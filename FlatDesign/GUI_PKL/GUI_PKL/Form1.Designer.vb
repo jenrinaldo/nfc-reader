@@ -38,9 +38,18 @@ Partial Class Form1
         Me.Fingerprint = New Bunifu.Framework.UI.BunifuImageButton()
         Me.RFID = New Bunifu.Framework.UI.BunifuImageButton()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.PanelFinger = New System.Windows.Forms.Panel()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
+        Me.NoJari = New System.Windows.Forms.ComboBox()
+        Me.NimFinger = New System.Windows.Forms.Label()
+        Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
+        Me.RectangleShape2 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
+        Me.RectangleShape1 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
         Me.PanelPW = New System.Windows.Forms.Panel()
-        Me.CheckBox2 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
+        Me.WriteFinger = New System.Windows.Forms.CheckBox()
+        Me.WriteRFID = New System.Windows.Forms.CheckBox()
         Me.CheckNIM = New System.Windows.Forms.TextBox()
         Me.NIMpw = New System.Windows.Forms.Label()
         Me.TxtPass = New System.Windows.Forms.TextBox()
@@ -52,21 +61,12 @@ Partial Class Form1
         Me.BtnNext = New System.Windows.Forms.Button()
         Me.BtnNext2 = New System.Windows.Forms.Button()
         Me.PanelWrite = New System.Windows.Forms.Panel()
-        Me.Ext2 = New System.Windows.Forms.Button()
+        Me.BatalRFID = New System.Windows.Forms.Button()
         Me.BtnWrite = New System.Windows.Forms.Button()
         Me.Label1 = New Bunifu.Framework.UI.BunifuCustomLabel()
         Me.NIMWrite = New Bunifu.Framework.UI.BunifuCustomLabel()
         Me.TxtNIM_Write = New System.Windows.Forms.TextBox()
         Me.Panel8 = New System.Windows.Forms.Panel()
-        Me.PanelFinger = New System.Windows.Forms.Panel()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
-        Me.NoJari = New System.Windows.Forms.ComboBox()
-        Me.NimFinger = New System.Windows.Forms.Label()
-        Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.RectangleShape2 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
-        Me.RectangleShape1 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
         Me.CheckRFID = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.CheckFngr = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.PanelRead = New System.Windows.Forms.Panel()
@@ -90,14 +90,16 @@ Partial Class Form1
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
+        Me.BtnBack = New System.Windows.Forms.Button()
+        Me.BatalFinger = New System.Windows.Forms.Button()
         Me.BunifuGradientPanel1.SuspendLayout()
         Me.PanelMENU.SuspendLayout()
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
+        Me.PanelFinger.SuspendLayout()
         Me.PanelPW.SuspendLayout()
         Me.PanelWrite.SuspendLayout()
-        Me.PanelFinger.SuspendLayout()
         Me.PanelRead.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel4.SuspendLayout()
@@ -311,8 +313,8 @@ Partial Class Form1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
         Me.Panel1.Controls.Add(Me.PanelFinger)
-        Me.Panel1.Controls.Add(Me.PanelPW)
         Me.Panel1.Controls.Add(Me.PanelWrite)
+        Me.Panel1.Controls.Add(Me.PanelPW)
         Me.Panel1.Controls.Add(Me.CheckRFID)
         Me.Panel1.Controls.Add(Me.CheckFngr)
         Me.Panel1.Controls.Add(Me.RFID)
@@ -323,230 +325,9 @@ Partial Class Form1
         Me.Panel1.Size = New System.Drawing.Size(542, 386)
         Me.Panel1.TabIndex = 1
         '
-        'PanelPW
-        '
-        Me.PanelPW.Controls.Add(Me.CheckBox2)
-        Me.PanelPW.Controls.Add(Me.CheckBox1)
-        Me.PanelPW.Controls.Add(Me.CheckNIM)
-        Me.PanelPW.Controls.Add(Me.NIMpw)
-        Me.PanelPW.Controls.Add(Me.TxtPass)
-        Me.PanelPW.Controls.Add(Me.TxtUsr)
-        Me.PanelPW.Controls.Add(Me.Panel5)
-        Me.PanelPW.Controls.Add(Me.Panel3)
-        Me.PanelPW.Controls.Add(Me.Password)
-        Me.PanelPW.Controls.Add(Me.User)
-        Me.PanelPW.Controls.Add(Me.BtnNext)
-        Me.PanelPW.Controls.Add(Me.BtnNext2)
-        Me.PanelPW.Location = New System.Drawing.Point(78, 135)
-        Me.PanelPW.Name = "PanelPW"
-        Me.PanelPW.Size = New System.Drawing.Size(401, 147)
-        Me.PanelPW.TabIndex = 31
-        '
-        'CheckBox2
-        '
-        Me.CheckBox2.AutoSize = True
-        Me.CheckBox2.Font = New System.Drawing.Font("Century Gothic", 8.25!)
-        Me.CheckBox2.Location = New System.Drawing.Point(208, 124)
-        Me.CheckBox2.Name = "CheckBox2"
-        Me.CheckBox2.Size = New System.Drawing.Size(96, 20)
-        Me.CheckBox2.TabIndex = 37
-        Me.CheckBox2.Text = "FINGERPRINT"
-        Me.CheckBox2.UseVisualStyleBackColor = True
-        '
-        'CheckBox1
-        '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Font = New System.Drawing.Font("Century Gothic", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CheckBox1.Location = New System.Drawing.Point(111, 124)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(50, 20)
-        Me.CheckBox1.TabIndex = 36
-        Me.CheckBox1.Text = "RFID"
-        Me.CheckBox1.UseVisualStyleBackColor = True
-        '
-        'CheckNIM
-        '
-        Me.CheckNIM.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!)
-        Me.CheckNIM.Location = New System.Drawing.Point(111, 96)
-        Me.CheckNIM.Name = "CheckNIM"
-        Me.CheckNIM.Size = New System.Drawing.Size(193, 24)
-        Me.CheckNIM.TabIndex = 35
-        '
-        'NIMpw
-        '
-        Me.NIMpw.AutoSize = True
-        Me.NIMpw.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.NIMpw.Location = New System.Drawing.Point(62, 96)
-        Me.NIMpw.Name = "NIMpw"
-        Me.NIMpw.Size = New System.Drawing.Size(50, 21)
-        Me.NIMpw.TabIndex = 33
-        Me.NIMpw.Text = "NIM :"
-        '
-        'TxtPass
-        '
-        Me.TxtPass.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TxtPass.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtPass.ForeColor = System.Drawing.SystemColors.GrayText
-        Me.TxtPass.Location = New System.Drawing.Point(112, 63)
-        Me.TxtPass.Name = "TxtPass"
-        Me.TxtPass.PasswordChar = Global.Microsoft.VisualBasic.ChrW(8226)
-        Me.TxtPass.Size = New System.Drawing.Size(246, 20)
-        Me.TxtPass.TabIndex = 23
-        '
-        'TxtUsr
-        '
-        Me.TxtUsr.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TxtUsr.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtUsr.ForeColor = System.Drawing.SystemColors.GrayText
-        Me.TxtUsr.Location = New System.Drawing.Point(112, 23)
-        Me.TxtUsr.Name = "TxtUsr"
-        Me.TxtUsr.Size = New System.Drawing.Size(249, 20)
-        Me.TxtUsr.TabIndex = 22
-        '
-        'Panel5
-        '
-        Me.Panel5.BackColor = System.Drawing.Color.Coral
-        Me.Panel5.Location = New System.Drawing.Point(111, 84)
-        Me.Panel5.Name = "Panel5"
-        Me.Panel5.Size = New System.Drawing.Size(249, 1)
-        Me.Panel5.TabIndex = 21
-        '
-        'Panel3
-        '
-        Me.Panel3.BackColor = System.Drawing.Color.Coral
-        Me.Panel3.Location = New System.Drawing.Point(111, 44)
-        Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(249, 1)
-        Me.Panel3.TabIndex = 20
-        '
-        'Password
-        '
-        Me.Password.AutoSize = True
-        Me.Password.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Password.Location = New System.Drawing.Point(17, 64)
-        Me.Password.Name = "Password"
-        Me.Password.Size = New System.Drawing.Size(79, 21)
-        Me.Password.TabIndex = 1
-        Me.Password.Text = "Password"
-        '
-        'User
-        '
-        Me.User.AutoSize = True
-        Me.User.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.User.Location = New System.Drawing.Point(17, 23)
-        Me.User.Name = "User"
-        Me.User.Size = New System.Drawing.Size(83, 21)
-        Me.User.TabIndex = 0
-        Me.User.Text = "Username"
-        '
-        'BtnNext
-        '
-        Me.BtnNext.BackColor = System.Drawing.Color.FromArgb(CType(CType(60, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(226, Byte), Integer))
-        Me.BtnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.BtnNext.ForeColor = System.Drawing.Color.White
-        Me.BtnNext.Location = New System.Drawing.Point(310, 92)
-        Me.BtnNext.Name = "BtnNext"
-        Me.BtnNext.Size = New System.Drawing.Size(51, 31)
-        Me.BtnNext.TabIndex = 24
-        Me.BtnNext.Text = "NEXT"
-        Me.BtnNext.UseVisualStyleBackColor = False
-        '
-        'BtnNext2
-        '
-        Me.BtnNext2.BackColor = System.Drawing.Color.FromArgb(CType(CType(60, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(226, Byte), Integer))
-        Me.BtnNext2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.BtnNext2.ForeColor = System.Drawing.Color.White
-        Me.BtnNext2.Location = New System.Drawing.Point(310, 92)
-        Me.BtnNext2.Name = "BtnNext2"
-        Me.BtnNext2.Size = New System.Drawing.Size(51, 31)
-        Me.BtnNext2.TabIndex = 34
-        Me.BtnNext2.Text = "NEXT"
-        Me.BtnNext2.UseVisualStyleBackColor = False
-        '
-        'PanelWrite
-        '
-        Me.PanelWrite.BackColor = System.Drawing.Color.Transparent
-        Me.PanelWrite.Controls.Add(Me.Ext2)
-        Me.PanelWrite.Controls.Add(Me.BtnWrite)
-        Me.PanelWrite.Controls.Add(Me.Label1)
-        Me.PanelWrite.Controls.Add(Me.NIMWrite)
-        Me.PanelWrite.Controls.Add(Me.TxtNIM_Write)
-        Me.PanelWrite.Controls.Add(Me.Panel8)
-        Me.PanelWrite.Location = New System.Drawing.Point(70, 118)
-        Me.PanelWrite.Name = "PanelWrite"
-        Me.PanelWrite.Size = New System.Drawing.Size(416, 166)
-        Me.PanelWrite.TabIndex = 2
-        '
-        'Ext2
-        '
-        Me.Ext2.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Ext2.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue
-        Me.Ext2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.SteelBlue
-        Me.Ext2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
-        Me.Ext2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Ext2.Font = New System.Drawing.Font("Century Gothic", 12.0!)
-        Me.Ext2.Location = New System.Drawing.Point(242, 98)
-        Me.Ext2.Name = "Ext2"
-        Me.Ext2.Size = New System.Drawing.Size(115, 41)
-        Me.Ext2.TabIndex = 22
-        Me.Ext2.Text = "BATAL"
-        Me.Ext2.UseVisualStyleBackColor = True
-        '
-        'BtnWrite
-        '
-        Me.BtnWrite.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.BtnWrite.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue
-        Me.BtnWrite.FlatAppearance.MouseDownBackColor = System.Drawing.Color.SteelBlue
-        Me.BtnWrite.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
-        Me.BtnWrite.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.BtnWrite.Font = New System.Drawing.Font("Century Gothic", 12.0!)
-        Me.BtnWrite.Location = New System.Drawing.Point(107, 98)
-        Me.BtnWrite.Name = "BtnWrite"
-        Me.BtnWrite.Size = New System.Drawing.Size(115, 41)
-        Me.BtnWrite.TabIndex = 21
-        Me.BtnWrite.Text = "TULIS"
-        Me.BtnWrite.UseVisualStyleBackColor = True
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(61, 27)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(289, 20)
-        Me.Label1.TabIndex = 20
-        Me.Label1.Text = "TETAP TEMPELKAN KARTU PADA READER"
-        '
-        'NIMWrite
-        '
-        Me.NIMWrite.AutoSize = True
-        Me.NIMWrite.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.NIMWrite.Location = New System.Drawing.Point(61, 69)
-        Me.NIMWrite.Name = "NIMWrite"
-        Me.NIMWrite.Size = New System.Drawing.Size(40, 20)
-        Me.NIMWrite.TabIndex = 17
-        Me.NIMWrite.Text = "NIM"
-        '
-        'TxtNIM_Write
-        '
-        Me.TxtNIM_Write.BackColor = System.Drawing.Color.White
-        Me.TxtNIM_Write.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TxtNIM_Write.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtNIM_Write.Location = New System.Drawing.Point(107, 68)
-        Me.TxtNIM_Write.Name = "TxtNIM_Write"
-        Me.TxtNIM_Write.Size = New System.Drawing.Size(249, 19)
-        Me.TxtNIM_Write.TabIndex = 16
-        '
-        'Panel8
-        '
-        Me.Panel8.BackColor = System.Drawing.Color.Coral
-        Me.Panel8.Location = New System.Drawing.Point(107, 89)
-        Me.Panel8.Name = "Panel8"
-        Me.Panel8.Size = New System.Drawing.Size(249, 1)
-        Me.Panel8.TabIndex = 15
-        '
         'PanelFinger
         '
+        Me.PanelFinger.Controls.Add(Me.BatalFinger)
         Me.PanelFinger.Controls.Add(Me.Label3)
         Me.PanelFinger.Controls.Add(Me.Label2)
         Me.PanelFinger.Controls.Add(Me.RichTextBox1)
@@ -636,6 +417,229 @@ Partial Class Form1
         Me.RectangleShape1.Location = New System.Drawing.Point(42, 168)
         Me.RectangleShape1.Name = "RectangleShape1"
         Me.RectangleShape1.Size = New System.Drawing.Size(300, 17)
+        '
+        'PanelPW
+        '
+        Me.PanelPW.Controls.Add(Me.BtnNext)
+        Me.PanelPW.Controls.Add(Me.BtnBack)
+        Me.PanelPW.Controls.Add(Me.WriteFinger)
+        Me.PanelPW.Controls.Add(Me.WriteRFID)
+        Me.PanelPW.Controls.Add(Me.CheckNIM)
+        Me.PanelPW.Controls.Add(Me.NIMpw)
+        Me.PanelPW.Controls.Add(Me.TxtPass)
+        Me.PanelPW.Controls.Add(Me.TxtUsr)
+        Me.PanelPW.Controls.Add(Me.Panel5)
+        Me.PanelPW.Controls.Add(Me.Panel3)
+        Me.PanelPW.Controls.Add(Me.Password)
+        Me.PanelPW.Controls.Add(Me.User)
+        Me.PanelPW.Controls.Add(Me.BtnNext2)
+        Me.PanelPW.Location = New System.Drawing.Point(78, 135)
+        Me.PanelPW.Name = "PanelPW"
+        Me.PanelPW.Size = New System.Drawing.Size(401, 147)
+        Me.PanelPW.TabIndex = 31
+        '
+        'WriteFinger
+        '
+        Me.WriteFinger.AutoSize = True
+        Me.WriteFinger.Font = New System.Drawing.Font("Century Gothic", 8.25!)
+        Me.WriteFinger.Location = New System.Drawing.Point(165, 124)
+        Me.WriteFinger.Name = "WriteFinger"
+        Me.WriteFinger.Size = New System.Drawing.Size(96, 20)
+        Me.WriteFinger.TabIndex = 37
+        Me.WriteFinger.Text = "FINGERPRINT"
+        Me.WriteFinger.UseVisualStyleBackColor = True
+        '
+        'WriteRFID
+        '
+        Me.WriteRFID.AutoSize = True
+        Me.WriteRFID.Font = New System.Drawing.Font("Century Gothic", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.WriteRFID.Location = New System.Drawing.Point(68, 124)
+        Me.WriteRFID.Name = "WriteRFID"
+        Me.WriteRFID.Size = New System.Drawing.Size(50, 20)
+        Me.WriteRFID.TabIndex = 36
+        Me.WriteRFID.Text = "RFID"
+        Me.WriteRFID.UseVisualStyleBackColor = True
+        '
+        'CheckNIM
+        '
+        Me.CheckNIM.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!)
+        Me.CheckNIM.Location = New System.Drawing.Point(68, 96)
+        Me.CheckNIM.Name = "CheckNIM"
+        Me.CheckNIM.Size = New System.Drawing.Size(193, 24)
+        Me.CheckNIM.TabIndex = 35
+        '
+        'NIMpw
+        '
+        Me.NIMpw.AutoSize = True
+        Me.NIMpw.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NIMpw.Location = New System.Drawing.Point(19, 96)
+        Me.NIMpw.Name = "NIMpw"
+        Me.NIMpw.Size = New System.Drawing.Size(50, 21)
+        Me.NIMpw.TabIndex = 33
+        Me.NIMpw.Text = "NIM :"
+        '
+        'TxtPass
+        '
+        Me.TxtPass.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TxtPass.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtPass.ForeColor = System.Drawing.SystemColors.GrayText
+        Me.TxtPass.Location = New System.Drawing.Point(112, 63)
+        Me.TxtPass.Name = "TxtPass"
+        Me.TxtPass.PasswordChar = Global.Microsoft.VisualBasic.ChrW(8226)
+        Me.TxtPass.Size = New System.Drawing.Size(263, 20)
+        Me.TxtPass.TabIndex = 23
+        '
+        'TxtUsr
+        '
+        Me.TxtUsr.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TxtUsr.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtUsr.ForeColor = System.Drawing.SystemColors.GrayText
+        Me.TxtUsr.Location = New System.Drawing.Point(112, 23)
+        Me.TxtUsr.Name = "TxtUsr"
+        Me.TxtUsr.Size = New System.Drawing.Size(266, 20)
+        Me.TxtUsr.TabIndex = 22
+        '
+        'Panel5
+        '
+        Me.Panel5.BackColor = System.Drawing.Color.Coral
+        Me.Panel5.Location = New System.Drawing.Point(111, 84)
+        Me.Panel5.Name = "Panel5"
+        Me.Panel5.Size = New System.Drawing.Size(266, 1)
+        Me.Panel5.TabIndex = 21
+        '
+        'Panel3
+        '
+        Me.Panel3.BackColor = System.Drawing.Color.Coral
+        Me.Panel3.Location = New System.Drawing.Point(111, 44)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(266, 1)
+        Me.Panel3.TabIndex = 20
+        '
+        'Password
+        '
+        Me.Password.AutoSize = True
+        Me.Password.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Password.Location = New System.Drawing.Point(17, 64)
+        Me.Password.Name = "Password"
+        Me.Password.Size = New System.Drawing.Size(79, 21)
+        Me.Password.TabIndex = 1
+        Me.Password.Text = "Password"
+        '
+        'User
+        '
+        Me.User.AutoSize = True
+        Me.User.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.User.Location = New System.Drawing.Point(17, 23)
+        Me.User.Name = "User"
+        Me.User.Size = New System.Drawing.Size(83, 21)
+        Me.User.TabIndex = 0
+        Me.User.Text = "Username"
+        '
+        'BtnNext
+        '
+        Me.BtnNext.BackColor = System.Drawing.Color.FromArgb(CType(CType(60, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(226, Byte), Integer))
+        Me.BtnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnNext.ForeColor = System.Drawing.Color.White
+        Me.BtnNext.Location = New System.Drawing.Point(270, 92)
+        Me.BtnNext.Name = "BtnNext"
+        Me.BtnNext.Size = New System.Drawing.Size(107, 31)
+        Me.BtnNext.TabIndex = 24
+        Me.BtnNext.Text = "NEXT"
+        Me.BtnNext.UseVisualStyleBackColor = False
+        '
+        'BtnNext2
+        '
+        Me.BtnNext2.BackColor = System.Drawing.Color.FromArgb(CType(CType(60, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(226, Byte), Integer))
+        Me.BtnNext2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnNext2.ForeColor = System.Drawing.Color.White
+        Me.BtnNext2.Location = New System.Drawing.Point(270, 92)
+        Me.BtnNext2.Name = "BtnNext2"
+        Me.BtnNext2.Size = New System.Drawing.Size(51, 31)
+        Me.BtnNext2.TabIndex = 34
+        Me.BtnNext2.Text = "NEXT"
+        Me.BtnNext2.UseVisualStyleBackColor = False
+        '
+        'PanelWrite
+        '
+        Me.PanelWrite.BackColor = System.Drawing.Color.Transparent
+        Me.PanelWrite.Controls.Add(Me.BatalRFID)
+        Me.PanelWrite.Controls.Add(Me.BtnWrite)
+        Me.PanelWrite.Controls.Add(Me.Label1)
+        Me.PanelWrite.Controls.Add(Me.NIMWrite)
+        Me.PanelWrite.Controls.Add(Me.TxtNIM_Write)
+        Me.PanelWrite.Controls.Add(Me.Panel8)
+        Me.PanelWrite.Location = New System.Drawing.Point(70, 118)
+        Me.PanelWrite.Name = "PanelWrite"
+        Me.PanelWrite.Size = New System.Drawing.Size(416, 166)
+        Me.PanelWrite.TabIndex = 2
+        '
+        'BatalRFID
+        '
+        Me.BatalRFID.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BatalRFID.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue
+        Me.BatalRFID.FlatAppearance.MouseDownBackColor = System.Drawing.Color.SteelBlue
+        Me.BatalRFID.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
+        Me.BatalRFID.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BatalRFID.Font = New System.Drawing.Font("Century Gothic", 12.0!)
+        Me.BatalRFID.Location = New System.Drawing.Point(242, 98)
+        Me.BatalRFID.Name = "BatalRFID"
+        Me.BatalRFID.Size = New System.Drawing.Size(115, 41)
+        Me.BatalRFID.TabIndex = 22
+        Me.BatalRFID.Text = "BATAL"
+        Me.BatalRFID.UseVisualStyleBackColor = True
+        '
+        'BtnWrite
+        '
+        Me.BtnWrite.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BtnWrite.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue
+        Me.BtnWrite.FlatAppearance.MouseDownBackColor = System.Drawing.Color.SteelBlue
+        Me.BtnWrite.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
+        Me.BtnWrite.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnWrite.Font = New System.Drawing.Font("Century Gothic", 12.0!)
+        Me.BtnWrite.Location = New System.Drawing.Point(107, 98)
+        Me.BtnWrite.Name = "BtnWrite"
+        Me.BtnWrite.Size = New System.Drawing.Size(115, 41)
+        Me.BtnWrite.TabIndex = 21
+        Me.BtnWrite.Text = "TULIS"
+        Me.BtnWrite.UseVisualStyleBackColor = True
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(61, 27)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(289, 20)
+        Me.Label1.TabIndex = 20
+        Me.Label1.Text = "TETAP TEMPELKAN KARTU PADA READER"
+        '
+        'NIMWrite
+        '
+        Me.NIMWrite.AutoSize = True
+        Me.NIMWrite.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NIMWrite.Location = New System.Drawing.Point(61, 69)
+        Me.NIMWrite.Name = "NIMWrite"
+        Me.NIMWrite.Size = New System.Drawing.Size(40, 20)
+        Me.NIMWrite.TabIndex = 17
+        Me.NIMWrite.Text = "NIM"
+        '
+        'TxtNIM_Write
+        '
+        Me.TxtNIM_Write.BackColor = System.Drawing.Color.White
+        Me.TxtNIM_Write.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TxtNIM_Write.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtNIM_Write.Location = New System.Drawing.Point(107, 68)
+        Me.TxtNIM_Write.Name = "TxtNIM_Write"
+        Me.TxtNIM_Write.Size = New System.Drawing.Size(249, 19)
+        Me.TxtNIM_Write.TabIndex = 16
+        '
+        'Panel8
+        '
+        Me.Panel8.BackColor = System.Drawing.Color.Coral
+        Me.Panel8.Location = New System.Drawing.Point(107, 89)
+        Me.Panel8.Name = "Panel8"
+        Me.Panel8.Size = New System.Drawing.Size(249, 1)
+        Me.Panel8.TabIndex = 15
         '
         'CheckRFID
         '
@@ -853,6 +857,33 @@ Partial Class Form1
         'Timer2
         '
         '
+        'BtnBack
+        '
+        Me.BtnBack.BackColor = System.Drawing.Color.FromArgb(CType(CType(60, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(226, Byte), Integer))
+        Me.BtnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnBack.ForeColor = System.Drawing.Color.White
+        Me.BtnBack.Location = New System.Drawing.Point(327, 91)
+        Me.BtnBack.Name = "BtnBack"
+        Me.BtnBack.Size = New System.Drawing.Size(51, 31)
+        Me.BtnBack.TabIndex = 38
+        Me.BtnBack.Text = "BACK"
+        Me.BtnBack.UseVisualStyleBackColor = False
+        '
+        'BatalFinger
+        '
+        Me.BatalFinger.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BatalFinger.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue
+        Me.BatalFinger.FlatAppearance.MouseDownBackColor = System.Drawing.Color.SteelBlue
+        Me.BatalFinger.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
+        Me.BatalFinger.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BatalFinger.Font = New System.Drawing.Font("Century Gothic", 12.0!)
+        Me.BatalFinger.Location = New System.Drawing.Point(265, 19)
+        Me.BatalFinger.Name = "BatalFinger"
+        Me.BatalFinger.Size = New System.Drawing.Size(78, 34)
+        Me.BatalFinger.TabIndex = 42
+        Me.BatalFinger.Text = "BATAL"
+        Me.BatalFinger.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
@@ -873,12 +904,12 @@ Partial Class Form1
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
+        Me.PanelFinger.ResumeLayout(False)
+        Me.PanelFinger.PerformLayout()
         Me.PanelPW.ResumeLayout(False)
         Me.PanelPW.PerformLayout()
         Me.PanelWrite.ResumeLayout(False)
         Me.PanelWrite.PerformLayout()
-        Me.PanelFinger.ResumeLayout(False)
-        Me.PanelFinger.PerformLayout()
         Me.PanelRead.ResumeLayout(False)
         Me.PanelRead.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -914,7 +945,7 @@ Partial Class Form1
     Friend WithEvents Timer3 As Timer
     Friend WithEvents SerialPort1 As IO.Ports.SerialPort
     Friend WithEvents BtnWrite As Button
-    Friend WithEvents Ext2 As Button
+    Friend WithEvents BatalRFID As Button
     Friend WithEvents BunifuCustomLabel4 As Bunifu.Framework.UI.BunifuCustomLabel
     Friend WithEvents BunifuCustomLabel3 As Bunifu.Framework.UI.BunifuCustomLabel
     Friend WithEvents Panel2 As Panel
@@ -951,6 +982,8 @@ Partial Class Form1
     Friend WithEvents NIMpw As Label
     Friend WithEvents BtnNext2 As Button
     Friend WithEvents CheckNIM As TextBox
-    Friend WithEvents CheckBox2 As CheckBox
-    Friend WithEvents CheckBox1 As CheckBox
+    Friend WithEvents WriteFinger As CheckBox
+    Friend WithEvents WriteRFID As CheckBox
+    Friend WithEvents BtnBack As Button
+    Friend WithEvents BatalFinger As Button
 End Class

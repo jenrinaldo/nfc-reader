@@ -32,11 +32,18 @@ Public Class Form1
     Dim Activ As String = "1L6D-450D-E57E-D237-B9D8-7RG2"
     Dim Flag As Integer
     Dim statusFP As Boolean
+    Dim Username As String
+    Dim Pass As String
     Delegate Sub SetTextCallback(ByVal [text] As String)
 
     Public connString1 As String = ConfigurationManager.ConnectionStrings("MySqlConnectionString").ToString()
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim FILE = IO.File.ReadAllLines("password.txt")
+        Dim myArray As String() = FILE
+        Username = myArray(0)
+        Pass = myArray(1)
+
         Try
             Conn = New MySqlConnection(connString1)
             FpVer = New FlexCodeSDK.FinFPVer
@@ -92,29 +99,29 @@ Public Class Form1
                 konek(hasil)
                 FPVerif()
                 CheckRFID.Checked = True
-                CheckBox1.Enabled = True
+                WriteRFID.Enabled = True
                 CheckFngr.Checked = True
-                CheckBox2.Enabled = True
+                WriteFinger.Enabled = True
             ElseIf string1 = "USB-SERIAL CH340" And statusFP = True Then
                 konek(hasil)
                 CheckRFID.Checked = True
-                CheckBox1.Enabled = True
+                WriteRFID.Enabled = True
                 CheckFngr.Checked = False
-                CheckBox2.Enabled = False
+                WriteFinger.Enabled = False
 
                 CheckFngr.Enabled = True
             ElseIf string1 <> "USB-SERIAL CH340" And statusFP = False Then
                 FPVerif()
                 CheckRFID.Checked = False
-                CheckBox1.Enabled = False
+                WriteRFID.Enabled = False
                 CheckFngr.Checked = True
-                CheckBox2.Enabled = True
+                WriteFinger.Enabled = True
             Else
                 CheckRFID.Checked = False
-                CheckBox1.Enabled = False
+                WriteRFID.Enabled = False
                 CheckFngr.Checked = False
                 CheckFngr.Enabled = True
-                CheckBox2.Enabled = False
+                WriteFinger.Enabled = False
                 sembunyi()
             End If
         Catch ex As Exception
@@ -256,18 +263,8 @@ Public Class Form1
         FpVer.FPUnload(userId, fpNum)
         FpVer.FPVerificationStop()
 
+        BackToPW()
 
-        Write.Enabled = True
-        Read.Enabled = True
-        Ext.Enabled = True
-
-        PnlRead.Show()
-        PanelRead.Show()
-
-        PnlWrite.Hide()
-        PanelFinger.Hide()
-        PanelWrite.Hide()
-        PanelPW.Hide()
         FPVerif()
 
         NimFinger.Text = "Berhasil"
@@ -335,7 +332,7 @@ Public Class Form1
             Case FlexCodeSDK.VerificationStatus.v_NoDevice
                 statusFP = True
                 Stts.Text = "Fingerprint Tidak" & vbNewLine & "Terpasang"
-                CheckBox2.Enabled = False
+                WriteFinger.Enabled = False
                 If CheckFngr.Checked = True Then
                     CheckFngr.Checked = False
                     CheckFngr.Enabled = True
@@ -364,6 +361,7 @@ Public Class Form1
             uniqueTemplate = False
         End If
     End Sub
+
     Private Sub Ext_Click(sender As Object, e As EventArgs) Handles Ext.Click
         Me.Close()
     End Sub
@@ -403,13 +401,13 @@ Public Class Form1
     Private Sub BtnCon_Click(sender As Object, e As EventArgs) Handles BtnCon.Click
         Read.Enabled = True
         Write.Enabled = True
-        CheckBox1.Enabled = True
+        WriteRFID.Enabled = True
         konek(CmbPort.SelectedItem)
     End Sub
 
     Private Sub BtnDiscon_Click(sender As Object, e As EventArgs) Handles BtnDiscon.Click
         diskonek()
-        CheckBox1.Enabled = False
+        WriteRFID.Enabled = False
         If CheckFngr.Checked = False Then
             sembunyi()
         End If
@@ -441,10 +439,10 @@ Public Class Form1
         CheckNIM.Hide()
         CheckNIM.Text = ""
 
-        CheckBox1.Hide()
-        CheckBox2.Hide()
-        CheckBox1.Checked = False
-        CheckBox2.Checked = False
+        WriteRFID.Hide()
+        WriteFinger.Hide()
+        WriteRFID.Checked = False
+        WriteFinger.Checked = False
 
         PanelFinger.Hide()
         PanelWrite.Hide()
@@ -460,6 +458,7 @@ Public Class Form1
 
         BtnNext.Show()
         BtnNext2.Hide()
+        BtnBack.Hide()
     End Sub
 
     Private Sub BtnWrite_Click(sender As Object, e As EventArgs) Handles BtnWrite.Click
@@ -472,7 +471,7 @@ Public Class Form1
         Write.Enabled = False
         Ext.Enabled = False
 
-        Ext2.Enabled = False
+        BatalRFID.Enabled = False
         BtnWrite.Enabled = False
     End Sub
 
@@ -489,16 +488,28 @@ Public Class Form1
         NimFinger.Text = TxtNIM_Write.Text
     End Sub
 
-    Private Sub gagal()
-        PanelRead.Show()
-        PnlRead.Show()
+    Private Sub BackToPW()
+        PnlWrite.Show()
+        PanelPW.Show()
+
+        WriteRFID.Checked = False
+        WriteFinger.Checked = False
+        CheckNIM.Text = ""
+
+        TxtUsr.Text = Username
+        TxtPass.Text = Pass
+        BtnNext.PerformClick()
 
         PanelWrite.Hide()
-        PnlWrite.Hide()
-        PanelFinger.Hide()
+        PnlRead.Hide()
+        PanelRead.Hide()
+
+        Ext.Enabled = True
+        BtnWrite.Enabled = True
+        BatalRFID.Enabled = True
     End Sub
 
-    Private Sub Ext2_Click(sender As Object, e As EventArgs) Handles Ext2.Click
+    Private Sub Ext2_Click(sender As Object, e As EventArgs) Handles BatalRFID.Click
         Stts.Show()
         PnlWrite.Hide()
         PanelWrite.Hide()
@@ -633,68 +644,38 @@ Public Class Form1
             ElseIf Regex.IsMatch(NIM.Text, "DataKosong") Then
                 NIM.Text = ""
                 Stts.Text = "Data Kosong"
-            ElseIf Regex.IsMatch(NIM.Text, "Write success!") And CheckFngr.Checked = True And CheckBox1.Checked = True And CheckBox2.Checked = True Then
+            ElseIf Regex.IsMatch(NIM.Text, "Write success!") And CheckFngr.Checked = True And WriteRFID.Checked = True And WriteFinger.Checked = True Then
                 NIM.Text = ""
                 MsgBox("Penulisan RFID Tag Sukses")
                 PnlWrite.Show()
-                PanelWrite.Hide()
                 PanelFinger.Show()
+                PanelWrite.Hide()
+
                 passing()
                 FPRegist()
 
-                BtnWrite.Enabled = True
-                Ext2.Enabled = True
-            ElseIf Regex.IsMatch(NIM.Text, "Write success!") And CheckFngr.Checked = True And CheckBox1.Checked = True And CheckBox2.Checked = False Then
+            ElseIf Regex.IsMatch(NIM.Text, "Write success!") And CheckFngr.Checked = True And WriteRFID.Checked = True And WriteFinger.Checked = False Then
                 NIM.Text = ""
                 MsgBox("Penulisan RFID Tag Sukses")
-                PnlWrite.Hide()
-                PanelWrite.Hide()
-                PnlRead.Show()
-                PanelRead.Show()
+                BackToPW()
 
-                Write.Enabled = True
-                Read.Enabled = True
-                Ext.Enabled = True
-                BtnWrite.Enabled = True
-                Ext2.Enabled = True
             ElseIf Regex.IsMatch(NIM.Text, "Write success!") And CheckFngr.Checked = False Then
                 NIM.Text = ""
                 MsgBox("Penulisan RFID Tag Sukses, Fingerprint tidak tersambung")
-                PnlWrite.Hide()
-                PanelWrite.Hide()
-                PnlRead.Show()
-                PanelRead.Show()
-
-                Write.Enabled = True
-                Read.Enabled = True
-                Ext.Enabled = True
-                BtnWrite.Enabled = True
-                Ext2.Enabled = True
+                BackToPW()
 
             ElseIf Regex.IsMatch(NIM.Text, "Write failed!") Then
                 NIM.Text = ""
                 MessageBox.Show("Penulisan RFID Tag Gagal", "Warning!", MessageBoxButtons.OK)
-                gagal()
-
-                Write.Enabled = True
-                Read.Enabled = True
-                Ext.Enabled = True
-                BtnWrite.Enabled = True
-                Ext2.Enabled = True
+                BackToPW()
 
             ElseIf RichTextBox1.Text <> "" Then
                 MsgBox("Jari anda telah terdaftar")
                 RichTextBox1.Text = ""
                 NIM.Text = ""
                 PictureBox1.Image = Nothing
-                PanelFinger.Hide()
-                PnlWrite.Hide()
 
-                Read.Enabled = True
-                Write.Enabled = True
-                Ext.Enabled = True
-                PanelRead.Show()
-                PnlRead.Show()
+                BackToPW()
             Else
                 NIM.Text = ""
                 Nama.Text = ""
@@ -711,7 +692,7 @@ Public Class Form1
         Try
             Dim Incoming As String = SerialPort1.ReadExisting()
         Catch ex As Exception
-            CheckBox1.Enabled = False
+            WriteRFID.Enabled = False
             diskonek()
             If CheckFngr.Checked = False Then
                 sembunyi()
@@ -731,7 +712,7 @@ Public Class Form1
         FpVer.FPVerificationStart()
         Stts.Text = ""
         If CheckFngr.Checked = True Then
-            CheckBox2.Enabled = True
+            WriteFinger.Enabled = True
             Read.Enabled = True
             Write.Enabled = True
             CheckFngr.Enabled = False
@@ -740,35 +721,39 @@ Public Class Form1
 
     Private Sub AksesTulis()
         If CheckRFID.Checked = True And CheckFngr.Checked = True Then
-            CheckBox1.Enabled = True
-            CheckBox2.Enabled = True
+            WriteRFID.Enabled = True
+            WriteFinger.Enabled = True
         ElseIf CheckRFID.Checked = True And CheckFngr.Checked = False Then
-            CheckBox1.Enabled = True
-            CheckBox2.Enabled = False
+            WriteRFID.Enabled = True
+            WriteFinger.Enabled = False
         ElseIf CheckRFID.Checked = False And CheckFngr.Checked = True Then
-            CheckBox1.Enabled = False
-            CheckBox2.Enabled = True
+            WriteRFID.Enabled = False
+            WriteFinger.Enabled = True
         End If
     End Sub
 
     Private Sub BtnNext_Click(sender As Object, e As EventArgs) Handles BtnNext.Click
         Stts.Text = ""
-        If TxtUsr.Text = "admin" And TxtPass.Text = "admin" Then
+        If TxtUsr.Text = Username And TxtPass.Text = Pass Then
 
-            PnlRead.Hide()
-            PanelRead.Hide()
             PnlWrite.Show()
             NIMpw.Show()
             CheckNIM.Show()
-            CheckBox1.Show()
-            CheckBox2.Show()
-
-            BtnNext.Hide()
+            WriteRFID.Show()
+            WriteFinger.Show()
             BtnNext2.Show()
+
+            PnlRead.Hide()
+            PanelRead.Hide()
+            BtnNext.Hide()
+            BtnBack.Show()
 
             CheckNIM.Focus()
             TxtUsr.Enabled = False
             TxtPass.Enabled = False
+            Read.Enabled = False
+            Write.Enabled = False
+
         Else
             If TxtUsr.Text = "" And TxtPass.Text = "" Then
                 MsgBox("No Username and Password found!", MsgBoxStyle.Critical, "Error")
@@ -807,7 +792,7 @@ Public Class Form1
         COMMAND = New MySqlCommand(Query, Conn)
         reader = COMMAND.ExecuteReader()
         If reader.Read Then
-            If CheckBox1.Checked = True And CheckBox2.Checked = True Then
+            If WriteRFID.Checked = True And WriteFinger.Checked = True Then
                 PanelWrite.Show()
                 PanelFinger.Hide()
                 PanelPW.Hide()
@@ -824,13 +809,11 @@ Public Class Form1
                 NoJari.Text = ""
                 RichTextBox1.Text = ""
                 Label2.Text = ""
-                TxtUsr.Text = ""
-                TxtPass.Text = ""
 
                 SerialPort1.Write("write" & "#")
                 waktu = 25
                 Timer3.Enabled = True
-            ElseIf CheckBox1.Checked = True And CheckBox2.Checked = False Then
+            ElseIf WriteRFID.Checked = True And WriteFinger.Checked = False Then
                 PanelWrite.Show()
                 PanelFinger.Hide()
                 PanelPW.Hide()
@@ -847,13 +830,11 @@ Public Class Form1
                 NoJari.Text = ""
                 RichTextBox1.Text = ""
                 Label2.Text = ""
-                TxtUsr.Text = ""
-                TxtPass.Text = ""
 
                 SerialPort1.Write("write" & "#")
                 waktu = 25
                 Timer3.Enabled = True
-            ElseIf CheckBox1.Checked = False And CheckBox2.Checked = True Then
+            ElseIf WriteRFID.Checked = False And WriteFinger.Checked = True Then
                 PnlWrite.Show()
                 PanelPW.Hide()
                 PanelWrite.Hide()
@@ -861,11 +842,11 @@ Public Class Form1
                 NimFinger.Text = CheckNIM.Text
                 FPRegist()
 
-                CheckBox1.Checked = False
-                CheckBox2.Checked = False
+                WriteRFID.Checked = False
+                WriteFinger.Checked = False
 
                 BtnWrite.Enabled = True
-                Ext2.Enabled = True
+                BatalRFID.Enabled = True
             Else
                 MsgBox("Silakan memilih salah satu atau keduanya")
             End If
@@ -878,10 +859,10 @@ Public Class Form1
             NIMpw.Show()
             CheckNIM.Show()
             BtnNext2.Show()
-            CheckBox1.Show()
-            CheckBox2.Show()
-            CheckBox1.Checked = False
-            CheckBox2.Checked = False
+            WriteRFID.Show()
+            WriteFinger.Show()
+            WriteRFID.Checked = False
+            WriteFinger.Checked = False
         End If
 
     End Sub
@@ -890,5 +871,41 @@ Public Class Form1
         If e.KeyCode = Keys.Enter And BtnNext2.Visible = True Then
             BtnNext2.PerformClick()
         End If
+    End Sub
+
+    Private Sub BtnBack_Click(sender As Object, e As EventArgs) Handles BtnBack.Click
+        TxtUsr.Focus()
+
+        Read.Enabled = True
+        Write.Enabled = True
+        TxtUsr.Enabled = True
+        TxtPass.Enabled = True
+        BtnNext.Enabled = True
+        BtnNext.Show()
+        BtnNext2.Hide()
+        BtnBack.Hide()
+        NIMpw.Hide()
+        CheckNIM.Hide()
+        WriteRFID.Hide()
+        WriteFinger.Hide()
+
+        WriteRFID.Checked = False
+        WriteFinger.Checked = False
+        CheckNIM.Text = ""
+        TxtUsr.Text = ""
+        TxtPass.Text = ""
+
+    End Sub
+
+    Private Sub BatalFinger_Click(sender As Object, e As EventArgs) Handles BatalFinger.Click
+        FpReg.FPRegistrationStop()
+        FPVerif()
+        BackToPW()
+
+        NimFinger.Text = ""
+        NoJari.Text = ""
+        RichTextBox1.Text = ""
+        Label2.Text = ""
+        Label3.Text = ""
     End Sub
 End Class

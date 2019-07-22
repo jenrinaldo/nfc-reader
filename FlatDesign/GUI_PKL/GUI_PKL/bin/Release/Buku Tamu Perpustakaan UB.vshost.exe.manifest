@@ -54,14 +54,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Buku Tamu Perpustakaan UB.exe" size="2784216">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Buku Tamu Perpustakaan UB.exe" size="2784728">
       <assemblyIdentity name="Buku Tamu Perpustakaan UB" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>UTKT6/U0IXegttf0FnW09bo6gqdwELF/R3cWv1QixS4=</dsig:DigestValue>
+        <dsig:DigestValue>LButx5Ewzq0tfIbHAUVCFtVUFWXsklMixFUNCs89ULQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
