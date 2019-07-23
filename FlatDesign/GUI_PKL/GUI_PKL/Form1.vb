@@ -39,6 +39,299 @@ Public Class Form1
     Delegate Sub SetTextCallback(ByVal [text] As String)
     Public connString1 As String = ConfigurationManager.ConnectionStrings("MySqlConnectionString").ToString()
 
+    ''' <Fingerprint>
+
+    ''' ------------ Registrasi --------------
+    ''' --------------------------------------
+    Private Sub FPRegist()
+        FpVer.FPVerificationStop()
+        FpReg = New FlexCodeSDK.FinFPReg
+        FpReg.AddDeviceInfo(SN, Verif, Activ)
+        FpReg.FPRegistrationStart("YourSecretKey")
+        uniqueTemplate = False
+    End Sub
+
+    Private Sub FpReg_FPRegistrationStatus(ByVal Status As FlexCodeSDK.RegistrationStatus) Handles FpReg.FPRegistrationStatus
+        If Status = FlexCodeSDK.RegistrationStatus.r_OK Then
+            StatusRegis = False
+            FpReg.FPRegistrationStop()
+            FPVerif()
+        End If
+    End Sub
+
+    Private Sub FpReg_FPRegistrationTemplate(ByVal FPTemplate As String) Handles FpReg.FPRegistrationTemplate
+        Template = FPTemplate
+        RichTextBox1.Text = FPTemplate
+    End Sub
+
+    Private Sub FpReg_FPSamplesNeeded(ByVal Samples As Short) Handles FpReg.FPSamplesNeeded
+        Label2.Text = "Tempelkan Jari sebanyak 4x "
+        If Str(Samples) = 4 Then
+            RectangleShape2.Width = 0
+        ElseIf Str(Samples) = 3 Then
+            RectangleShape2.Width = 80
+        ElseIf Str(Samples) = 2 Then
+            RectangleShape2.Width = 160
+        ElseIf Str(Samples) = 1 Then
+            RectangleShape2.Width = 250
+        ElseIf Str(Samples) = 0 Then
+            RectangleShape2.Width = 292
+            Label2.Text = "Registrasi Berhasil"
+            Label3.Text = "Tempelkan lagi jari anda"
+        End If
+    End Sub
+    ''' ------------------------------------------------------------------
+    ''' ==================================================================
+
+    ''' -------------------------- Verifikasi ----------------------------
+    ''' ------------------------------------------------------------------
+    Private Sub FPVerif()
+        Conn.Close()
+        Conn.Open()
+        FpVer.AddDeviceInfo(SN, Verif, Activ)
+        Dim commText As String = "CALL GetTemplate()"
+        Dim sqlCommand As New MySqlCommand(commText, Conn)
+        Dim rd As MySqlDataReader = sqlCommand.ExecuteReader()
+        While rd.Read
+            FpVer.FPLoad(rd.GetString(0), rd.GetString(3), rd.GetString(2), "YourSecretKey")
+        End While
+        FpVer.FPVerificationStart()
+        rd.Close()
+    End Sub
+
+    Private Sub FPVer_FPVerificationID(ByVal ID As String, ByVal FingerNr As FlexCodeSDK.FingerNumber) Handles FpVer.FPVerificationID
+        Dim bls As String
+        userId = ID
+        fpNum = FingerNr
+        NIM.Text = ID
+        bls = balasan.Text
+        balasan.Text = ""
+        If FlexCodeSDK.VerificationStatus.v_OK = 1 And bls <> "" Then
+            MsgBox(bls)
+            PictureBox1.Image = Nothing
+            NIM.Text = ""
+            Nama.Text = ""
+        Else
+            PictureBox1.Image = Nothing
+            NIM.Text = ""
+            Nama.Text = ""
+        End If
+    End Sub
+
+    Private Sub FPVer_FPVerificationImage() Handles FpVer.FPVerificationImage
+        Dim imgFile As FileStream = New FileStream(My.Application.Info.DirectoryPath & "\FPTemp.BMP", FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+        Dim fileBytes(imgFile.Length) As Byte
+        imgFile.Read(fileBytes, 0, fileBytes.Length)
+        imgFile.Close()
+        Dim ms As MemoryStream = New MemoryStream(fileBytes)
+        PictureBox1.Image = Image.FromStream(ms)
+    End Sub
+
+    Private Sub FPVer_FPVerificationStatus(ByVal Status As FlexCodeSDK.VerificationStatus) Handles FpVer.FPVerificationStatus
+        Select Case Status
+            Case FlexCodeSDK.VerificationStatus.v_ActivationIncorrect
+                Stts.Text = "Activation / verification code is" & vbNewLine & "incorrent or not set"
+            Case FlexCodeSDK.VerificationStatus.v_FPDevFull
+                Stts.Text = "Max 10 devices"
+            Case FlexCodeSDK.VerificationStatus.v_FPListEmpty
+                Stts.Text = "Please add templates"
+            Case FlexCodeSDK.VerificationStatus.v_FPListFull
+                Stts.Text = "Max 100K templates"
+            Case FlexCodeSDK.VerificationStatus.v_MultiplelMatch
+                Stts.Text = "Multiple match"
+            Case FlexCodeSDK.VerificationStatus.v_NoDevice
+                statusFP = True
+                Stts.Text = "Fingerprint Tidak" & vbNewLine & "Terpasang"
+                WriteFinger.Enabled = False
+                If CheckFngr.Checked = True Then
+                    CheckFngr.Checked = False
+                    CheckFngr.Enabled = True
+                End If
+                If CheckRFID.Checked = False Then
+                    sembunyi()
+                End If
+            Case FlexCodeSDK.VerificationStatus.v_NotMatch, FlexCodeSDK.VerificationStatus.v_FPListEmpty
+                Stts.Text = "No Match"
+                PictureBox1.Image = Nothing
+                uniqueTemplate = True
+            Case FlexCodeSDK.VerificationStatus.v_PoorImageQuality
+                Stts.Text = "Poor image quality"
+            Case FlexCodeSDK.VerificationStatus.v_VerificationFailed
+                Stts.Text = "Verification failed"
+            Case FlexCodeSDK.VerificationStatus.v_VerifyCaptureStop
+                Stts.Text = "Stop verify"
+            Case FlexCodeSDK.VerificationStatus.v_OK
+                Exit Select
+            Case Else
+                statusFP = False
+                CheckFngr.Checked = True
+        End Select
+        If uniqueTemplate And RichTextBox1.Text <> "" Then
+            fpAddToDB()
+            uniqueTemplate = False
+        End If
+    End Sub
+    ''' ------------------------------------------------------------------
+    ''' ==================================================================
+
+    ''' ----------- data registrasi yang berasal dari fingerprint akan di insert ke database ---------------
+    ''' ----------------------------------------------------------------------------------------------------
+    Private Sub fpAddToDB()
+        Conn.Close()
+        Conn.Open()
+        Stts.Text = ""
+        Dim commText As String = "CALL UpdateFinger('" & RichTextBox1.Text & "', '" & Str(NoJari.SelectedIndex) & "', '" & NimFinger.Text & "');"
+        Dim sqlCommand As New MySqlCommand(commText, Conn)
+        sqlCommand.ExecuteNonQuery()
+        MsgBox("OK!")
+        FpVer.FPUnload(userId, fpNum)
+        FpVer.FPVerificationStop()
+
+        PanelFinger.Hide()
+        BackToPW()
+
+        FPVerif()
+
+        NimFinger.Text = "Berhasil"
+        NoJari.Text = ""
+        RichTextBox1.Text = ""
+        Label2.Text = ""
+        PictureBox1.Image = Nothing
+    End Sub
+    ''' ------------------------------------------------------------------
+    ''' ==================================================================
+
+    ''' </fingerprint>
+
+    ''' <RFID>
+    Private Sub tampil()
+        Read.Enabled = True
+        Write.Enabled = True
+        PnlRead.Show()
+        PanelRead.Show()
+    End Sub
+
+    Private Sub sembunyi()
+        PnlRead.Hide()
+        PnlWrite.Hide()
+        PanelRead.Show()
+        PanelPW.Hide()
+
+        NIM.Enabled = True
+
+        Write.Enabled = False
+        Read.Enabled = False
+
+        CmbPort.Text = ""
+        Stts.Text = ""
+        NIM.Text = ""
+        Nama.Text = ""
+        TxtNIM_Write.Text = ""
+    End Sub
+
+    Private Sub konek(ByVal Cmb As String)
+        SerialPort1.BaudRate = baudrate
+        SerialPort1.PortName = Cmb
+        SerialPort1.Parity = Parity.None
+        SerialPort1.StopBits = StopBits.One
+        SerialPort1.Handshake = Handshake.None
+        SerialPort1.Encoding = System.Text.Encoding.Default
+        SerialPort1.Open()
+
+        BtnDiscon.Enabled = True
+        BtnDiscon.BringToFront()
+
+        BtnCon.Enabled = False
+        BtnCon.SendToBack()
+
+        BtnScanPort.Enabled = False
+        CmbPort.DroppedDown = False
+        CmbPort.Enabled = False
+        CmbPort.Text = Cmb
+
+        Timer2.Enabled = True
+        CheckRFID.Checked = True
+    End Sub
+
+    Private Sub diskonek()
+        BtnDiscon.Enabled = False
+        BtnCon.Enabled = False
+        CmbPort.Text = ""
+        BtnScanPort.Enabled = True
+        CmbPort.Enabled = True
+
+        BtnCon.BringToFront()
+        BtnDiscon.SendToBack()
+
+        Timer2.Enabled = False
+
+        NIM.Enabled = False
+        CheckRFID.Checked = False
+
+        SerialPort1.Close()
+    End Sub
+
+    ''' <penulisan di NIM.text>
+    Private Sub SerialPort1_DataReceived(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
+        ReceivedText(SerialPort1.ReadExisting())
+    End Sub
+
+    Private Sub ReceivedText(ByVal [text] As String)
+        If Me.NIM.InvokeRequired Then
+            Dim x As New SetTextCallback(AddressOf ReceivedText)
+            Me.Invoke(x, New Object() {(text)})
+        Else
+            Me.NIM.Text &= [text]
+        End If
+    End Sub
+    ''' </penulisan di NIM.text>
+
+    '''</RFID>
+
+
+    ''' <Fungsi>
+
+    ''' -------------------------------------------
+    ''' Melakukan passing nilai dari RFID ke Finger
+    ''' -------------------------------------------
+    Private Sub passing()
+        PnlWrite.Show()
+        PanelFinger.Show()
+        PanelWrite.Hide()
+        PanelRead.Hide()
+
+        Read.Enabled = False
+        Write.Enabled = False
+        Ext.Enabled = False
+
+        NimFinger.Text = TxtNIM_Write.Text
+    End Sub
+
+    ''' -------------------------------------------------
+    ''' Kembali ke mode write ---------------------------
+    ''' -------------------------------------------------
+    Private Sub BackToPW()
+        PnlWrite.Show()
+        PanelPW.Show()
+
+        WriteRFID.Checked = False
+        WriteFinger.Checked = False
+        CheckNIM.Text = ""
+
+        TxtUsr.Text = Username
+        TxtPass.Text = Pass
+        BtnNext.PerformClick()
+
+        PanelWrite.Hide()
+        PnlRead.Hide()
+        PanelRead.Hide()
+
+        Ext.Enabled = True
+        BtnWrite.Enabled = True
+        BatalRFID.Enabled = True
+    End Sub
+    ''' </Fungsi>
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim FILE = IO.File.ReadAllLines("password.txt")
         Dim myArray As String() = FILE
@@ -144,224 +437,6 @@ Public Class Form1
             CmbPort.Text = ""
             Ext.Enabled = True
         End Try
-
-
-    End Sub
-
-    Private Sub FPRegist()
-        FpVer.FPVerificationStop()
-        FpReg = New FlexCodeSDK.FinFPReg
-        FpReg.AddDeviceInfo(SN, Verif, Activ)
-        FpReg.FPRegistrationStart("YourSecretKey")
-        uniqueTemplate = False
-    End Sub
-
-    Private Sub FpReg_FPSamplesNeeded(ByVal Samples As Short) Handles FpReg.FPSamplesNeeded
-        Label2.Text = "Tempelkan Jari sebanyak 4x "
-        If Str(Samples) = 4 Then
-            RectangleShape2.Width = 0
-        ElseIf Str(Samples) = 3 Then
-            RectangleShape2.Width = 80
-        ElseIf Str(Samples) = 2 Then
-            RectangleShape2.Width = 160
-        ElseIf Str(Samples) = 1 Then
-            RectangleShape2.Width = 250
-        ElseIf Str(Samples) = 0 Then
-            RectangleShape2.Width = 292
-            Label2.Text = "Registrasi Berhasil"
-            Label3.Text = "Tempelkan lagi jari anda"
-        End If
-    End Sub
-
-    Private Sub FpReg_FPRegistrationStatus(ByVal Status As FlexCodeSDK.RegistrationStatus) Handles FpReg.FPRegistrationStatus
-        If Status = FlexCodeSDK.RegistrationStatus.r_OK Then
-            StatusRegis = False
-            FpReg.FPRegistrationStop()
-            FPVerif()
-        End If
-    End Sub
-
-
-    Private Sub FPVerif()
-        Conn.Close()
-        Conn.Open()
-        FpVer.AddDeviceInfo(SN, Verif, Activ)
-        Dim commText As String = "CALL GetTemplate()"
-        Dim sqlCommand As New MySqlCommand(commText, Conn)
-        Dim rd As MySqlDataReader = sqlCommand.ExecuteReader()
-        While rd.Read
-            FpVer.FPLoad(rd.GetString(0), rd.GetString(3), rd.GetString(2), "YourSecretKey")
-        End While
-        FpVer.FPVerificationStart()
-        rd.Close()
-    End Sub
-
-    Private Sub FPVer_FPVerificationID(ByVal ID As String, ByVal FingerNr As FlexCodeSDK.FingerNumber) Handles FpVer.FPVerificationID
-        Dim bls As String
-        userId = ID
-        fpNum = FingerNr
-        NIM.Text = ID
-        bls = balasan.Text
-        balasan.Text = ""
-        If FlexCodeSDK.VerificationStatus.v_OK = 1 And bls <> "" Then
-            MsgBox(bls)
-            PictureBox1.Image = Nothing
-            NIM.Text = ""
-            Nama.Text = ""
-        Else
-            PictureBox1.Image = Nothing
-            NIM.Text = ""
-            Nama.Text = ""
-        End If
-    End Sub
-
-    Private Sub FPVer_FPVerificationImage() Handles FpVer.FPVerificationImage
-        Dim imgFile As FileStream = New FileStream(My.Application.Info.DirectoryPath & "\FPTemp.BMP", FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
-        Dim fileBytes(imgFile.Length) As Byte
-        imgFile.Read(fileBytes, 0, fileBytes.Length)
-        imgFile.Close()
-        Dim ms As MemoryStream = New MemoryStream(fileBytes)
-        PictureBox1.Image = Image.FromStream(ms)
-    End Sub
-
-    Private Sub FpReg_FPRegistrationTemplate(ByVal FPTemplate As String) Handles FpReg.FPRegistrationTemplate
-        Template = FPTemplate
-        RichTextBox1.Text = FPTemplate
-    End Sub
-
-    Private Sub konek(ByVal Cmb As String)
-        SerialPort1.BaudRate = baudrate
-        SerialPort1.PortName = Cmb
-        SerialPort1.Parity = Parity.None
-        SerialPort1.StopBits = StopBits.One
-        SerialPort1.Handshake = Handshake.None
-        SerialPort1.Encoding = System.Text.Encoding.Default
-        SerialPort1.Open()
-
-        BtnDiscon.Enabled = True
-        BtnDiscon.BringToFront()
-
-        BtnCon.Enabled = False
-        BtnCon.SendToBack()
-
-        BtnScanPort.Enabled = False
-        CmbPort.DroppedDown = False
-        CmbPort.Enabled = False
-        CmbPort.Text = Cmb
-
-        Timer2.Enabled = True
-        CheckRFID.Checked = True
-    End Sub
-
-    Private Sub fpAddToDB()
-        Conn.Close()
-        Conn.Open()
-        Stts.Text = ""
-        Dim commText As String = "CALL UpdateFinger('" & RichTextBox1.Text & "', '" & Str(NoJari.SelectedIndex) & "', '" & NimFinger.Text & "');"
-        Dim sqlCommand As New MySqlCommand(commText, Conn)
-        sqlCommand.ExecuteNonQuery()
-        MsgBox("OK!")
-        FpVer.FPUnload(userId, fpNum)
-        FpVer.FPVerificationStop()
-
-        PanelFinger.Hide()
-        BackToPW()
-
-        FPVerif()
-
-        NimFinger.Text = "Berhasil"
-        NoJari.Text = ""
-        RichTextBox1.Text = ""
-        Label2.Text = ""
-        PictureBox1.Image = Nothing
-    End Sub
-
-    Private Sub tampil()
-        Read.Enabled = True
-        Write.Enabled = True
-        PnlRead.Show()
-        PanelRead.Show()
-    End Sub
-
-    Private Sub sembunyi()
-        PnlRead.Hide()
-        PnlWrite.Hide()
-        PanelRead.Show()
-        PanelPW.Hide()
-
-        NIM.Enabled = True
-
-        Write.Enabled = False
-        Read.Enabled = False
-
-        CmbPort.Text = ""
-        Stts.Text = ""
-        NIM.Text = ""
-        Nama.Text = ""
-        TxtNIM_Write.Text = ""
-    End Sub
-
-    Private Sub diskonek()
-        BtnDiscon.Enabled = False
-        BtnCon.Enabled = False
-        CmbPort.Text = ""
-        BtnScanPort.Enabled = True
-        CmbPort.Enabled = True
-
-        BtnCon.BringToFront()
-        BtnDiscon.SendToBack()
-
-        Timer2.Enabled = False
-
-        NIM.Enabled = False
-        CheckRFID.Checked = False
-
-        SerialPort1.Close()
-    End Sub
-
-    Private Sub FPVer_FPVerificationStatus(ByVal Status As FlexCodeSDK.VerificationStatus) Handles FpVer.FPVerificationStatus
-        Select Case Status
-            Case FlexCodeSDK.VerificationStatus.v_ActivationIncorrect
-                Stts.Text = "Activation / verification code is" & vbNewLine & "incorrent or not set"
-            Case FlexCodeSDK.VerificationStatus.v_FPDevFull
-                Stts.Text = "Max 10 devices"
-            Case FlexCodeSDK.VerificationStatus.v_FPListEmpty
-                Stts.Text = "Please add templates"
-            Case FlexCodeSDK.VerificationStatus.v_FPListFull
-                Stts.Text = "Max 100K templates"
-            Case FlexCodeSDK.VerificationStatus.v_MultiplelMatch
-                Stts.Text = "Multiple match"
-            Case FlexCodeSDK.VerificationStatus.v_NoDevice
-                statusFP = True
-                Stts.Text = "Fingerprint Tidak" & vbNewLine & "Terpasang"
-                WriteFinger.Enabled = False
-                If CheckFngr.Checked = True Then
-                    CheckFngr.Checked = False
-                    CheckFngr.Enabled = True
-                End If
-                If CheckRFID.Checked = False Then
-                    sembunyi()
-                End If
-            Case FlexCodeSDK.VerificationStatus.v_NotMatch, FlexCodeSDK.VerificationStatus.v_FPListEmpty
-                Stts.Text = "No Match"
-                PictureBox1.Image = Nothing
-                uniqueTemplate = True
-            Case FlexCodeSDK.VerificationStatus.v_PoorImageQuality
-                Stts.Text = "Poor image quality"
-            Case FlexCodeSDK.VerificationStatus.v_VerificationFailed
-                Stts.Text = "Verification failed"
-            Case FlexCodeSDK.VerificationStatus.v_VerifyCaptureStop
-                Stts.Text = "Stop verify"
-            Case FlexCodeSDK.VerificationStatus.v_OK
-                Exit Select
-            Case Else
-                statusFP = False
-                CheckFngr.Checked = True
-        End Select
-        If uniqueTemplate And RichTextBox1.Text <> "" Then
-            fpAddToDB()
-            uniqueTemplate = False
-        End If
     End Sub
 
     Private Sub Ext_Click(sender As Object, e As EventArgs) Handles Ext.Click
@@ -376,6 +451,12 @@ Public Class Form1
         Else
             Application.ExitThread()
         End If
+    End Sub
+
+    Private Sub Form1_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
+        Conn.Close()
+        FpVer.FPListClear()
+        FpVer.FPVerificationStop()
     End Sub
 
     Private Sub BtnScanPort_Click(sender As Object, e As EventArgs) Handles BtnScanPort.Click
@@ -463,6 +544,9 @@ Public Class Form1
         BtnBack.Hide()
     End Sub
 
+    ''' --------------------------------------------------
+    ''' untuk melakukan penulisan terhadap RFID Tag-------
+    ''' --------------------------------------------------
     Private Sub BtnWrite_Click(sender As Object, e As EventArgs) Handles BtnWrite.Click
         FpVer.FPVerificationStop()
         SerialPort1.Write(TxtNIM_Write.Text & "*")
@@ -477,41 +561,7 @@ Public Class Form1
         BtnWrite.Enabled = False
     End Sub
 
-    Private Sub passing()
-        PnlWrite.Show()
-        PanelFinger.Show()
-        PanelWrite.Hide()
-        PanelRead.Hide()
-
-        Read.Enabled = False
-        Write.Enabled = False
-        Ext.Enabled = False
-
-        NimFinger.Text = TxtNIM_Write.Text
-    End Sub
-
-    Private Sub BackToPW()
-        PnlWrite.Show()
-        PanelPW.Show()
-
-        WriteRFID.Checked = False
-        WriteFinger.Checked = False
-        CheckNIM.Text = ""
-
-        TxtUsr.Text = Username
-        TxtPass.Text = Pass
-        BtnNext.PerformClick()
-
-        PanelWrite.Hide()
-        PnlRead.Hide()
-        PanelRead.Hide()
-
-        Ext.Enabled = True
-        BtnWrite.Enabled = True
-        BatalRFID.Enabled = True
-    End Sub
-
-    Private Sub Ext2_Click(sender As Object, e As EventArgs) Handles BatalRFID.Click
+    Private Sub BatalRFID_Click(sender As Object, e As EventArgs) Handles BatalRFID.Click
         Stts.Show()
         PnlWrite.Hide()
         PanelWrite.Hide()
@@ -528,7 +578,22 @@ Public Class Form1
         waktu = 0
     End Sub
 
+    Private Sub BatalFinger_Click(sender As Object, e As EventArgs) Handles BatalFinger.Click
+        FpReg.FPRegistrationStop()
+        FPVerif()
+        PanelFinger.Hide()
+        BackToPW()
 
+        NimFinger.Text = ""
+        NoJari.Text = ""
+        RichTextBox1.Text = ""
+        Label2.Text = ""
+        Label3.Text = ""
+    End Sub
+
+    ''' ------------------------------------------------------------------
+    ''' Mengecek agar masukan yang diberikan di textbox hanya berupa angka
+    ''' -------------------------------------------------------------------
     Private Sub CheckNIM_TextChanged(sender As Object, e As EventArgs) Handles CheckNIM.TextChanged
         Dim theText As String = CheckNIM.Text
         Dim Letter As String
@@ -546,51 +611,10 @@ Public Class Form1
         CheckNIM.Select(SelectionIndex - Change, 0)
     End Sub
 
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        Tanggal.Text = Date.Now.ToString("dddd, dd MMM yyyy")
-        Jam.Text = Date.Now.ToString("hh:mm:ss")
-    End Sub
 
-    Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
-        If waktu > 0 Then
-            waktu -= 1
-        Else
-            Timer3.Enabled = False
-            SerialPort1.Write("DataKosong" & "*")
-            TxtNIM_Write.Text = ""
-
-            Read.Enabled = True
-            Write.Enabled = True
-            Ext.Enabled = True
-
-            Stts.Show()
-            PanelRead.Show()
-            PnlRead.Show()
-
-            PnlWrite.Hide()
-            PanelWrite.Hide()
-        End If
-    End Sub
-
-    Private Sub SerialPort1_DataReceived(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
-        ReceivedText(SerialPort1.ReadExisting())
-    End Sub
-
-    Private Sub ReceivedText(ByVal [text] As String)
-        If Me.NIM.InvokeRequired Then
-            Dim x As New SetTextCallback(AddressOf ReceivedText)
-            Me.Invoke(x, New Object() {(text)})
-        Else
-            Me.NIM.Text &= [text]
-        End If
-    End Sub
-
-    Private Sub NIM_KeyDown(sender As Object, e As KeyEventArgs) Handles NIM.KeyDown
-        If e.KeyCode = Keys.Enter And NIM.Text <> "" Then
-            NIM.Text = ""
-        End If
-    End Sub
-
+    ''' ------------------------------------------------------------------
+    ''' Proses jika terjadi penerimaan data dan penulisan ke database-----
+    ''' ------------------------------------------------------------------
     Private Sub NIM_TextChanged(sender As Object, e As EventArgs) Handles NIM.TextChanged
         Dim bfr As String
         bfr = NIM.Text
@@ -689,9 +713,16 @@ Public Class Form1
             MsgBox("Periksa sambungan database")
             NIM.Text = ""
         End Try
-
     End Sub
 
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        Tanggal.Text = Date.Now.ToString("dddd, dd MMM yyyy")
+        Jam.Text = Date.Now.ToString("hh:mm:ss")
+    End Sub
+
+    ''' -------------------------------------------------------------------------
+    ''' untuk mengecek jika sambungan RFID Reader terputus ----------------------
+    ''' -------------------------------------------------------------------------
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
         Try
             Dim Incoming As String = SerialPort1.ReadExisting()
@@ -702,15 +733,35 @@ Public Class Form1
                 sembunyi()
             End If
         End Try
-
     End Sub
 
-    Private Sub Form1_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
-        Conn.Close()
-        FpVer.FPListClear()
-        FpVer.FPVerificationStop()
+    ''' ----------------------------------------------------------------------
+    ''' Timer yang digunakan RFID Writer selama 25 detik----------------------
+    ''' ----------------------------------------------------------------------
+    Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
+        If waktu > 0 Then
+            waktu -= 1
+        Else
+            Timer3.Enabled = False
+            SerialPort1.Write("DataKosong" & "*")
+            TxtNIM_Write.Text = ""
+
+            Read.Enabled = True
+            Write.Enabled = True
+            Ext.Enabled = True
+
+            Stts.Show()
+            PanelRead.Show()
+            PnlRead.Show()
+
+            PnlWrite.Hide()
+            PanelWrite.Hide()
+        End If
     End Sub
 
+    ''' -------------------------------------------------------------------------
+    ''' untuk mengecek jika sambungan Fingerprint terputus ----------------------
+    ''' -------------------------------------------------------------------------
     Private Sub CheckFngr_Click(sender As Object, e As EventArgs) Handles CheckFngr.Click
         FpVer.AddDeviceInfo(SN, Verif, Activ)
         FpVer.FPVerificationStart()
@@ -720,19 +771,6 @@ Public Class Form1
             Read.Enabled = True
             Write.Enabled = True
             CheckFngr.Enabled = False
-        End If
-    End Sub
-
-    Private Sub AksesTulis()
-        If CheckRFID.Checked = True And CheckFngr.Checked = True Then
-            WriteRFID.Enabled = True
-            WriteFinger.Enabled = True
-        ElseIf CheckRFID.Checked = True And CheckFngr.Checked = False Then
-            WriteRFID.Enabled = True
-            WriteFinger.Enabled = False
-        ElseIf CheckRFID.Checked = False And CheckFngr.Checked = True Then
-            WriteRFID.Enabled = False
-            WriteFinger.Enabled = True
         End If
     End Sub
 
@@ -772,18 +810,6 @@ Public Class Form1
                     End If
                 End If
             End If
-        End If
-    End Sub
-
-    Private Sub TxtUsr_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtUsr.KeyDown
-        If e.KeyCode = Keys.Enter And PanelPW.Visible = True Then
-            BtnNext.PerformClick()
-        End If
-    End Sub
-
-    Private Sub TxtPass_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtPass.KeyDown
-        If e.KeyCode = Keys.Enter And PanelPW.Visible = True Then
-            BtnNext.PerformClick()
         End If
     End Sub
 
@@ -870,12 +896,6 @@ Public Class Form1
 
     End Sub
 
-    Private Sub CheckNIM_KeyDown(sender As Object, e As KeyEventArgs) Handles CheckNIM.KeyDown
-        If e.KeyCode = Keys.Enter And BtnNext2.Visible = True Then
-            BtnNext2.PerformClick()
-        End If
-    End Sub
-
     Private Sub BtnBack_Click(sender As Object, e As EventArgs) Handles BtnBack.Click
         TxtUsr.Focus()
 
@@ -897,19 +917,29 @@ Public Class Form1
         CheckNIM.Text = ""
         TxtUsr.Text = ""
         TxtPass.Text = ""
-
     End Sub
 
-    Private Sub BatalFinger_Click(sender As Object, e As EventArgs) Handles BatalFinger.Click
-        FpReg.FPRegistrationStop()
-        FPVerif()
-        PanelFinger.Hide()
-        BackToPW()
+    Private Sub TxtUsr_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtUsr.KeyDown
+        If e.KeyCode = Keys.Enter And PanelPW.Visible = True Then
+            BtnNext.PerformClick()
+        End If
+    End Sub
 
-        NimFinger.Text = ""
-        NoJari.Text = ""
-        RichTextBox1.Text = ""
-        Label2.Text = ""
-        Label3.Text = ""
+    Private Sub TxtPass_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtPass.KeyDown
+        If e.KeyCode = Keys.Enter And PanelPW.Visible = True Then
+            BtnNext.PerformClick()
+        End If
+    End Sub
+
+    Private Sub NIM_KeyDown(sender As Object, e As KeyEventArgs) Handles NIM.KeyDown
+        If e.KeyCode = Keys.Enter And NIM.Text <> "" Then
+            NIM.Text = ""
+        End If
+    End Sub
+
+    Private Sub CheckNIM_KeyDown(sender As Object, e As KeyEventArgs) Handles CheckNIM.KeyDown
+        If e.KeyCode = Keys.Enter And BtnNext2.Visible = True Then
+            BtnNext2.PerformClick()
+        End If
     End Sub
 End Class
