@@ -10,6 +10,7 @@ Imports System.Configuration
 
 
 Public Class Form1
+
     Dim WithEvents FpVer As New FlexCodeSDK.FinFPVer
     Dim WithEvents FpReg As New FlexCodeSDK.FinFPReg
     Dim uniqueTemplate As Boolean
@@ -34,8 +35,8 @@ Public Class Form1
     Dim statusFP As Boolean
     Dim Username As String
     Dim Pass As String
-    Delegate Sub SetTextCallback(ByVal [text] As String)
 
+    Delegate Sub SetTextCallback(ByVal [text] As String)
     Public connString1 As String = ConfigurationManager.ConnectionStrings("MySqlConnectionString").ToString()
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -263,6 +264,7 @@ Public Class Form1
         FpVer.FPUnload(userId, fpNum)
         FpVer.FPVerificationStop()
 
+        PanelFinger.Hide()
         BackToPW()
 
         FPVerif()
@@ -671,11 +673,13 @@ Public Class Form1
 
             ElseIf RichTextBox1.Text <> "" Then
                 MsgBox("Jari anda telah terdaftar")
+
                 RichTextBox1.Text = ""
                 NIM.Text = ""
                 PictureBox1.Image = Nothing
 
                 BackToPW()
+                PanelFinger.Hide()
             Else
                 NIM.Text = ""
                 Nama.Text = ""
@@ -855,7 +859,6 @@ Public Class Form1
             BtnNext.Hide()
             CheckNIM.Focus()
 
-            CheckNIM.Text = ""
             NIMpw.Show()
             CheckNIM.Show()
             BtnNext2.Show()
@@ -900,6 +903,7 @@ Public Class Form1
     Private Sub BatalFinger_Click(sender As Object, e As EventArgs) Handles BatalFinger.Click
         FpReg.FPRegistrationStop()
         FPVerif()
+        PanelFinger.Hide()
         BackToPW()
 
         NimFinger.Text = ""

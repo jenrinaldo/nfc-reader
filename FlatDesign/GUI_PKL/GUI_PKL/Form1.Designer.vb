@@ -38,16 +38,9 @@ Partial Class Form1
         Me.Fingerprint = New Bunifu.Framework.UI.BunifuImageButton()
         Me.RFID = New Bunifu.Framework.UI.BunifuImageButton()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.PanelFinger = New System.Windows.Forms.Panel()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
-        Me.NoJari = New System.Windows.Forms.ComboBox()
-        Me.NimFinger = New System.Windows.Forms.Label()
-        Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.RectangleShape2 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
-        Me.RectangleShape1 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
         Me.PanelPW = New System.Windows.Forms.Panel()
+        Me.BtnNext = New System.Windows.Forms.Button()
+        Me.BtnBack = New System.Windows.Forms.Button()
         Me.WriteFinger = New System.Windows.Forms.CheckBox()
         Me.WriteRFID = New System.Windows.Forms.CheckBox()
         Me.CheckNIM = New System.Windows.Forms.TextBox()
@@ -58,7 +51,6 @@ Partial Class Form1
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Password = New System.Windows.Forms.Label()
         Me.User = New System.Windows.Forms.Label()
-        Me.BtnNext = New System.Windows.Forms.Button()
         Me.BtnNext2 = New System.Windows.Forms.Button()
         Me.PanelWrite = New System.Windows.Forms.Panel()
         Me.BatalRFID = New System.Windows.Forms.Button()
@@ -67,6 +59,16 @@ Partial Class Form1
         Me.NIMWrite = New Bunifu.Framework.UI.BunifuCustomLabel()
         Me.TxtNIM_Write = New System.Windows.Forms.TextBox()
         Me.Panel8 = New System.Windows.Forms.Panel()
+        Me.PanelFinger = New System.Windows.Forms.Panel()
+        Me.BatalFinger = New System.Windows.Forms.Button()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
+        Me.NoJari = New System.Windows.Forms.ComboBox()
+        Me.NimFinger = New System.Windows.Forms.Label()
+        Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
+        Me.RectangleShape2 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
+        Me.RectangleShape1 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
         Me.CheckRFID = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.CheckFngr = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.PanelRead = New System.Windows.Forms.Panel()
@@ -90,16 +92,14 @@ Partial Class Form1
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
-        Me.BtnBack = New System.Windows.Forms.Button()
-        Me.BatalFinger = New System.Windows.Forms.Button()
         Me.BunifuGradientPanel1.SuspendLayout()
         Me.PanelMENU.SuspendLayout()
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
-        Me.PanelFinger.SuspendLayout()
         Me.PanelPW.SuspendLayout()
         Me.PanelWrite.SuspendLayout()
+        Me.PanelFinger.SuspendLayout()
         Me.PanelRead.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel4.SuspendLayout()
@@ -313,8 +313,8 @@ Partial Class Form1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
         Me.Panel1.Controls.Add(Me.PanelFinger)
-        Me.Panel1.Controls.Add(Me.PanelWrite)
         Me.Panel1.Controls.Add(Me.PanelPW)
+        Me.Panel1.Controls.Add(Me.PanelWrite)
         Me.Panel1.Controls.Add(Me.CheckRFID)
         Me.Panel1.Controls.Add(Me.CheckFngr)
         Me.Panel1.Controls.Add(Me.RFID)
@@ -324,99 +324,6 @@ Partial Class Form1
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(542, 386)
         Me.Panel1.TabIndex = 1
-        '
-        'PanelFinger
-        '
-        Me.PanelFinger.Controls.Add(Me.BatalFinger)
-        Me.PanelFinger.Controls.Add(Me.Label3)
-        Me.PanelFinger.Controls.Add(Me.Label2)
-        Me.PanelFinger.Controls.Add(Me.RichTextBox1)
-        Me.PanelFinger.Controls.Add(Me.NoJari)
-        Me.PanelFinger.Controls.Add(Me.NimFinger)
-        Me.PanelFinger.Controls.Add(Me.ShapeContainer1)
-        Me.PanelFinger.Location = New System.Drawing.Point(82, 99)
-        Me.PanelFinger.Name = "PanelFinger"
-        Me.PanelFinger.Size = New System.Drawing.Size(394, 204)
-        Me.PanelFinger.TabIndex = 29
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(37, 186)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(40, 13)
-        Me.Label3.TabIndex = 41
-        Me.Label3.Text = "Label3"
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(39, 152)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(40, 13)
-        Me.Label2.TabIndex = 39
-        Me.Label2.Text = "Label2"
-        '
-        'RichTextBox1
-        '
-        Me.RichTextBox1.Location = New System.Drawing.Point(42, 55)
-        Me.RichTextBox1.Name = "RichTextBox1"
-        Me.RichTextBox1.Size = New System.Drawing.Size(301, 96)
-        Me.RichTextBox1.TabIndex = 38
-        Me.RichTextBox1.Text = ""
-        '
-        'NoJari
-        '
-        Me.NoJari.FormattingEnabled = True
-        Me.NoJari.Items.AddRange(New Object() {"Left Pinkie", "Left Ring", "Left Middle", "Left Index", "Left Thumb", "Right Thumb", "Right Index", "Right Middle", "Right Ring", "Right Pinkie"})
-        Me.NoJari.Location = New System.Drawing.Point(42, 30)
-        Me.NoJari.Name = "NoJari"
-        Me.NoJari.Size = New System.Drawing.Size(182, 21)
-        Me.NoJari.TabIndex = 37
-        '
-        'NimFinger
-        '
-        Me.NimFinger.AutoSize = True
-        Me.NimFinger.Cursor = System.Windows.Forms.Cursors.Default
-        Me.NimFinger.Font = New System.Drawing.Font("Century Gothic", 12.0!)
-        Me.NimFinger.Location = New System.Drawing.Point(38, 5)
-        Me.NimFinger.Name = "NimFinger"
-        Me.NimFinger.Size = New System.Drawing.Size(27, 21)
-        Me.NimFinger.TabIndex = 35
-        Me.NimFinger.Text = "ID"
-        '
-        'ShapeContainer1
-        '
-        Me.ShapeContainer1.Location = New System.Drawing.Point(0, 0)
-        Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
-        Me.ShapeContainer1.Name = "ShapeContainer1"
-        Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.RectangleShape2, Me.RectangleShape1})
-        Me.ShapeContainer1.Size = New System.Drawing.Size(394, 204)
-        Me.ShapeContainer1.TabIndex = 40
-        Me.ShapeContainer1.TabStop = False
-        '
-        'RectangleShape2
-        '
-        Me.RectangleShape2.BackColor = System.Drawing.Color.PowderBlue
-        Me.RectangleShape2.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque
-        Me.RectangleShape2.BorderColor = System.Drawing.Color.PowderBlue
-        Me.RectangleShape2.BorderWidth = 3
-        Me.RectangleShape2.CornerRadius = 2
-        Me.RectangleShape2.Location = New System.Drawing.Point(46, 172)
-        Me.RectangleShape2.Name = "RectangleShape2"
-        Me.RectangleShape2.Size = New System.Drawing.Size(292, 9)
-        '
-        'RectangleShape1
-        '
-        Me.RectangleShape1.BackColor = System.Drawing.Color.PowderBlue
-        Me.RectangleShape1.BorderColor = System.Drawing.Color.PowderBlue
-        Me.RectangleShape1.BorderWidth = 3
-        Me.RectangleShape1.CornerRadius = 5
-        Me.RectangleShape1.Location = New System.Drawing.Point(42, 168)
-        Me.RectangleShape1.Name = "RectangleShape1"
-        Me.RectangleShape1.Size = New System.Drawing.Size(300, 17)
         '
         'PanelPW
         '
@@ -437,6 +344,30 @@ Partial Class Form1
         Me.PanelPW.Name = "PanelPW"
         Me.PanelPW.Size = New System.Drawing.Size(401, 147)
         Me.PanelPW.TabIndex = 31
+        '
+        'BtnNext
+        '
+        Me.BtnNext.BackColor = System.Drawing.Color.FromArgb(CType(CType(60, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(226, Byte), Integer))
+        Me.BtnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnNext.ForeColor = System.Drawing.Color.White
+        Me.BtnNext.Location = New System.Drawing.Point(270, 92)
+        Me.BtnNext.Name = "BtnNext"
+        Me.BtnNext.Size = New System.Drawing.Size(107, 31)
+        Me.BtnNext.TabIndex = 24
+        Me.BtnNext.Text = "NEXT"
+        Me.BtnNext.UseVisualStyleBackColor = False
+        '
+        'BtnBack
+        '
+        Me.BtnBack.BackColor = System.Drawing.Color.FromArgb(CType(CType(60, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(226, Byte), Integer))
+        Me.BtnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnBack.ForeColor = System.Drawing.Color.White
+        Me.BtnBack.Location = New System.Drawing.Point(327, 91)
+        Me.BtnBack.Name = "BtnBack"
+        Me.BtnBack.Size = New System.Drawing.Size(51, 31)
+        Me.BtnBack.TabIndex = 38
+        Me.BtnBack.Text = "BACK"
+        Me.BtnBack.UseVisualStyleBackColor = False
         '
         'WriteFinger
         '
@@ -535,18 +466,6 @@ Partial Class Form1
         Me.User.TabIndex = 0
         Me.User.Text = "Username"
         '
-        'BtnNext
-        '
-        Me.BtnNext.BackColor = System.Drawing.Color.FromArgb(CType(CType(60, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(226, Byte), Integer))
-        Me.BtnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.BtnNext.ForeColor = System.Drawing.Color.White
-        Me.BtnNext.Location = New System.Drawing.Point(270, 92)
-        Me.BtnNext.Name = "BtnNext"
-        Me.BtnNext.Size = New System.Drawing.Size(107, 31)
-        Me.BtnNext.TabIndex = 24
-        Me.BtnNext.Text = "NEXT"
-        Me.BtnNext.UseVisualStyleBackColor = False
-        '
         'BtnNext2
         '
         Me.BtnNext2.BackColor = System.Drawing.Color.FromArgb(CType(CType(60, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(226, Byte), Integer))
@@ -640,6 +559,114 @@ Partial Class Form1
         Me.Panel8.Name = "Panel8"
         Me.Panel8.Size = New System.Drawing.Size(249, 1)
         Me.Panel8.TabIndex = 15
+        '
+        'PanelFinger
+        '
+        Me.PanelFinger.Controls.Add(Me.BatalFinger)
+        Me.PanelFinger.Controls.Add(Me.Label3)
+        Me.PanelFinger.Controls.Add(Me.Label2)
+        Me.PanelFinger.Controls.Add(Me.RichTextBox1)
+        Me.PanelFinger.Controls.Add(Me.NoJari)
+        Me.PanelFinger.Controls.Add(Me.NimFinger)
+        Me.PanelFinger.Controls.Add(Me.ShapeContainer1)
+        Me.PanelFinger.Location = New System.Drawing.Point(82, 99)
+        Me.PanelFinger.Name = "PanelFinger"
+        Me.PanelFinger.Size = New System.Drawing.Size(394, 204)
+        Me.PanelFinger.TabIndex = 29
+        '
+        'BatalFinger
+        '
+        Me.BatalFinger.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BatalFinger.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue
+        Me.BatalFinger.FlatAppearance.MouseDownBackColor = System.Drawing.Color.SteelBlue
+        Me.BatalFinger.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
+        Me.BatalFinger.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BatalFinger.Font = New System.Drawing.Font("Century Gothic", 12.0!)
+        Me.BatalFinger.Location = New System.Drawing.Point(265, 19)
+        Me.BatalFinger.Name = "BatalFinger"
+        Me.BatalFinger.Size = New System.Drawing.Size(78, 34)
+        Me.BatalFinger.TabIndex = 42
+        Me.BatalFinger.Text = "BATAL"
+        Me.BatalFinger.UseVisualStyleBackColor = True
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(37, 186)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(40, 13)
+        Me.Label3.TabIndex = 41
+        Me.Label3.Text = "Label3"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(39, 152)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(40, 13)
+        Me.Label2.TabIndex = 39
+        Me.Label2.Text = "Label2"
+        '
+        'RichTextBox1
+        '
+        Me.RichTextBox1.Location = New System.Drawing.Point(42, 55)
+        Me.RichTextBox1.Name = "RichTextBox1"
+        Me.RichTextBox1.Size = New System.Drawing.Size(301, 96)
+        Me.RichTextBox1.TabIndex = 38
+        Me.RichTextBox1.Text = ""
+        '
+        'NoJari
+        '
+        Me.NoJari.FormattingEnabled = True
+        Me.NoJari.Items.AddRange(New Object() {"Left Pinkie", "Left Ring", "Left Middle", "Left Index", "Left Thumb", "Right Thumb", "Right Index", "Right Middle", "Right Ring", "Right Pinkie"})
+        Me.NoJari.Location = New System.Drawing.Point(42, 30)
+        Me.NoJari.Name = "NoJari"
+        Me.NoJari.Size = New System.Drawing.Size(182, 21)
+        Me.NoJari.TabIndex = 37
+        '
+        'NimFinger
+        '
+        Me.NimFinger.AutoSize = True
+        Me.NimFinger.Cursor = System.Windows.Forms.Cursors.Default
+        Me.NimFinger.Font = New System.Drawing.Font("Century Gothic", 12.0!)
+        Me.NimFinger.Location = New System.Drawing.Point(38, 5)
+        Me.NimFinger.Name = "NimFinger"
+        Me.NimFinger.Size = New System.Drawing.Size(27, 21)
+        Me.NimFinger.TabIndex = 35
+        Me.NimFinger.Text = "ID"
+        '
+        'ShapeContainer1
+        '
+        Me.ShapeContainer1.Location = New System.Drawing.Point(0, 0)
+        Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
+        Me.ShapeContainer1.Name = "ShapeContainer1"
+        Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.RectangleShape2, Me.RectangleShape1})
+        Me.ShapeContainer1.Size = New System.Drawing.Size(394, 204)
+        Me.ShapeContainer1.TabIndex = 40
+        Me.ShapeContainer1.TabStop = False
+        '
+        'RectangleShape2
+        '
+        Me.RectangleShape2.BackColor = System.Drawing.Color.PowderBlue
+        Me.RectangleShape2.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque
+        Me.RectangleShape2.BorderColor = System.Drawing.Color.PowderBlue
+        Me.RectangleShape2.BorderWidth = 3
+        Me.RectangleShape2.CornerRadius = 2
+        Me.RectangleShape2.Location = New System.Drawing.Point(46, 172)
+        Me.RectangleShape2.Name = "RectangleShape2"
+        Me.RectangleShape2.Size = New System.Drawing.Size(292, 9)
+        '
+        'RectangleShape1
+        '
+        Me.RectangleShape1.BackColor = System.Drawing.Color.PowderBlue
+        Me.RectangleShape1.BorderColor = System.Drawing.Color.PowderBlue
+        Me.RectangleShape1.BorderWidth = 3
+        Me.RectangleShape1.CornerRadius = 5
+        Me.RectangleShape1.Location = New System.Drawing.Point(42, 168)
+        Me.RectangleShape1.Name = "RectangleShape1"
+        Me.RectangleShape1.Size = New System.Drawing.Size(300, 17)
         '
         'CheckRFID
         '
@@ -857,33 +884,6 @@ Partial Class Form1
         'Timer2
         '
         '
-        'BtnBack
-        '
-        Me.BtnBack.BackColor = System.Drawing.Color.FromArgb(CType(CType(60, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(226, Byte), Integer))
-        Me.BtnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.BtnBack.ForeColor = System.Drawing.Color.White
-        Me.BtnBack.Location = New System.Drawing.Point(327, 91)
-        Me.BtnBack.Name = "BtnBack"
-        Me.BtnBack.Size = New System.Drawing.Size(51, 31)
-        Me.BtnBack.TabIndex = 38
-        Me.BtnBack.Text = "BACK"
-        Me.BtnBack.UseVisualStyleBackColor = False
-        '
-        'BatalFinger
-        '
-        Me.BatalFinger.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.BatalFinger.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue
-        Me.BatalFinger.FlatAppearance.MouseDownBackColor = System.Drawing.Color.SteelBlue
-        Me.BatalFinger.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
-        Me.BatalFinger.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.BatalFinger.Font = New System.Drawing.Font("Century Gothic", 12.0!)
-        Me.BatalFinger.Location = New System.Drawing.Point(265, 19)
-        Me.BatalFinger.Name = "BatalFinger"
-        Me.BatalFinger.Size = New System.Drawing.Size(78, 34)
-        Me.BatalFinger.TabIndex = 42
-        Me.BatalFinger.Text = "BATAL"
-        Me.BatalFinger.UseVisualStyleBackColor = True
-        '
         'Form1
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
@@ -904,12 +904,12 @@ Partial Class Form1
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
-        Me.PanelFinger.ResumeLayout(False)
-        Me.PanelFinger.PerformLayout()
         Me.PanelPW.ResumeLayout(False)
         Me.PanelPW.PerformLayout()
         Me.PanelWrite.ResumeLayout(False)
         Me.PanelWrite.PerformLayout()
+        Me.PanelFinger.ResumeLayout(False)
+        Me.PanelFinger.PerformLayout()
         Me.PanelRead.ResumeLayout(False)
         Me.PanelRead.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
