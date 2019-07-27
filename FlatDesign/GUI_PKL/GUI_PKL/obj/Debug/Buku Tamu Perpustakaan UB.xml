@@ -6,6 +6,58 @@ Buku Tamu Perpustakaan UB
 </name>
 </assembly>
 <members>
+<member name="M:GUI_PKL.Form1.FPRegist">
+ ------------ Registrasi --------------
+ --------------------------------------
+</member>
+<member name="M:GUI_PKL.Form1.FPVerif">
+ -------------------------- Verifikasi ----------------------------
+ ------------------------------------------------------------------
+</member>
+<member name="M:GUI_PKL.Form1.fpAddToDB">
+ ----------- data registrasi yang berasal dari fingerprint akan di insert ke database ---------------
+ ----------------------------------------------------------------------------------------------------
+</member>
+<member name="M:GUI_PKL.Form1.passing">
+ -------------------------------------------
+ Melakukan passing nilai dari RFID ke Finger
+ -------------------------------------------
+</member>
+<member name="M:GUI_PKL.Form1.BackToPW">
+ -------------------------------------------------
+ Kembali ke mode write ---------------------------
+ -------------------------------------------------
+</member>
+<member name="M:GUI_PKL.Form1.BtnWrite_Click(System.Object,System.EventArgs)">
+ --------------------------------------------------
+ untuk melakukan penulisan terhadap RFID Tag-------
+ --------------------------------------------------
+</member>
+<member name="M:GUI_PKL.Form1.CheckNIM_TextChanged(System.Object,System.EventArgs)">
+ ------------------------------------------------------------------
+ Mengecek agar masukan yang diberikan di textbox hanya berupa angka
+ -------------------------------------------------------------------
+</member>
+<member name="M:GUI_PKL.Form1.NIM_TextChanged(System.Object,System.EventArgs)">
+ ------------------------------------------------------------------
+ Proses jika terjadi penerimaan data dan penulisan ke database-----
+ ------------------------------------------------------------------
+</member>
+<member name="M:GUI_PKL.Form1.Timer2_Tick(System.Object,System.EventArgs)">
+ -------------------------------------------------------------------------
+ untuk mengecek jika sambungan RFID Reader terputus ----------------------
+ -------------------------------------------------------------------------
+</member>
+<member name="M:GUI_PKL.Form1.Timer3_Tick(System.Object,System.EventArgs)">
+ ----------------------------------------------------------------------
+ Timer yang digunakan RFID Writer selama 25 detik----------------------
+ ----------------------------------------------------------------------
+</member>
+<member name="M:GUI_PKL.Form1.CheckFngr_Click(System.Object,System.EventArgs)">
+ -------------------------------------------------------------------------
+ untuk mengecek jika sambungan Fingerprint terputus ----------------------
+ -------------------------------------------------------------------------
+</member>
 <member name="T:GUI_PKL.My.Resources.Resources">
 <summary>
   A strongly-typed resource class, for looking up localized strings, etc.

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="Buku Tamu Perpustakaan UB.exe" version="1.0.1.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="Buku Tamu Perpustakaan UB.exe" version="1.0.2.3" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <application />
   <entryPoint>
     <assemblyIdentity name="Buku Tamu Perpustakaan UB" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
@@ -54,14 +54,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Buku Tamu Perpustakaan UB.exe" size="2788312">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Buku Tamu Perpustakaan UB.exe" size="2788824">
       <assemblyIdentity name="Buku Tamu Perpustakaan UB" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Tb0azrpne0fOhi0767lwLcsXF7fx1ryDZOal5BQP5ic=</dsig:DigestValue>
+        <dsig:DigestValue>CxFpsg693P4U5ojRoL+ksaMxI3YyBGfP+KKcs0XKt5s=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -113,13 +113,13 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Buku Tamu Perpustakaan UB.exe.config" size="541">
+  <file name="Buku Tamu Perpustakaan UB.exe.config" size="545">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>cM6JQmgS6KOmJdSXsiN8tjPNsa36AB/qx4La06nNYCk=</dsig:DigestValue>
+      <dsig:DigestValue>/tvYhnHTB0AXIB2c4rD2HVcyB/Rf9cGMLNcPRJz0Ylk=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

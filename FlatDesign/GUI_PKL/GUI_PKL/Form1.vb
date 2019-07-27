@@ -333,13 +333,20 @@ Public Class Form1
     ''' </Fungsi>
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim FILE = IO.File.ReadAllLines("password.txt")
-        Dim myArray As String() = FILE
-        Username = myArray(0)
-        Pass = myArray(1)
-
         Try
             Conn = New MySqlConnection(connString1)
+
+            Conn.Open()
+            Query = "SELECT * FROM kunciregistrasi"
+            COMMAND = New MySqlCommand(Query, Conn)
+            reader = COMMAND.ExecuteReader()
+            If reader.Read() Then
+                Username = reader("Username".ToString())
+                Pass = reader("Password".ToString())
+            End If
+            reader.Close()
+            Conn.Close()
+
             FpVer = New FlexCodeSDK.FinFPVer
             FpReg = New FlexCodeSDK.FinFPReg
             FpVer.SetMaxTemplate(100000)
@@ -432,7 +439,14 @@ Public Class Form1
             CheckRFID.Checked = False
 
             PnlRead.Hide()
+            PnlWrite.Hide()
             PanelRead.Hide()
+            PanelWrite.Hide()
+            PanelPW.Hide()
+            PanelFinger.Hide()
+            Stts.Hide()
+
+            Timer1.Enabled = True
 
             CmbPort.Text = ""
             Ext.Enabled = True
@@ -490,7 +504,13 @@ Public Class Form1
 
     Private Sub BtnDiscon_Click(sender As Object, e As EventArgs) Handles BtnDiscon.Click
         diskonek()
-        WriteRFID.Enabled = False
+        PnlRead.Hide()
+        PanelWrite.Hide()
+        TxtNIM_Write.Text = ""
+        Ext.Enabled = True
+        WriteRFID.Enabled = True
+        BatalRFID.Enabled = True
+
         If CheckFngr.Checked = False Then
             sembunyi()
         End If
@@ -729,6 +749,10 @@ Public Class Form1
         Catch ex As Exception
             WriteRFID.Enabled = False
             diskonek()
+            PnlRead.Hide()
+            PanelWrite.Hide()
+            TxtNIM_Write.Text = ""
+            Ext.Enabled = True
             If CheckFngr.Checked = False Then
                 sembunyi()
             End If
@@ -766,6 +790,8 @@ Public Class Form1
         FpVer.AddDeviceInfo(SN, Verif, Activ)
         FpVer.FPVerificationStart()
         Stts.Text = ""
+        PanelFinger.Hide()
+        NimFinger.Text = ""
         If CheckFngr.Checked = True Then
             WriteFinger.Enabled = True
             Read.Enabled = True
@@ -830,6 +856,7 @@ Public Class Form1
                 Read.Enabled = False
                 Write.Enabled = False
                 Ext.Enabled = False
+                BtnDiscon.Enabled = False
 
                 TxtNIM_Write.Text = CheckNIM.Text
                 TxtNIM_Write.Focus()
@@ -851,6 +878,7 @@ Public Class Form1
                 Read.Enabled = False
                 Write.Enabled = False
                 Ext.Enabled = False
+                BtnDiscon.Enabled = False
 
                 TxtNIM_Write.Text = CheckNIM.Text
                 TxtNIM_Write.Focus()

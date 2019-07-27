@@ -38,6 +38,13 @@ Partial Class Form1
         Me.Fingerprint = New Bunifu.Framework.UI.BunifuImageButton()
         Me.RFID = New Bunifu.Framework.UI.BunifuImageButton()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.PanelWrite = New System.Windows.Forms.Panel()
+        Me.BatalRFID = New System.Windows.Forms.Button()
+        Me.BtnWrite = New System.Windows.Forms.Button()
+        Me.Label1 = New Bunifu.Framework.UI.BunifuCustomLabel()
+        Me.NIMWrite = New Bunifu.Framework.UI.BunifuCustomLabel()
+        Me.TxtNIM_Write = New System.Windows.Forms.TextBox()
+        Me.Panel8 = New System.Windows.Forms.Panel()
         Me.PanelFinger = New System.Windows.Forms.Panel()
         Me.BatalFinger = New System.Windows.Forms.Button()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -62,13 +69,6 @@ Partial Class Form1
         Me.Password = New System.Windows.Forms.Label()
         Me.User = New System.Windows.Forms.Label()
         Me.BtnNext2 = New System.Windows.Forms.Button()
-        Me.PanelWrite = New System.Windows.Forms.Panel()
-        Me.BatalRFID = New System.Windows.Forms.Button()
-        Me.BtnWrite = New System.Windows.Forms.Button()
-        Me.Label1 = New Bunifu.Framework.UI.BunifuCustomLabel()
-        Me.NIMWrite = New Bunifu.Framework.UI.BunifuCustomLabel()
-        Me.TxtNIM_Write = New System.Windows.Forms.TextBox()
-        Me.Panel8 = New System.Windows.Forms.Panel()
         Me.CheckRFID = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.CheckFngr = New Bunifu.Framework.UI.BunifuCheckbox()
         Me.PanelRead = New System.Windows.Forms.Panel()
@@ -97,9 +97,9 @@ Partial Class Form1
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
+        Me.PanelWrite.SuspendLayout()
         Me.PanelFinger.SuspendLayout()
         Me.PanelPW.SuspendLayout()
-        Me.PanelWrite.SuspendLayout()
         Me.PanelRead.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel4.SuspendLayout()
@@ -312,9 +312,9 @@ Partial Class Form1
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.PanelPW)
         Me.Panel1.Controls.Add(Me.PanelWrite)
         Me.Panel1.Controls.Add(Me.PanelFinger)
-        Me.Panel1.Controls.Add(Me.PanelPW)
         Me.Panel1.Controls.Add(Me.CheckRFID)
         Me.Panel1.Controls.Add(Me.CheckFngr)
         Me.Panel1.Controls.Add(Me.RFID)
@@ -324,6 +324,88 @@ Partial Class Form1
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(542, 386)
         Me.Panel1.TabIndex = 1
+        '
+        'PanelWrite
+        '
+        Me.PanelWrite.BackColor = System.Drawing.Color.Transparent
+        Me.PanelWrite.Controls.Add(Me.BatalRFID)
+        Me.PanelWrite.Controls.Add(Me.BtnWrite)
+        Me.PanelWrite.Controls.Add(Me.Label1)
+        Me.PanelWrite.Controls.Add(Me.NIMWrite)
+        Me.PanelWrite.Controls.Add(Me.TxtNIM_Write)
+        Me.PanelWrite.Controls.Add(Me.Panel8)
+        Me.PanelWrite.Location = New System.Drawing.Point(70, 118)
+        Me.PanelWrite.Name = "PanelWrite"
+        Me.PanelWrite.Size = New System.Drawing.Size(416, 166)
+        Me.PanelWrite.TabIndex = 2
+        '
+        'BatalRFID
+        '
+        Me.BatalRFID.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BatalRFID.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue
+        Me.BatalRFID.FlatAppearance.MouseDownBackColor = System.Drawing.Color.SteelBlue
+        Me.BatalRFID.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
+        Me.BatalRFID.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BatalRFID.Font = New System.Drawing.Font("Century Gothic", 12.0!)
+        Me.BatalRFID.Location = New System.Drawing.Point(242, 98)
+        Me.BatalRFID.Name = "BatalRFID"
+        Me.BatalRFID.Size = New System.Drawing.Size(115, 41)
+        Me.BatalRFID.TabIndex = 22
+        Me.BatalRFID.Text = "BATAL"
+        Me.BatalRFID.UseVisualStyleBackColor = True
+        '
+        'BtnWrite
+        '
+        Me.BtnWrite.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BtnWrite.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue
+        Me.BtnWrite.FlatAppearance.MouseDownBackColor = System.Drawing.Color.SteelBlue
+        Me.BtnWrite.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
+        Me.BtnWrite.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnWrite.Font = New System.Drawing.Font("Century Gothic", 12.0!)
+        Me.BtnWrite.Location = New System.Drawing.Point(107, 98)
+        Me.BtnWrite.Name = "BtnWrite"
+        Me.BtnWrite.Size = New System.Drawing.Size(115, 41)
+        Me.BtnWrite.TabIndex = 21
+        Me.BtnWrite.Text = "TULIS"
+        Me.BtnWrite.UseVisualStyleBackColor = True
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(61, 27)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(289, 20)
+        Me.Label1.TabIndex = 20
+        Me.Label1.Text = "TETAP TEMPELKAN KARTU PADA READER"
+        '
+        'NIMWrite
+        '
+        Me.NIMWrite.AutoSize = True
+        Me.NIMWrite.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NIMWrite.Location = New System.Drawing.Point(61, 69)
+        Me.NIMWrite.Name = "NIMWrite"
+        Me.NIMWrite.Size = New System.Drawing.Size(40, 20)
+        Me.NIMWrite.TabIndex = 17
+        Me.NIMWrite.Text = "NIM"
+        '
+        'TxtNIM_Write
+        '
+        Me.TxtNIM_Write.BackColor = System.Drawing.Color.White
+        Me.TxtNIM_Write.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TxtNIM_Write.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtNIM_Write.Location = New System.Drawing.Point(107, 68)
+        Me.TxtNIM_Write.Name = "TxtNIM_Write"
+        Me.TxtNIM_Write.Size = New System.Drawing.Size(249, 19)
+        Me.TxtNIM_Write.TabIndex = 16
+        '
+        'Panel8
+        '
+        Me.Panel8.BackColor = System.Drawing.Color.Coral
+        Me.Panel8.Location = New System.Drawing.Point(107, 89)
+        Me.Panel8.Name = "Panel8"
+        Me.Panel8.Size = New System.Drawing.Size(249, 1)
+        Me.Panel8.TabIndex = 15
         '
         'PanelFinger
         '
@@ -586,88 +668,6 @@ Partial Class Form1
         Me.BtnNext2.Text = "NEXT"
         Me.BtnNext2.UseVisualStyleBackColor = False
         '
-        'PanelWrite
-        '
-        Me.PanelWrite.BackColor = System.Drawing.Color.Transparent
-        Me.PanelWrite.Controls.Add(Me.BatalRFID)
-        Me.PanelWrite.Controls.Add(Me.BtnWrite)
-        Me.PanelWrite.Controls.Add(Me.Label1)
-        Me.PanelWrite.Controls.Add(Me.NIMWrite)
-        Me.PanelWrite.Controls.Add(Me.TxtNIM_Write)
-        Me.PanelWrite.Controls.Add(Me.Panel8)
-        Me.PanelWrite.Location = New System.Drawing.Point(70, 118)
-        Me.PanelWrite.Name = "PanelWrite"
-        Me.PanelWrite.Size = New System.Drawing.Size(416, 166)
-        Me.PanelWrite.TabIndex = 2
-        '
-        'BatalRFID
-        '
-        Me.BatalRFID.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.BatalRFID.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue
-        Me.BatalRFID.FlatAppearance.MouseDownBackColor = System.Drawing.Color.SteelBlue
-        Me.BatalRFID.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
-        Me.BatalRFID.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.BatalRFID.Font = New System.Drawing.Font("Century Gothic", 12.0!)
-        Me.BatalRFID.Location = New System.Drawing.Point(242, 98)
-        Me.BatalRFID.Name = "BatalRFID"
-        Me.BatalRFID.Size = New System.Drawing.Size(115, 41)
-        Me.BatalRFID.TabIndex = 22
-        Me.BatalRFID.Text = "BATAL"
-        Me.BatalRFID.UseVisualStyleBackColor = True
-        '
-        'BtnWrite
-        '
-        Me.BtnWrite.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.BtnWrite.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue
-        Me.BtnWrite.FlatAppearance.MouseDownBackColor = System.Drawing.Color.SteelBlue
-        Me.BtnWrite.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
-        Me.BtnWrite.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.BtnWrite.Font = New System.Drawing.Font("Century Gothic", 12.0!)
-        Me.BtnWrite.Location = New System.Drawing.Point(107, 98)
-        Me.BtnWrite.Name = "BtnWrite"
-        Me.BtnWrite.Size = New System.Drawing.Size(115, 41)
-        Me.BtnWrite.TabIndex = 21
-        Me.BtnWrite.Text = "TULIS"
-        Me.BtnWrite.UseVisualStyleBackColor = True
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(61, 27)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(289, 20)
-        Me.Label1.TabIndex = 20
-        Me.Label1.Text = "TETAP TEMPELKAN KARTU PADA READER"
-        '
-        'NIMWrite
-        '
-        Me.NIMWrite.AutoSize = True
-        Me.NIMWrite.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.NIMWrite.Location = New System.Drawing.Point(61, 69)
-        Me.NIMWrite.Name = "NIMWrite"
-        Me.NIMWrite.Size = New System.Drawing.Size(40, 20)
-        Me.NIMWrite.TabIndex = 17
-        Me.NIMWrite.Text = "NIM"
-        '
-        'TxtNIM_Write
-        '
-        Me.TxtNIM_Write.BackColor = System.Drawing.Color.White
-        Me.TxtNIM_Write.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TxtNIM_Write.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtNIM_Write.Location = New System.Drawing.Point(107, 68)
-        Me.TxtNIM_Write.Name = "TxtNIM_Write"
-        Me.TxtNIM_Write.Size = New System.Drawing.Size(249, 19)
-        Me.TxtNIM_Write.TabIndex = 16
-        '
-        'Panel8
-        '
-        Me.Panel8.BackColor = System.Drawing.Color.Coral
-        Me.Panel8.Location = New System.Drawing.Point(107, 89)
-        Me.Panel8.Name = "Panel8"
-        Me.Panel8.Size = New System.Drawing.Size(249, 1)
-        Me.Panel8.TabIndex = 15
-        '
         'CheckRFID
         '
         Me.CheckRFID.BackColor = System.Drawing.Color.FromArgb(CType(CType(51, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(117, Byte), Integer))
@@ -904,12 +904,12 @@ Partial Class Form1
         CType(Me.Fingerprint, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RFID, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
+        Me.PanelWrite.ResumeLayout(False)
+        Me.PanelWrite.PerformLayout()
         Me.PanelFinger.ResumeLayout(False)
         Me.PanelFinger.PerformLayout()
         Me.PanelPW.ResumeLayout(False)
         Me.PanelPW.PerformLayout()
-        Me.PanelWrite.ResumeLayout(False)
-        Me.PanelWrite.PerformLayout()
         Me.PanelRead.ResumeLayout(False)
         Me.PanelRead.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
