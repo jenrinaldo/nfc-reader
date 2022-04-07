@@ -1,7 +1,37 @@
-D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\GUI_PKL.exe.config
-D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\GUI_PKL.exe
-D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\GUI_PKL.pdb
-D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\GUI_PKL.xml
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Buku Tamu Perpustakaan UB.exe.config
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\Interop.FlexCodeSDK.dll
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\GUI_PKL.vbproj.ResolveComReference.cache
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\Buku Tamu Perpustakaan UB.exe
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\Buku Tamu Perpustakaan UB.xml
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\Buku Tamu Perpustakaan UB.pdb
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\GUI_PKL.vbprojResolveAssemblyReference.cache
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\GUI_PKL.Form1.resources
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\GUI_PKL.Resources.resources
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\GUI_PKL.vbproj.GenerateResource.Cache
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Buku Tamu Perpustakaan UB.exe.manifest
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Buku Tamu Perpustakaan UB.application
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Buku Tamu Perpustakaan UB.exe
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Buku Tamu Perpustakaan UB.pdb
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Buku Tamu Perpustakaan UB.xml
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Bunifu_UI_v1.5.3.dll
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Microsoft.VisualBasic.PowerPacks.dll
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\MySql.Data.dll
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Google.Protobuf.dll
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\BouncyCastle.Crypto.dll
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Microsoft.VisualBasic.PowerPacks.xml
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\MySql.Data.xml
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\Buku Tamu Perpustakaan UB.exe.manifest
+F:\D\Ini\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\Buku Tamu Perpustakaan UB.application
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Buku Tamu Perpustakaan UB.exe.config
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\GUI_PKL.vbproj.ResolveComReference.cache
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\Buku Tamu Perpustakaan UB.exe
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\Buku Tamu Perpustakaan UB.xml
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\Buku Tamu Perpustakaan UB.pdb
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Buku Tamu Perpustakaan UB.exe.manifest
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Buku Tamu Perpustakaan UB.application
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Buku Tamu Perpustakaan UB.exe
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Buku Tamu Perpustakaan UB.pdb
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Buku Tamu Perpustakaan UB.xml
 D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Bunifu_UI_v1.5.3.dll
 D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Microsoft.VisualBasic.PowerPacks.dll
 D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\MySql.Data.dll
@@ -9,12 +39,10 @@ D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Google.Prot
 D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\BouncyCastle.Crypto.dll
 D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\Microsoft.VisualBasic.PowerPacks.xml
 D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\bin\Debug\MySql.Data.xml
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\GUI_PKL.vbprojResolveAssemblyReference.cache
 D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\Interop.FlexCodeSDK.dll
-D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\GUI_PKL.vbproj.ResolveComReference.cache
 D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\GUI_PKL.Form1.resources
 D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\GUI_PKL.Resources.resources
 D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\GUI_PKL.vbproj.GenerateResource.Cache
-D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\GUI_PKL.exe
-D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\GUI_PKL.xml
-D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\GUI_PKL.pdb
-D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\GUI_PKL.vbprojResolveAssemblyReference.cache
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\Buku Tamu Perpustakaan UB.exe.manifest
+D:\Kuliah\MATERI PKL\nfc-reader\FlatDesign\GUI_PKL\GUI_PKL\obj\Debug\Buku Tamu Perpustakaan UB.application
